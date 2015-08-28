@@ -111,7 +111,7 @@ We don't believe there is much benefit in assign a "domain" to each concept in e
 
 | column                        | type  | description                                                                                                                                                                       |
 | -----------------             | ----  | -----------                                                                                                                                                                       |
-| id                            | int   | A unique identifier for each COST record.                                                                                                                                         |
+| id                            | serial   | A unique identifier for each COST record.                                                                                                                                         |
 | cost_event_id                 | int   | A foreign key identifier to the event (e.g. Measurement, Procedure, Visit, Drug Exposure, etc) record for which cost data are recorded.                                           |
 | table_name                    | text  | The name of the table where the associated event record is found.                                                                                                                 |
 | currency_concept_id           | int   | A concept representing the 3-letter code used to delineate international currencies, such as USD for US Dollar.                                                                   |
@@ -137,7 +137,7 @@ We don't believe there is much benefit in assign a "domain" to each concept in e
 
 | column               | type | description                                                                                                                     |
 | -----------------    | ---- | -----------                                                                                                                     |
-| id                   | int  | A unique identifier for each person.                                                                                            |
+| id                   | serial  | A unique identifier for each person.                                                                                            |
 | gender_concept_id    | int  | A foreign key that refers to an identifier in the CONCEPT table for the unique gender of the person.                            |
 | birth_date           | date | Date of birth                                                                                                                   |
 | race_concept_id      | int  | A foreign key that refers to an identifier in the CONCEPT table for the unique race of the person.                              |
@@ -151,7 +151,7 @@ We don't believe there is much benefit in assign a "domain" to each concept in e
 
 | column            | type | description                                                                                                                    |
 | ----------------- | ---- | -----------                                                                                                                    |
-| id                | int  | A unique identifier for each geographic location.                                                                              |
+| id                | serial  | A unique identifier for each geographic location.                                                                              |
 | address_1         | text | The address field 1, typically used for the street address, as it appears in the source data.                                  |
 | address_2         | text | The address field 2, typically used for additional detail such as buildings, suites, floors, as it appears in the source data. |
 | city              | text | The city field as it appears in the source data.                                                                               |
@@ -165,7 +165,7 @@ We don't believe there is much benefit in assign a "domain" to each concept in e
 
 | column                      | type | description                                                                        |
 | -----------------           | ---- | -----------                                                                        |
-| id                          | int  | A unique identifier for each Provider.                                             |
+| id                          | serial  | A unique identifier for each Provider.                                             |
 | provider_name               | text | A description of the Provider.                                                     |
 | npi                         | text | The National Provider Identifier (NPI) of the provider.                            |
 | dea                         | text | The Drug Enforcement Administration (DEA) number of the provider.                  |
@@ -182,7 +182,7 @@ We don't believe there is much benefit in assign a "domain" to each concept in e
 
 | column                        | type | description                                                                                                                        |
 | -----------------             | ---- | -----------                                                                                                                        |
-| id                            | int  | A unique identifier for each Care Site.                                                                                            |
+| id                            | serial  | A unique identifier for each Care Site.                                                                                            |
 | care_site_name                | text | The description or name of the Care Site                                                                                           |
 | place_of_service_concept_id   | int  | A foreign key that refers to a Place of Service Concept ID in the Standardized Vocabularies.                                       |
 | location_id                   | int  | A foreign key to the geographic Location of the Care Site in the LOCATION table, where the detailed address information is stored. |
