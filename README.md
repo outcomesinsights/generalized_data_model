@@ -31,7 +31,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                  | serial | Surrogate key for record                                                              |
 | person_id           | int    | ID of person associated with this record                                              |
 | start_date          | date   | Date of when clinical record began                                                    |
-| stop_date           | date   | Date of when clinical record ended                                                    |
+| end_date           | date   | Date of when clinical record ended                                                    |
 | encounter_id        | int    | FK for encounter associated with this record                                          |
 | provenance_id       | int    | FK for provenance record associated with this procedure                               |
 | clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
@@ -48,7 +48,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                | serial | Surrogate key for record                                                                    |
 | person_id         | int    | ID of person associated with this record                                                    |
 | start_date        | date   | Date of when record began                                                                   |
-| stop_date         | date   | Date of when record ended                                                                   |
+| end_date         | date   | Date of when record ended                                                                   |
 | provenance_id     | int    | FK reference to provenance table                                                            |
 | provider_id       | int    | FK reference to provider table                                                              |
 | visit_id          | int    | FK reference to visit table                                                                 |
@@ -63,7 +63,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                  | serial | Surrogate key for record                                                                                                                                                                                                                                         |
 | person_id           | int    | ID of person associated with this record                                                                                                                                                                                                                         |
 | start_date          | date   | Date of when record began                                                                                                                                                                                                                                        |
-| stop_date           | date   | Date of when record ended                                                                                                                                                                                                                                        |
+| end_date           | date   | Date of when record ended                                                                                                                                                                                                                                        |
 | encounter_id        | int    | FK reference to encounter table                                                                                                                                                                                                                                  |
 | provenance_id       | int    | FK reference to provenance table                                                                                                                                                                                                                                 |
 | detail_concept_id   | int    | FK reference to concept table representing the topic the detail addresses                                                                                                                                                                                        |
@@ -87,7 +87,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                   | serial | Surrogate key for record                                                                                                               |
 | person_id            | int    | ID of person associated with this record                                                                                               |
 | start_date           | date   | Date of when record began                                                                                                              |
-| stop_date            | date   | Date of when record ended                                                                                                              |
+| end_date            | date   | Date of when record ended                                                                                                              |
 | encounter_id         | int    | FK reference to encounter table                                                                                                        |
 | provenance_id        | int    | FK reference to provenance table                                                                                                       |
 | provider_id          | int    | FK reference to provider table                                                                                                         |
@@ -207,7 +207,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                | serial | Surrogate key for record                                                                                                                                                        |
 | person_id         | int    | ID of person associated with this record                                                                                                                                        |
 | start_date        | date   | Date of when record began                                                                                                                                                       |
-| stop_date         | date   | Date of when record ended                                                                                                                                                       |
+| end_date         | date   | Date of when record ended                                                                                                                                                       |
 | provenance_id     | int    | FK reference to provenance table                                                                                                                                                |
 | enrollment_type   | text   | String representing the type of insurance                                                                                                                                       |
 | applicable_table  | text   | name of the table which this period provides information for.  E.g. Part D enrollment implies data for the exposure table (though not for device exposures...hmmmmmm) |
