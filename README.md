@@ -212,7 +212,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | enrollment_type   | text   | String representing the type of insurance                                                                                                                                       |
 | applicable_table  | text   | name of the table which this period provides information for.  E.g. Part D enrollment implies data for the exposure table (though not for device exposures...hmmmmmm) |
 
-## provenance
+## provenances
 - Records information about where a row in the CDM came from
 - Most tables will have a provenance_id pointing to a row in this table
 - If we split some of the information in this table into another table, we won’t need to make a new row for EVERY row in the other tables, we just need to make a row for each unique combination of the values for the columns below, i.e. clinical rows may share a common provenance_id
