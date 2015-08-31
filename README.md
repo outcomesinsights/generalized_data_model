@@ -1,21 +1,29 @@
 # Outcomes Insights, Inc. Draft Common Data Model
 
-The purpose of this CDM is to avoid any unnecessary mapping, translation, and restructuring of raw data.  While we are inspired by CDMs such as OMOP, we find their CDM to require a very complicated ETL process in order to get data into their desired format.
+A common data model (CDM) defines a set of standard locations in which information of specific types should be stored.  As such, it describes the end result of an extract, transform, and load (ETL) process for an arbitrary source (or raw) dataset.  CDM specifications can be created with a variety of goals for the resulting data model.  The goals of this CDM are twofold:  
 
-We reject the need for mapping various terminologies into a standard vocabulary.  That step is not useful for the type of research we plan on conducting in the near term.
+1. To minimize vocabulary mapping and restructuring in order to improve CDM adoption and to separate the data model from the vocabulary model
+2. To capture the provenance of the data in order to enhance the reproducibility of studies that use the CDM 
 
-We don't believe there is much benefit in assign a "domain" to each concept in every terminology.  Again, we aim to search through our data using ICD-9/HCPCS/CPT codes and simply need to know when, and in what context, those codes were reported.  It is not important for us to determine if a HCPCS code really represents a measurement or observation or drug exposure.  It is more important for us to know that if an algorithm involves a HCPCS code, that we know which table to look for that code.
+While we are inspired by CDMs such as OMOP, we find that the OMOP model requires a substantial mapping of vocabularies and domains that is intended to allow queries to operate on data from any source.  While this is a potentially powerful design goal, it results in a very complicated ETL process that varies across ETL practitioners.  It creates a steep learning curve for understanding and using novel vocabularies required to navigate the data.  And it also ignores a substantial literature that uses validated algorithms based on the vocabularies in the source data, reducing transparency and reproducibility.  
+
+Therefore, as part of the data model, we do not want to incorporate information about whether a particular code represents a condition, measurement, observation, or drug exposure.  Instead, we prefer to retain data using their native vocabularies (e.g., ICD-9, HCPCS, CPT, etc.) so that we can focus on when, and in what context, the ideas represented by the codes were reported.  Hence, the fundamental premise of our CDM is that storing the data in a CDM should be separate from mapping the data to clinical research variables via algorithms.  
+
+The rationale for separating these functions is that vocabulary mappings are prone to refinement and they can obscure the connection back to the source data ("provenance").  Also, mappings are not universally available (e.g., procedure vocabularies).  Furthermore, to the extent that there are potential efficiencies to expressing queries in a common vocabulary (e.g., SNOMED), this does not require that every code in the data be remapped **during the ETL process**.  Generalized queries only require a mapping from the common vocabulary (e.g., SNOMED) to the codes available in the dataset at hand, which can readily be done "on the fly."
+
+Perhaps the simplest way to explain the philosophy of our CDM is that, if an algorithm involves a specific code, we should know the CDM table in which to look for that code regardless of the structure of the original (raw) data.  Then we should be able to leverage our library of existing algorithms and vocabulary tools to operate on the data and create our study datasets.  The ultimate goal is **not to have to do any ETL at all**, and to operate against the raw data directly.  However, for the time being, we are focused on building a simple CDM that involves minimal ETL, coupled with a framework for creating, storing, sharing, and using algorithms that operate on a CDM.
+
+To this end, we have developed an open-source language, [ConceptQL](https://github.com/outcomesinsights/conceptql), that enables us to create, store, share, and use algorithms that are designed to work on electronic health information.  Our project, [Jigsaw](http://www.jigsawanalytics.com) leverages ConceptQL to create a mechanism for leveraging algorithms and vocabularies separately from the CDM.
 
 ## clinical_codes
-- Instead of having separate condition and procedure tables, we’ll have all codes from the following vocabularies end up in this table.
-    - Vocabularies
-        - ICD-9 (Proc and CM)
-        - ICD-10 (Proc and CM)
-        - SNOMED
-        - MEDCODE
-        - HCPCS/CPT
-        - SEER/Oncology
-- The OMOP specification for procedure_occurrence and condition_occurrence are quite similar.  Having two separate tables follows with OMOP’s philosophy of classifying each concept into a specific domain.  Since we are not interested in domains for our research, and since the tables are so similar, there is no philosophical or technical reason why we can’t combine conditions and procedures into the same table.  Indeed, CPRD data does not make this distinction.
+- Instead of having separate condition and procedure tables, we’ll include all codes from the following vocabularies:
+  - ICD-9 (Proc and CM)
+  - ICD-10 (Proc and CM)
+  - SNOMED
+  - MEDCODE
+  - HCPCS/CPT
+  - SEER/Oncology
+- The OMOP specification for procedure_occurrence and condition_occurrence are quite similar.  Having two separate tables follows with OMOP’s philosophy of classifying each concept into a specific domain.  Since we are not interested in domains for our research, and since the tables are so similar, there is no philosophical or technical reason why we can’t combine conditions and procedures into the same table.  After all, Medcodes (in CPRD), SNOMED, HCPCS, ICD-9, and ICD-10 all include multiple domains within their vocabularies.
 - For each code we find in the source data, we will create a new row in this table.  The code from the source data will be matched against OMOP’s concept table and we will save the concept_id in this table, rather than the raw code.
 
 | column              | type   | description                                                                           |
@@ -30,7 +38,7 @@ We don't believe there is much benefit in assign a "domain" to each concept in e
 | quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
 
 ## encounters
-- Represents an encounter between a patient and one provider in a particular place of service
+- Represents an encounter between a patient and one provider in a particular place of service (on a single day?)
 - Can be pointed to by multiple clinical, detail, and exposure records
 - Vocabularies
     - Place of service
@@ -64,7 +72,7 @@ We don't believe there is much benefit in assign a "domain" to each concept in e
 | value_as_concept_id | int    | A foreign key to an observation result stored as a Concept ID. This is applicable to observations where the result can be expressed as a Standard Concept from the Standardized Vocabularies (e.g., positive/negative, present/absent, low/high, etc.). |
 | unit_concept_id     | int    | A foreign key to a Standard Concept ID of measurement units in the Standardized Vocabularies.                                                                                                                                                                    |
 
-## Exposures
+## exposures
 - To capture drug/device data (outside of procedure codes).  See OMOP drug/device exposure tables
 - Could include devices if they are reported separately from procedures
 - Vocabularies
@@ -204,7 +212,7 @@ We don't believe there is much benefit in assign a "domain" to each concept in e
 | enrollment_type   | text   | String representing the type of insurance                                                                                                                                       |
 | applicable_table  | text   | name of the table which this period provides information for.  E.g. Part D enrollment implies data for the exposure table (though not for device exposures...hmmmmmm) |
 
-## provenances
+## provenance
 - Records information about where a row in the CDM came from
 - Most tables will have a provenance_id pointing to a row in this table
 - If we split some of the information in this table into another table, we won’t need to make a new row for EVERY row in the other tables, we just need to make a row for each unique combination of the values for the columns below, i.e. clinical rows may share a common provenance_id
@@ -213,7 +221,7 @@ We don't believe there is much benefit in assign a "domain" to each concept in e
 | -----------------      | ----   | -----------                                                                                                                                                       |
 | id                     | serial | Surrogate key for record                                                                                                                                          |
 | file_name              | text   | Name of the file from which the record was pulled                                                                                                                 |
-| file_year              | int    | Year in which the file was ??????                                                                                                                                 |
+| file_seqnum            | int    | Addition detail on file (e.g., year [2008] or year + part [2008_3])                                                                                                                                 |
 | file_row_id            | text   | ID assigned to the original row from which the record was pulled                                                                                                  |
 | position               | int    | The position for the variable assigned e.g. dx3 gets position 3                                                                                                   |
 | original_variable_name | text   | Name of the original variable from which the record was derived.  This won’t work for details since more than one field might contribute to a detail record |
@@ -222,3 +230,5 @@ We don't believe there is much benefit in assign a "domain" to each concept in e
 - Do we need a table for “facility”, “hospitalization” or “extended care” records (with types for inpatient, long-term, SNF, etc.)
 - What about modifiers – tend to be for laterality (left/right) or multiple physicians and maybe part of ETL
 - Do we need some types in the data (e.g., “cancer registry”, “claims”, “EHR”)
+- We should require mapping to a vocab for text-based entries (e.g., drugs stored as drug names, labs stored as lab names)
+
