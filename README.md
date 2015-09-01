@@ -33,7 +33,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | start_date          | date   | Date of when clinical record began                                                    |
 | end_date            | date   | Date of when clinical record ended                                                    |
 | encounter_id        | int    | FK for encounter associated with this record                                          |
-| origin_id       | int    | FK for origin record associated with this procedure                               |
+| origin_id           | int    | FK for origin record associated with this procedure                                   |
 | clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
 | quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
 
@@ -50,7 +50,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id         | int    | ID of person associated with this record                                                    |
 | start_date        | date   | Date of when record began                                                                   |
 | end_date          | date   | Date of when record ended                                                                   |
-| origin_id     | int    | FK reference to origins table                                                            |
+| origin_id         | int    | FK reference to origins table                                                               |
 | provider_id       | int    | FK reference to provider table                                                              |
 | visit_id          | int    | FK reference to visit table                                                                 |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
@@ -65,19 +65,19 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 - Might eventually map to LOINC where possible
 - SEER/Oncology vocab
 
-| column              | type   | description                                                                                                                                                                                                                                                      |
-| -----------------   | ----   | -----------                                                                                                                                                                                                                                                      |
-| id                  | serial | Surrogate key for record                                                                                                                                                                                                                                         |
-| person_id           | int    | ID of person associated with this record                                                                                                                                                                                                                         |
-| start_date          | date   | Date of when record began                                                                                                                                                                                                                                        |
-| end_date            | date   | Date of when record ended                                                                                                                                                                                                                                        |
-| encounter_id        | int    | FK reference to encounter table                                                                                                                                                                                                                                  |
-| origin_id       | int    | FK reference to origins table                                                                                                                                                                                                                                 |
-| detail_concept_id   | int    | FK reference to concept table representing the topic the detail addresses                                                                                                                                                                                        |
-| value_as_number     | float  | The observation result stored as a number. This is applicable to observations where the result is expressed as a numeric value.                                                                                                                                  |
-| value_as_string     | text   | The observation result stored as a string. This is applicable to observations where the result is expressed as verbatim text.                                                                                                                                    |
+| column              | type   | description                                                                                                                                                                                                                                             |
+| -----------------   | ----   | -----------                                                                                                                                                                                                                                             |
+| id                  | serial | Surrogate key for record                                                                                                                                                                                                                                |
+| person_id           | int    | ID of person associated with this record                                                                                                                                                                                                                |
+| start_date          | date   | Date of when record began                                                                                                                                                                                                                               |
+| end_date            | date   | Date of when record ended                                                                                                                                                                                                                               |
+| encounter_id        | int    | FK reference to encounter table                                                                                                                                                                                                                         |
+| origin_id           | int    | FK reference to origins table                                                                                                                                                                                                                           |
+| detail_concept_id   | int    | FK reference to concept table representing the topic the detail addresses                                                                                                                                                                               |
+| value_as_number     | float  | The observation result stored as a number. This is applicable to observations where the result is expressed as a numeric value.                                                                                                                         |
+| value_as_string     | text   | The observation result stored as a string. This is applicable to observations where the result is expressed as verbatim text.                                                                                                                           |
 | value_as_concept_id | int    | A foreign key to an observation result stored as a Concept ID. This is applicable to observations where the result can be expressed as a Standard Concept from the Standardized Vocabularies (e.g., positive/negative, present/absent, low/high, etc.). |
-| unit_concept_id     | int    | A foreign key to a Standard Concept ID of measurement units in the Standardized Vocabularies.                                                                                                                                                                    |
+| unit_concept_id     | int    | A foreign key to a Standard Concept ID of measurement units in the Standardized Vocabularies.                                                                                                                                                           |
 
 ## exposures
 
@@ -96,7 +96,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | start_date           | date   | Date of when record began                                                                                                              |
 | end_date             | date   | Date of when record ended                                                                                                              |
 | encounter_id         | int    | FK reference to encounter table                                                                                                        |
-| origin_id        | int    | FK reference to origins table                                                                                                       |
+| origin_id            | int    | FK reference to origins table                                                                                                          |
 | provider_id          | int    | FK reference to provider table                                                                                                         |
 | exposure_concept_id  | int    | FK reference to concept table representing the exposure represented by this record                                                     |
 | refills              | int    | The number of refills after the initial prescription. The initial prescription is not counted, values start with 0.                    |
@@ -116,7 +116,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id             | int    | ID of person associated with this record                                                              |
 | date                  | date   | Date of death                                                                                         |
 | encounter_id          | int    | FK reference to encounter table                                                                       |
-| origin_id         | int    | FK reference to origins table                                                                      |
+| origin_id             | int    | FK reference to origins table                                                                         |
 | cause_concept_id      | int    | FK reference into concept that represents cause of death                                              |
 | cause_type_concept_id | int    | FK reference into concept that represents the type of cause of death (e.g. primary, secondary, etc. ) |
 
@@ -125,27 +125,27 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 - To capture costs (charges, reimbursed amounts, and/or costs) for each provided service
 - OI cost table
 
-| column                        | type   | description                                                                                                                                                                                 |
-| -----------------             | ----   | -----------                                                                                                                                                                                 |
-| id                            | serial | A unique identifier for each COST record.                                                                                                                                                   |
-| cost_event_id                 | int    | A foreign key identifier to the event (e.g. Measurement, Procedure, Visit, Drug Exposure, etc) record for which cost data are recorded.                                                     |
-| table_name                    | text   | The name of the table where the associated event record is found.                                                                                                                           |
-| currency_concept_id           | int    | A concept representing the 3-letter code used to delineate international currencies, such as USD for US Dollar.                                                                             |
-| charge                        | float  | The amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider)                                                                                    |
-| paid_copay                    | float  | The amount paid by the Person as a fixed contribution to the expenses. Copay does not contribute to the out of pocket expenses.                                                             |
+| column                        | type   | description                                                                                                                                                                       |
+| -----------------             | ----   | -----------                                                                                                                                                                       |
+| id                            | serial | A unique identifier for each COST record.                                                                                                                                         |
+| cost_event_id                 | int    | A foreign key identifier to the event (e.g. Measurement, Procedure, Visit, Drug Exposure, etc) record for which cost data are recorded.                                           |
+| table_name                    | text   | The name of the table where the associated event record is found.                                                                                                                 |
+| currency_concept_id           | int    | A concept representing the 3-letter code used to delineate international currencies, such as USD for US Dollar.                                                                   |
+| charge                        | float  | The amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider)                                                                          |
+| paid_copay                    | float  | The amount paid by the Person as a fixed contribution to the expenses. Copay does not contribute to the out of pocket expenses.                                                   |
 | paid_coinsurance              | float  | The amount paid by the Person as a joint assumption of risk. Typically, this is a percentage of the expenses defined by the Payer Plan after the Person's deductible is exceeded. |
-| paid_toward_deductible        | float  | The amount paid by the Person that is counted toward the deductible defined by the Payer Plan.                                                                                              |
-| paid_by_payer                 | float  | The amount paid by the Payer. If there is more than one Payer, several COST records indicate that fact.                                                                                     |
-| paid_by_coordination_benefits | float  | The amount paid by a secondary Payer through the coordination of benefits.                                                                                                                  |
-| total_out_of_pocket           | float  | The total amount paid by the Person as a share of the expenses.                                                                                                                             |
-| total_paid                    | float  | The total amount paid for the expenses of drug exposure.                                                                                                                                    |
-| ingredient_cost               | float  | The portion of the drug expenses due to the cost charged by the manufacturer for the drug, typically a percentage of the Average Wholesale Price.                                           |
-| dispensing_fee                | float  | The portion of the drug expenses due to the dispensing fee charged by the pharmacy, typically a fixed amount.                                                                               |
-| cost                          | float  | Cost of service/device/drug incurred by provider/pharmacy.  Was "average_wholesale_price" which represented: "List price of a Drug set by the manufacturer."                   |
-| information_period_id         | int    | A foreign key to the information_period table, where the details of the Payer, Plan and Family are stored.                                                                                  |
-| amount_allowed                | float  | The contracted amount the provider has agreed to accept as payment in full.                                                                                                                 |
-| revenue_code_concept_id       | int    | A foreign key referring to a Standard Concept ID in the Standardized Vocabularies for Revenue codes.                                                                                        |
-| revenue_code_source_value     | text   | The source code for the Revenue code as it appears in the source data, stored here for reference.                                                                                           |
+| paid_toward_deductible        | float  | The amount paid by the Person that is counted toward the deductible defined by the Payer Plan.                                                                                    |
+| paid_by_payer                 | float  | The amount paid by the Payer. If there is more than one Payer, several COST records indicate that fact.                                                                           |
+| paid_by_coordination_benefits | float  | The amount paid by a secondary Payer through the coordination of benefits.                                                                                                        |
+| total_out_of_pocket           | float  | The total amount paid by the Person as a share of the expenses.                                                                                                                   |
+| total_paid                    | float  | The total amount paid for the expenses of drug exposure.                                                                                                                          |
+| ingredient_cost               | float  | The portion of the drug expenses due to the cost charged by the manufacturer for the drug, typically a percentage of the Average Wholesale Price.                                 |
+| dispensing_fee                | float  | The portion of the drug expenses due to the dispensing fee charged by the pharmacy, typically a fixed amount.                                                                     |
+| cost                          | float  | Cost of service/device/drug incurred by provider/pharmacy.  Was "average_wholesale_price" which represented: "List price of a Drug set by the manufacturer."                      |
+| information_period_id         | int    | A foreign key to the information_period table, where the details of the Payer, Plan and Family are stored.                                                                        |
+| amount_allowed                | float  | The contracted amount the provider has agreed to accept as payment in full.                                                                                                       |
+| revenue_code_concept_id       | int    | A foreign key referring to a Standard Concept ID in the Standardized Vocabularies for Revenue codes.                                                                              |
+| revenue_code_source_value     | text   | The source code for the Revenue code as it appears in the source data, stored here for reference.                                                                                 |
 
 ## people
 
@@ -217,7 +217,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id         | int    | ID of person associated with this record                                                                                                  |
 | start_date        | date   | Date of when record began                                                                                                                 |
 | end_date          | date   | Date of when record ended                                                                                                                 |
-| origin_id     | int    | FK reference to origins table                                                                                                          |
+| origin_id         | int    | FK reference to origins table                                                                                                             |
 | information_type  | text   | String representing the type of data availability (e.g., insurance coverage, hospital data, up-to-standard date).  Could be concept type. |
 
 ## sources
