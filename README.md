@@ -1,13 +1,13 @@
 # Outcomes Insights, Inc. Draft Common Data Model
 
-A common data model (CDM) defines a set of standard locations in which information of specific types should be stored.  As such, it describes the end result of an extract, transform, and load (ETL) process for an arbitrary source (or raw) dataset.  CDM specifications can be created with a variety of goals for the resulting data model.  The goals of this CDM are twofold:  
+A common data model (CDM) defines a set of standard locations in which information of specific types should be stored.  As such, it describes the end result of an extract, transform, and load (ETL) process for an arbitrary source (or raw) dataset.  CDM specifications can be created with a variety of goals for the resulting data model.  The goals of this CDM are twofold:
 
 1. To minimize vocabulary mapping and restructuring in order to improve CDM adoption and to separate the data model from the vocabulary model
-2. To capture the provenance of the data in order to enhance the reproducibility of studies that use the CDM 
+1. To capture the provenance of the data in order to enhance the reproducibility of studies that use the CDM
 
-While we are inspired by CDMs such as OMOP, we find that the OMOP model requires a substantial mapping of vocabularies and domains that is intended to allow queries to operate on data from any source.  While this is a potentially powerful design goal, it results in a very complicated ETL process that varies across ETL practitioners.  It creates a steep learning curve for understanding and using novel vocabularies required to navigate the data.  And it also ignores a substantial literature that uses validated algorithms based on the vocabularies in the source data, reducing transparency and reproducibility.  
+While we are inspired by CDMs such as OMOP, we find that the OMOP model requires a substantial mapping of vocabularies and domains that is intended to allow queries to operate on data from any source.  While this is a potentially powerful design goal, it results in a very complicated ETL process that varies across ETL practitioners.  It creates a steep learning curve for understanding and using novel vocabularies required to navigate the data.  And it also ignores a substantial literature that uses validated algorithms based on the vocabularies in the source data, reducing transparency and reproducibility.
 
-Therefore, as part of the data model, we do not want to incorporate information about whether a particular code represents a condition, measurement, observation, or drug exposure.  Instead, we prefer to retain data using their native vocabularies (e.g., ICD-9, HCPCS, CPT, etc.) so that we can focus on when, and in what context, the ideas represented by the codes were reported.  Hence, the fundamental premise of our CDM is that storing the data in a CDM should be separate from mapping the data to clinical research variables via algorithms.  
+Therefore, as part of the data model, we do not want to incorporate information about whether a particular code represents a condition, measurement, observation, or drug exposure.  Instead, we prefer to retain data using their native vocabularies (e.g., ICD-9, HCPCS, CPT, etc.) so that we can focus on when, and in what context, the ideas represented by the codes were reported.  Hence, the fundamental premise of our CDM is that storing the data in a CDM should be separate from mapping the data to clinical research variables via algorithms.
 
 The rationale for separating these functions is that vocabulary mappings are prone to refinement and they can obscure the connection back to the source data ("provenance").  Also, mappings are not universally available (e.g., procedure vocabularies).  Furthermore, to the extent that there are potential efficiencies to expressing queries in a common vocabulary (e.g., SNOMED), this does not require that every code in the data be remapped **during the ETL process**.  Generalized queries only require a mapping from the common vocabulary (e.g., SNOMED) to the codes available in the dataset at hand, which can readily be done "on the fly."
 
@@ -16,6 +16,7 @@ Perhaps the simplest way to explain the philosophy of our CDM is that, if an alg
 To this end, we have developed an open-source language, [ConceptQL](https://github.com/outcomesinsights/conceptql), that enables us to create, store, share, and use algorithms that are designed to work on electronic health information.  Our project, [Jigsaw](http://www.jigsawanalytics.com) leverages ConceptQL to create a mechanism for leveraging algorithms and vocabularies separately from the CDM.
 
 ## clinical_codes
+
 - Instead of having separate condition and procedure tables, we’ll include all codes from the following vocabularies:
   - ICD-9 (Proc and CM)
   - ICD-10 (Proc and CM)
@@ -37,10 +38,11 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
 
 ## encounters
+
 - Represents an encounter between a patient and one provider in a particular place of service (on a single day?)
 - Can be pointed to by multiple clinical, detail, and exposure records
 - Vocabularies
-    - Place of service
+  - Place of service
 
 | column            | type   | description                                                                                 |
 | ----------------- | ----   | -----------                                                                                 |
@@ -53,14 +55,12 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | visit_id          | int    | FK reference to visit table                                                                 |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
 
-
 ## visits
--  ? how do we resolve the idea of hospitalizations and outpatient facility visits?
 
-
-
+- ? how do we resolve the idea of hospitalizations and outpatient facility visits?
 
 ## details
+
 - Additional information – measurements, observations, status, and specifications
 - Might eventually map to LOINC where possible
 - SEER/Oncology vocab
@@ -80,14 +80,14 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | unit_concept_id     | int    | A foreign key to a Standard Concept ID of measurement units in the Standardized Vocabularies.                                                                                                                                                                    |
 
 ## exposures
+
 - To capture drug/device data (outside of procedure codes).  See OMOP drug/device exposure tables
 - Could include devices if they are reported separately from procedures
 - Vocabularies
-    - NDC
-    - RxNorm
-    - Prodcodes (CPRD)
-    - device vocab (?)
-
+  - NDC
+  - RxNorm
+  - Prodcodes (CPRD)
+  - device vocab (?)
 
 | column               | type   | description                                                                                                                            |
 | -----------------    | ----   | -----------                                                                                                                            |
@@ -105,6 +105,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | dose_unit_concept_id | int    | A foreign key to a predefined concept in the Standardized Vocabularies reflecting the unit the effective_drug_dose value is expressed. |
 
 ## deaths
+
 - Capture mortality information – date and cause(s) of death
 - Might want to check diagnosis codes as part of ETL (?)
 - Possibly roll into information period table?
@@ -120,6 +121,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | cause_type_concept_id | int    | FK reference into concept that represents the type of cause of death (e.g. primary, secondary, etc. ) |
 
 ## costs
+
 - To capture costs (charges, reimbursed amounts, and/or costs) for each provided service
 - OI cost table
 
@@ -145,8 +147,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | revenue_code_concept_id       | int    | A foreign key referring to a Standard Concept ID in the Standardized Vocabularies for Revenue codes.                                                                                        |
 | revenue_code_source_value     | text   | The source code for the Revenue code as it appears in the source data, stored here for reference.                                                                                           |
 
-
 ## people
+
 - See OMOP person table
 
 | column               | type   | description                                                                                                                     |
@@ -161,6 +163,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | care_site_id         | int    | A foreign key to the site of primary care in the care_site table, where the details of the care site are stored.                |
 
 ## addresses
+
 - See OMOP location table – used for persons and care sites
 
 | column            | type   | description                                                                                                                    |
@@ -173,8 +176,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | zip               | text   | The zip or postal code.                                                                                                        |
 | county            | text   | The county.                                                                                                                    |
 
-
 ## providers
+
 - See OMOP provider table.  Adapt to allow multiple providers via encounter table
 
 | column                      | type   | description                                                                        |
@@ -190,8 +193,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | specialty_source_concept_id | int    | A foreign key to a Concept that refers to the code used in the source.             |
 | gender_source_concept_id    | int    | A foreign key to a Concept that refers to the code used in the source.             |
 
-
 ## care_sites
+
 - See OMOP care site table.
 
 | column                        | type   | description                                                                                                                        |
@@ -203,8 +206,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | care_site_source_value        | text   | The identifier for the Care Site in the source data, stored here for reference.                                                    |
 | place_of_service_source_value | text   | The source code for the Place of Service as it appears in the source data, stored here for reference.                              |
 
-
 ## information_periods
+
 - Captures periods for which information in each table is relevant.  Could include enrollment types (e.g., Part A, Part B, HMO) or just “observable” (as with up-to-standard data in CPRD)
 - One row per person per enrollment type per table
 
@@ -217,8 +220,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | provenance_id     | int    | FK reference to provenance table                                                                                                                                                |
 | information_type   | text   | String representing the type of data availability (e.g., insurance coverage, hospital data, up-to-standard date).  Could be concept type.                                                                                                                                       |
 
-
 ## provenances
+
 - Records information about where a row in the CDM came from
 - Most tables will have a provenance_id pointing to a row in this table
 - If we split some of the information in this table into another table, we won’t need to make a new row for EVERY row in the other tables, we just need to make a row for each unique combination of the values for the columns below, i.e. clinical rows may share a common provenance_id
@@ -235,6 +238,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 ## tbd -- separate file row table and a file spec table
 
 ## Miscellaneous details and questions
+
 - Do we need a table for “facility”, “hospitalization” or “extended care” records (with types for inpatient, long-term, SNF, etc.)
 - What about modifiers – tend to be for laterality (left/right) or multiple physicians and maybe part of ETL
 - Additional physician information -- is it needed?
