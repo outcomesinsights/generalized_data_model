@@ -158,7 +158,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | birth_date           | date   | Date of birth                                                                                                                   |
 | race_concept_id      | int    | A foreign key that refers to an identifier in the CONCEPT table for the unique race of the person.                              |
 | ethnicity_concept_id | int    | A foreign key that refers to the standard concept identifier in the Standardized Vocabularies for the ethnicity of the person.  |
-| address_id          | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored. |
+| address_id           | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored. |
 | provider_id          | int    | A foreign key to the primary care provider the person is seeing in the provider table.                                          |
 | care_site_id         | int    | A foreign key to the site of primary care in the care_site table, where the details of the care site are stored.                |
 
@@ -202,7 +202,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                            | serial | A unique identifier for each Care Site.                                                                                            |
 | care_site_name                | text   | The description or name of the Care Site                                                                                           |
 | place_of_service_concept_id   | int    | A foreign key that refers to a Place of Service Concept ID in the Standardized Vocabularies.                                       |
-| address_id                   | int    | A foreign key to the geographic Location of the Care Site in the LOCATION table, where the detailed address information is stored. |
+| address_id                    | int    | A foreign key to the geographic Location of the Care Site in the LOCATION table, where the detailed address information is stored. |
 | care_site_source_value        | text   | The identifier for the Care Site in the source data, stored here for reference.                                                    |
 | place_of_service_source_value | text   | The source code for the Place of Service as it appears in the source data, stored here for reference.                              |
 
@@ -211,14 +211,14 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 - Captures periods for which information in each table is relevant.  Could include enrollment types (e.g., Part A, Part B, HMO) or just “observable” (as with up-to-standard data in CPRD)
 - One row per person per enrollment type per table
 
-| column            | type   | description                                                                                                                                                                     |
-| ----------------- | ----   | -----------                                                                                                                                                                     |
-| id                | serial | Surrogate key for record                                                                                                                                                        |
-| person_id         | int    | ID of person associated with this record                                                                                                                                        |
-| start_date        | date   | Date of when record began                                                                                                                                                       |
-| end_date          | date   | Date of when record ended                                                                                                                                                       |
-| provenance_id     | int    | FK reference to provenance table                                                                                                                                                |
-| information_type   | text   | String representing the type of data availability (e.g., insurance coverage, hospital data, up-to-standard date).  Could be concept type.                                                                                                                                       |
+| column            | type   | description                                                                                                                               |
+| ----------------- | ----   | -----------                                                                                                                               |
+| id                | serial | Surrogate key for record                                                                                                                  |
+| person_id         | int    | ID of person associated with this record                                                                                                  |
+| start_date        | date   | Date of when record began                                                                                                                 |
+| end_date          | date   | Date of when record ended                                                                                                                 |
+| provenance_id     | int    | FK reference to provenance table                                                                                                          |
+| information_type  | text   | String representing the type of data availability (e.g., insurance coverage, hospital data, up-to-standard date).  Could be concept type. |
 
 ## provenances
 
@@ -230,7 +230,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | -----------------      | ----   | -----------                                                                                                                                                       |
 | id                     | serial | Surrogate key for record                                                                                                                                          |
 | file_name              | text   | Name of the file from which the record was pulled                                                                                                                 |
-| file_seqnum            | int    | Addition detail on file (e.g., year [2008] or year + part [2008_3])                                                                                                                                 |
+| file_seqnum            | int    | Addition detail on file (e.g., year [2008] or year + part [2008_3])                                                                                               |
 | file_row_id            | text   | ID assigned to the original row from which the record was pulled                                                                                                  |
 | position               | int    | The position for the variable assigned e.g. dx3 gets position 3                                                                                                   |
 | original_variable_name | text   | Name of the original variable from which the record was derived.  This won’t work for details since more than one field might contribute to a detail record |
