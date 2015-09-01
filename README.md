@@ -22,7 +22,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
   - SNOMED
   - MEDCODE
   - HCPCS/CPT
-  - SEER/Oncology
 - The OMOP specification for procedure_occurrence and condition_occurrence are quite similar.  Having two separate tables follows with OMOP’s philosophy of classifying each concept into a specific domain.  Since we are not interested in domains for our research, and since the tables are so similar, there is no philosophical or technical reason why we can’t combine conditions and procedures into the same table.  After all, Medcodes (in CPRD), SNOMED, HCPCS, ICD-9, and ICD-10 all include multiple domains within their vocabularies.
 - For each code we find in the source data, we will create a new row in this table.  The code from the source data will be matched against OMOP’s concept table and we will save the concept_id in this table, rather than the raw code.
 
@@ -31,7 +30,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                  | serial | Surrogate key for record                                                              |
 | person_id           | int    | ID of person associated with this record                                              |
 | start_date          | date   | Date of when clinical record began                                                    |
-| end_date           | date   | Date of when clinical record ended                                                    |
+| end_date            | date   | Date of when clinical record ended                                                    |
 | encounter_id        | int    | FK for encounter associated with this record                                          |
 | provenance_id       | int    | FK for provenance record associated with this procedure                               |
 | clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
@@ -48,22 +47,30 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                | serial | Surrogate key for record                                                                    |
 | person_id         | int    | ID of person associated with this record                                                    |
 | start_date        | date   | Date of when record began                                                                   |
-| end_date         | date   | Date of when record ended                                                                   |
+| end_date          | date   | Date of when record ended                                                                   |
 | provenance_id     | int    | FK reference to provenance table                                                            |
 | provider_id       | int    | FK reference to provider table                                                              |
 | visit_id          | int    | FK reference to visit table                                                                 |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
 
+
+## visits
+-  ? how do we resolve the idea of hospitalizations and outpatient facility visits?
+
+
+
+
 ## details
 - Additional information – measurements, observations, status, and specifications
 - Might eventually map to LOINC where possible
+- SEER/Oncology vocab
 
 | column              | type   | description                                                                                                                                                                                                                                                      |
 | -----------------   | ----   | -----------                                                                                                                                                                                                                                                      |
 | id                  | serial | Surrogate key for record                                                                                                                                                                                                                                         |
 | person_id           | int    | ID of person associated with this record                                                                                                                                                                                                                         |
 | start_date          | date   | Date of when record began                                                                                                                                                                                                                                        |
-| end_date           | date   | Date of when record ended                                                                                                                                                                                                                                        |
+| end_date            | date   | Date of when record ended                                                                                                                                                                                                                                        |
 | encounter_id        | int    | FK reference to encounter table                                                                                                                                                                                                                                  |
 | provenance_id       | int    | FK reference to provenance table                                                                                                                                                                                                                                 |
 | detail_concept_id   | int    | FK reference to concept table representing the topic the detail addresses                                                                                                                                                                                        |
@@ -87,12 +94,11 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                   | serial | Surrogate key for record                                                                                                               |
 | person_id            | int    | ID of person associated with this record                                                                                               |
 | start_date           | date   | Date of when record began                                                                                                              |
-| end_date            | date   | Date of when record ended                                                                                                              |
+| end_date             | date   | Date of when record ended                                                                                                              |
 | encounter_id         | int    | FK reference to encounter table                                                                                                        |
 | provenance_id        | int    | FK reference to provenance table                                                                                                       |
 | provider_id          | int    | FK reference to provider table                                                                                                         |
 | exposure_concept_id  | int    | FK reference to concept table representing the exposure represented by this record                                                     |
-| stop_reason          | text   | The reason the Drug was stopped. Reasons include regimen completed, changed, removed, etc.                                             |
 | refills              | int    | The number of refills after the initial prescription. The initial prescription is not counted, values start with 0.                    |
 | quantity             | float  | The quantity of drug as recorded in the original prescription or dispensing record.                                                    |
 | days_supply          | int    | The number of days of supply of the medication as recorded in the original prescription or dispensing record.                          |
@@ -150,11 +156,11 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | birth_date           | date   | Date of birth                                                                                                                   |
 | race_concept_id      | int    | A foreign key that refers to an identifier in the CONCEPT table for the unique race of the person.                              |
 | ethnicity_concept_id | int    | A foreign key that refers to the standard concept identifier in the Standardized Vocabularies for the ethnicity of the person.  |
-| location_id          | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored. |
+| address_id          | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored. |
 | provider_id          | int    | A foreign key to the primary care provider the person is seeing in the provider table.                                          |
 | care_site_id         | int    | A foreign key to the site of primary care in the care_site table, where the details of the care site are stored.                |
 
-## locations
+## addresses
 - See OMOP location table – used for persons and care sites
 
 | column            | type   | description                                                                                                                    |
@@ -193,7 +199,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                            | serial | A unique identifier for each Care Site.                                                                                            |
 | care_site_name                | text   | The description or name of the Care Site                                                                                           |
 | place_of_service_concept_id   | int    | A foreign key that refers to a Place of Service Concept ID in the Standardized Vocabularies.                                       |
-| location_id                   | int    | A foreign key to the geographic Location of the Care Site in the LOCATION table, where the detailed address information is stored. |
+| address_id                   | int    | A foreign key to the geographic Location of the Care Site in the LOCATION table, where the detailed address information is stored. |
 | care_site_source_value        | text   | The identifier for the Care Site in the source data, stored here for reference.                                                    |
 | place_of_service_source_value | text   | The source code for the Place of Service as it appears in the source data, stored here for reference.                              |
 
@@ -207,10 +213,10 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                | serial | Surrogate key for record                                                                                                                                                        |
 | person_id         | int    | ID of person associated with this record                                                                                                                                        |
 | start_date        | date   | Date of when record began                                                                                                                                                       |
-| end_date         | date   | Date of when record ended                                                                                                                                                       |
+| end_date          | date   | Date of when record ended                                                                                                                                                       |
 | provenance_id     | int    | FK reference to provenance table                                                                                                                                                |
-| enrollment_type   | text   | String representing the type of insurance                                                                                                                                       |
-| applicable_table  | text   | name of the table which this period provides information for.  E.g. Part D enrollment implies data for the exposure table (though not for device exposures...hmmmmmm) |
+| information_type   | text   | String representing the type of data availability (e.g., insurance coverage, hospital data, up-to-standard date).  Could be concept type.                                                                                                                                       |
+
 
 ## provenances
 - Records information about where a row in the CDM came from
@@ -226,9 +232,14 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | position               | int    | The position for the variable assigned e.g. dx3 gets position 3                                                                                                   |
 | original_variable_name | text   | Name of the original variable from which the record was derived.  This won’t work for details since more than one field might contribute to a detail record |
 
+## tbd -- separate file row table and a file spec table
+
 ## Miscellaneous details and questions
 - Do we need a table for “facility”, “hospitalization” or “extended care” records (with types for inpatient, long-term, SNF, etc.)
 - What about modifiers – tend to be for laterality (left/right) or multiple physicians and maybe part of ETL
+- Additional physician information -- is it needed?
 - Do we need some types in the data (e.g., “cancer registry”, “claims”, “EHR”)
 - We should require mapping to a vocab for text-based entries (e.g., drugs stored as drug names, labs stored as lab names)
+- Lab-specific normal limits (upper and lower)
+- Is there a way to connect data elements with information periods (i.e., when is prescription data available?)
 
