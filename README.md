@@ -33,9 +33,11 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | start_date          | date   | Date of when clinical record began                                                    |
 | end_date            | date   | Date of when clinical record ended                                                    |
 | encounter_id        | int    | FK for encounter associated with this record                                          |
-| origin_id           | int    | FK for origin record associated with this procedure                                   |
 | clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
 | quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
+| file_type         | text   | Type of the file from which the record was pulled                   |
+| position          | int    | The position for the variable assigned e.g. dx3 gets position 3                                                                            | 
+| type_concept_id  | int  | Type of clinical code (e.g., diagnosis, procedure, etc.)  |
 
 ## encounters
 
@@ -50,7 +52,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id         | int    | ID of person associated with this record                                                    |
 | start_date        | date   | Date of when record began                                                                   |
 | end_date          | date   | Date of when record ended                                                                   |
-| origin_id         | int    | FK reference to origins table                                                               |
 | provider_id       | int    | FK reference to provider table                                                              |
 | visit_id          | int    | FK reference to visit table                                                                 |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
@@ -72,7 +73,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | start_date          | date   | Date of when record began                                                                                                                                                                                                                               |
 | end_date            | date   | Date of when record ended                                                                                                                                                                                                                               |
 | encounter_id        | int    | FK reference to encounter table                                                                                                                                                                                                                         |
-| origin_id           | int    | FK reference to origins table                                                                                                                                                                                                                           |
 | detail_concept_id   | int    | FK reference to concept table representing the topic the detail addresses                                                                                                                                                                               |
 | value_as_number     | float  | The observation result stored as a number. This is applicable to observations where the result is expressed as a numeric value.                                                                                                                         |
 | value_as_string     | text   | The observation result stored as a string. This is applicable to observations where the result is expressed as verbatim text.                                                                                                                           |
@@ -96,7 +96,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | start_date           | date   | Date of when record began                                                                                                              |
 | end_date             | date   | Date of when record ended                                                                                                              |
 | encounter_id         | int    | FK reference to encounter table                                                                                                        |
-| origin_id            | int    | FK reference to origins table                                                                                                          |
 | provider_id          | int    | FK reference to provider table                                                                                                         |
 | exposure_concept_id  | int    | FK reference to concept table representing the exposure represented by this record                                                     |
 | refills              | int    | The number of refills after the initial prescription. The initial prescription is not counted, values start with 0.                    |
@@ -116,7 +115,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id             | int    | ID of person associated with this record                                                              |
 | date                  | date   | Date of death                                                                                         |
 | encounter_id          | int    | FK reference to encounter table                                                                       |
-| origin_id             | int    | FK reference to origins table                                                                         |
 | cause_concept_id      | int    | FK reference into concept that represents cause of death                                              |
 | cause_type_concept_id | int    | FK reference into concept that represents the type of cause of death (e.g. primary, secondary, etc. ) |
 
@@ -217,44 +215,10 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id         | int    | ID of person associated with this record                                                                                                  |
 | start_date        | date   | Date of when record began                                                                                                                 |
 | end_date          | date   | Date of when record ended                                                                                                                 |
-| origin_id         | int    | FK reference to origins table                                                                                                             |
+
 | information_type  | text   | String representing the type of data availability (e.g., insurance coverage, hospital data, up-to-standard date).  Could be concept type. |
 
-## sources
 
-- Records information about the file(s) from which records were pulled
-- Called sources because we may not always be pulling information from files.  Other sources might be tables, webpages, etc?
-
-| column            | type   | description                                                         |
-| ----------------- | ----   | -----------                                                         |
-| id                | serial | Surrogate key for record                                            |
-| file_name         | text   | Name of the file from which the record was pulled                   |
-| file_seqnum       | int    | Addition detail on file (e.g., year [2008] or year + part [2008_3]) |
-
-## variables
-
-- Tracks all the variables from the source data that are used to create records in the CDM
-- Tracks position information so if someone is interested in a primary ICD-9 code, they may use the `position` and `vocabulary_id` columns to find columns that match `1` and `ICD9CM` respectively
-
-| column            | type   | description                                                                                                                                                 |
-| ----------------- | ----   | -----------                                                                                                                                                 |
-| id                | serial | Surrogate key for record                                                                                                                                    |
-| name              | text   | Name of the original variable from which the record was derived.  This won’t work for details since more than one field might contribute to a detail record |
-| position          | int    | The position for the variable assigned e.g. dx3 gets position 3                                                                                             |
-| vocabulary_id     | int    | FK reference to the vocabulary that is used in this column                                                                                                  |
-
-## origins
-
-- Records the provenance of a record
-- Many tables in the CDM have an `origin_id`
-- Joins together the name of the variable and the source file from which a record was derived
-
-| column            | type   | description                                                                                      |
-| ----------------- | ----   | -----------                                                                                      |
-| id                | serial | Surrogate key for record                                                                         |
-| row_identifier    | text   | The ID used in the source data to identify the row from which the record was derived             |
-| variable_id       | int    | FK reference to the variable record that represents the column from which the record was derived |
-| source_id         | int    | FK reference to the source file/table/etc from which the record was derived                      |
 
 ## Miscellaneous details and questions
 
