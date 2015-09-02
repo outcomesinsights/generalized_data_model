@@ -55,7 +55,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
 | address_id        | int    | FK reference to address table                                                               |
 
-
 ## details
 
 - Additional information – measurements, observations, status, and specifications
@@ -213,8 +212,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | end_date          | date   | Date of when record ended                                                                                                                 |
 
 | information_type  | text   | String representing the type of data availability (e.g., insurance coverage, hospital data, up-to-standard date).  Could be concept type. |
-
-
 
 ## Miscellaneous details and questions
 
