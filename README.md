@@ -32,16 +32,16 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id           | int    | ID of person associated with this record                                              |
 | start_date          | date   | Date of when clinical record began                                                    |
 | end_date            | date   | Date of when clinical record ended                                                    |
-| encounter_id        | int    | FK for encounter associated with this record                                          |
+| visit_id        | int    | FK for visit associated with this record                                          |
 | clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
 | quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
 | file_type         | text   | Type of the file from which the record was pulled                   |
 | position          | int    | The position for the variable assigned e.g. dx3 gets position 3                                                                            | 
 | type_concept_id  | int  | Type of clinical code (e.g., diagnosis, procedure, etc.)  |
 
-## encounters
+## visits
 
-- Represents an encounter between a patient and one provider in a particular place of service (on a single day?)
+- Represents an visit between a patient and one provider in a particular place of service (on a single day?)
 - Can be pointed to by multiple clinical, detail, and exposure records
 - Vocabularies
   - Place of service
@@ -52,13 +52,9 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id         | int    | ID of person associated with this record                                                    |
 | start_date        | date   | Date of when record began                                                                   |
 | end_date          | date   | Date of when record ended                                                                   |
-| provider_id       | int    | FK reference to provider table                                                              |
-| visit_id          | int    | FK reference to visit table                                                                 |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
+| address_id        | int  |  FK reference to address table|
 
-## visits
-
-- ? how do we resolve the idea of hospitalizations and outpatient facility visits?
 
 ## details
 
@@ -72,7 +68,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id           | int    | ID of person associated with this record                                                                                                                                                                                                                |
 | start_date          | date   | Date of when record began                                                                                                                                                                                                                               |
 | end_date            | date   | Date of when record ended                                                                                                                                                                                                                               |
-| encounter_id        | int    | FK reference to encounter table                                                                                                                                                                                                                         |
+| visit_id        | int    | FK reference to visit table                                                                                                                                                                                                                         |
 | detail_concept_id   | int    | FK reference to concept table representing the topic the detail addresses                                                                                                                                                                               |
 | value_as_number     | float  | The observation result stored as a number. This is applicable to observations where the result is expressed as a numeric value.                                                                                                                         |
 | value_as_string     | text   | The observation result stored as a string. This is applicable to observations where the result is expressed as verbatim text.                                                                                                                           |
@@ -95,7 +91,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id            | int    | ID of person associated with this record                                                                                               |
 | start_date           | date   | Date of when record began                                                                                                              |
 | end_date             | date   | Date of when record ended                                                                                                              |
-| encounter_id         | int    | FK reference to encounter table                                                                                                        |
+| visit_id         | int    | FK reference to visit table                                                                                                        |
 | provider_id          | int    | FK reference to provider table                                                                                                         |
 | exposure_concept_id  | int    | FK reference to concept table representing the exposure represented by this record                                                     |
 | refills              | int    | The number of refills after the initial prescription. The initial prescription is not counted, values start with 0.                    |
@@ -114,7 +110,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                    | serial | Surrogate key for record                                                                              |
 | person_id             | int    | ID of person associated with this record                                                              |
 | date                  | date   | Date of death                                                                                         |
-| encounter_id          | int    | FK reference to encounter table                                                                       |
+| visit_id          | int    | FK reference to visit table                                                                       |
 | cause_concept_id      | int    | FK reference into concept that represents cause of death                                              |
 | cause_type_concept_id | int    | FK reference into concept that represents the type of cause of death (e.g. primary, secondary, etc. ) |
 
@@ -176,7 +172,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## providers
 
-- See OMOP provider table.  Adapt to allow multiple providers via encounter table
+- See OMOP provider table.  Adapt to allow multiple providers via visit table
 
 | column                      | type   | description                                                                        |
 | -----------------           | ----   | -----------                                                                        |
