@@ -41,7 +41,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## visits
 
-- Represents an visit between a patient and one provider in a particular place of service (on a single day?)
+- Represents an visit between a patient and a particular place of service
 - Can be pointed to by multiple clinical, detail, and exposure records
 - Vocabularies
   - Place of service
@@ -54,6 +54,19 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | end_date          | date   | Date of when record ended                                                                   |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
 | address_id        | int    | FK reference to address table                                                               |
+
+## encounters
+
+- Associates one or more providers to a visit
+- Called encounters because it represents an encounter between a person and a provider in a specific visit
+- Encounters captures the role, if any, the provider played in the encounter
+
+| column            | type   | description                                                                  |
+| ----------------- | ----   | -----------                                                                  |
+| id                | serial | Surrogate key for record                                                     |
+| provider_id       | int    | FK reference to providers table                                              |
+| visit_id          | int    | FK reference to visits table                                                 |
+| role_type_id      | int    | FK reference to concepts related to roles providers can play in an encounter |
 
 ## details
 
