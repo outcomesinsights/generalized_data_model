@@ -202,19 +202,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | specialty_source_concept_id | int    | A foreign key to a Concept that refers to the code used in the source.             |
 | gender_source_concept_id    | int    | A foreign key to a Concept that refers to the code used in the source.             |
 
-## care_sites
-
-- See OMOP care site table.
-
-| column                        | type   | description                                                                                                                        |
-| -----------------             | ----   | -----------                                                                                                                        |
-| id                            | serial | A unique identifier for each Care Site.                                                                                            |
-| care_site_name                | text   | The description or name of the Care Site                                                                                           |
-| place_of_service_concept_id   | int    | A foreign key that refers to a Place of Service Concept ID in the Standardized Vocabularies.                                       |
-| address_id                    | int    | A foreign key to the geographic Location of the Care Site in the LOCATION table, where the detailed address information is stored. |
-| care_site_source_value        | text   | The identifier for the Care Site in the source data, stored here for reference.                                                    |
-| place_of_service_source_value | text   | The source code for the Place of Service as it appears in the source data, stored here for reference.                              |
-
 ## information_periods
 
 - Captures periods for which information in each table is relevant.  Could include enrollment types (e.g., Part A, Part B, HMO) or just “observable” (as with up-to-standard data in CPRD)
