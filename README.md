@@ -112,7 +112,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | quantity             | float  | The quantity of drug as recorded in the original prescription or dispensing record.                                                    |
 | days_supply          | int    | The number of days of supply of the medication as recorded in the original prescription or dispensing record.                          |
 | dose_unit_concept_id | int    | A foreign key to a predefined concept in the Standardized Vocabularies reflecting the unit the effective_drug_dose value is expressed. |
-| provider_id            | int    | FK for provider associated with this record                                              |
 
 ## deaths
 
