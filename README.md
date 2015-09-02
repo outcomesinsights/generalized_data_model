@@ -33,6 +33,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | start_date          | date   | Date of when clinical record began                                                    |
 | end_date            | date   | Date of when clinical record ended                                                    |
 | visit_id            | int    | FK for visit associated with this record                                              |
+| provider_id            | int    | FK for provider associated with this record                                              |
 | clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
 | quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
 | file_type           | text   | Type of the file from which the record was pulled                                     |
@@ -41,7 +42,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## visits
 
-- Represents an visit between a patient and one provider in a particular place of service (on a single day?)
+- Represents an visit between a patient and a particular place of service
 - Can be pointed to by multiple clinical, detail, and exposure records
 - Vocabularies
   - Place of service
@@ -54,6 +55,19 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | end_date          | date   | Date of when record ended                                                                   |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
 | address_id        | int    | FK reference to address table                                                               |
+
+## encounters
+
+- Associates one or more providers to a visit
+- Called encounters because it represents an encounter between a person and a provider in a specific visit
+- Encounters captures the role, if any, the provider played in the encounter
+
+| column            | type   | description                                                                  |
+| ----------------- | ----   | -----------                                                                  |
+| id                | serial | Surrogate key for record                                                     |
+| provider_id       | int    | FK reference to providers table                                              |
+| visit_id          | int    | FK reference to visits table                                                 |
+| role_type_id      | int    | FK reference to concepts related to roles providers can play in an encounter |
 
 ## details
 
@@ -73,6 +87,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | value_as_string     | text   | The observation result stored as a string. This is applicable to observations where the result is expressed as verbatim text.                                                                                                                                         |
 | value_as_concept_id | int    | A foreign key to an observation result stored as a Concept ID. This is applicable to observations where the result can be expressed as a Standard Concept from the Standardized Vocabularies (e.g., positive/negative, present/absent, low/high, etc.). |
 | unit_concept_id     | int    | A foreign key to a Standard Concept ID of measurement units in the Standardized Vocabularies.                                                                                                                                                                         |
+| provider_id            | int    | FK for provider associated with this record                                              |
 
 ## exposures
 
@@ -97,6 +112,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | quantity             | float  | The quantity of drug as recorded in the original prescription or dispensing record.                                                    |
 | days_supply          | int    | The number of days of supply of the medication as recorded in the original prescription or dispensing record.                          |
 | dose_unit_concept_id | int    | A foreign key to a predefined concept in the Standardized Vocabularies reflecting the unit the effective_drug_dose value is expressed. |
+| provider_id            | int    | FK for provider associated with this record                                              |
 
 ## deaths
 
@@ -112,6 +128,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | visit_id              | int    | FK reference to visit table                                                                           |
 | cause_concept_id      | int    | FK reference into concept that represents cause of death                                              |
 | cause_type_concept_id | int    | FK reference into concept that represents the type of cause of death (e.g. primary, secondary, etc. ) |
+| provider_id            | int    | FK for provider associated with this record                                              |
 
 ## costs
 
