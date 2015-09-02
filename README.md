@@ -154,7 +154,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | information_period_id         | int    | A foreign key to the information_period table, where the details of the Payer, Plan and Family are stored.                                                                                 |
 | amount_allowed                | float  | The contracted amount the provider has agreed to accept as payment in full.                                                                                                                |
 | revenue_code_concept_id       | int    | A foreign key referring to a Standard Concept ID in the Standardized Vocabularies for Revenue codes.                                                                                       |
-| revenue_code_source_value     | text   | The source code for the Revenue code as it appears in the source data, stored here for reference.                                                                                          |
 
 ## people
 
