@@ -62,9 +62,10 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## encounters
 
-- Associates one or more providers to a visit
-- Called encounters because it represents an encounter between a person and a provider in a specific visit
-- Encounters captures the role, if any, the provider played in the encounter
+- Links one or more providers with a visit
+- Represents an encounter between a person and a provider in a specific visit
+- Patients can have multiple encounters within a visit (but not the other way around)
+- Encounters captures the role, if any, the provider played in the encounter (e.g., attending physician)
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
