@@ -21,9 +21,9 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
   - ICD-9 (Proc and CM)
   - ICD-10 (Proc and CM)
   - SNOMED
-  - MEDCODE
+  - Medcode (CPRD)
   - HCPCS/CPT
-- The OMOP specification for procedure_occurrence and condition_occurrence are quite similar.  Having two separate tables follows with OMOP’s philosophy of classifying each concept into a specific domain.  Since we are not interested in domains for our research, and since the tables are so similar, there is no philosophical or technical reason why we can’t combine conditions and procedures into the same table.  After all, Medcodes (in CPRD), SNOMED, HCPCS, ICD-9, and ICD-10 all include multiple domains within their vocabularies.
+- The OMOP specification for procedure and condition tables are quite similar.  Having separate tables follows with OMOP’s philosophy of classifying each concept into a specific domain.  The PCORnet CDM has two condition tables (one for results of diagnostic processes and one for condition lists), and a procedure table.  Again, these are all very similar in structure.  Since domains are semantic classifications, and since all of the tables are so similar, there is no philosophical or technical reason why we can’t combine conditions and procedures into the same table.  After all, all of the above-listed vocabularies include multiple domains.
 - For each code we find in the source data, we will create a new row in this table.  The code from the source data will be matched against OMOP’s concept table and we will save the concept_id in this table, rather than the raw code.
 
 | column              | type   | description                                                                           |
@@ -42,8 +42,10 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## visits
 
-- Represents an visit between a patient and a particular place of service
-- Can be pointed to by multiple clinical, detail, and exposure records
+- Represents the place of service where an encounter occurs (see the encounters table)
+- Includes office visits, hospital stays, long-term care, hospice, and outpatient facility visits
+- Can be pointed to by multiple encounter, clinical, detail, and exposure records
+- Describes the contiguous dates of service, the place of service, and the manner in which the patient arrived and left (for facility files)
 - Vocabularies
   - Place of service
 
@@ -53,14 +55,17 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id         | int    | ID of person associated with this record                                                    |
 | start_date        | date   | Date of when record began                                                                   |
 | end_date          | date   | Date of when record ended                                                                   |
+| admit_source_concept_id      | int  | Source of admission (e.g., ED, transfer, etc.; for facility records only) |
+| discharge_location_concept_id   | int | Discharge location (e.g., long-term care, home, dead, etc.; for facility records only) |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
 | address_id        | int    | FK reference to address table                                                               |
 
 ## encounters
 
-- Associates one or more providers to a visit
-- Called encounters because it represents an encounter between a person and a provider in a specific visit
-- Encounters captures the role, if any, the provider played in the encounter
+- Links one or more providers with a visit
+- Represents an encounter between a person and a provider in a specific visit
+- Patients can have multiple encounters within a visit (but not the other way around)
+- Encounters captures the role, if any, the provider played in the encounter (e.g., attending physician)
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
@@ -72,8 +77,10 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 ## details
 
 - Additional information – measurements, observations, status, and specifications
-- Might eventually map to LOINC where possible
-- SEER/Oncology vocab
+- Text-based vocabularies should be mapped to LOINC, if possible (e.g., laboratory data indexed by text names for the lab results)
+- Other vocabularies should be included in their original system (e.g., SEER variables)
+  - This could be implemented by making variable names a vocabulary in themselves
+- May need to add variables for "normal range", or consider a separate table for additional laboratory details
 
 | column              | type   | description                                                                                                                                                                                                                                             |
 | -----------------   | ----   | -----------                                                                                                                                                                                                                                             |
@@ -91,13 +98,13 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## exposures
 
-- To capture drug/device data (outside of procedure codes).  See OMOP drug/device exposure tables
-- Could include devices if they are reported separately from procedures
+- To capture drug and device data 
+- Drugs and devices captured in the clinical_codes table should remain in the clinical_codes table.
+- Could include devices if they are reported separately from procedures.  Note that these may be text entries and may have mis-spellings (e.g., MedAssets and other text-based data sources).  Mapping to a vocabulary may or may not be possible.
 - Vocabularies
   - NDC
   - RxNorm
   - Prodcodes (CPRD)
-  - device vocab (?)
 
 | column               | type   | description                                                                                                                            |
 | -----------------    | ----   | -----------                                                                                                                            |
@@ -116,8 +123,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 ## deaths
 
 - Capture mortality information – date and cause(s) of death
-- Might want to check diagnosis codes as part of ETL (?)
-- Possibly roll into information period table?
+- Might want to check diagnosis codes and discharge location as part of ETL.
 
 | column                | type   | description                                                                                           |
 | -----------------     | ----   | -----------                                                                                           |
@@ -157,7 +163,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## people
 
-- See OMOP person table
+- Demographic information about the patients in the data.
+- Provider_id is for HMO and similar situations (CPRD) where there is a defined primary care provider
 
 | column               | type   | description                                                                                                                     |
 | -----------------    | ----   | -----------                                                                                                                     |
@@ -168,7 +175,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | ethnicity_concept_id | int    | A foreign key that refers to the standard concept identifier in the Standardized Vocabularies for the ethnicity of the person.  |
 | address_id           | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored. |
 | provider_id          | int    | A foreign key to the primary care provider the person is seeing in the provider table.                                          |
-| care_site_id         | int    | A foreign key to the site of primary care in the care_site table, where the details of the care site are stored.                |
+
 
 ## addresses
 
@@ -195,7 +202,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | npi                         | text   | The National Provider Identifier (NPI) of the provider.                            |
 | dea                         | text   | The Drug Enforcement Administration (DEA) number of the provider.                  |
 | specialty_concept_id        | int    | A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies. |
-| care_site_id                | int    | A foreign key to the main Care Site where the provider is practicing.              |
+| address_id                | int    | A foreign key to the address of the location where the provider is practicing.              |
 | birth_date                  | int    | The date of birth of the Provider.                                                 |
 | gender_concept_id           | int    | The gender of the Provider.                                                        |
 | specialty_source_concept_id | int    | A foreign key to a Concept that refers to the code used in the source.             |
@@ -203,7 +210,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## information_periods
 
-- Captures periods for which information in each table is relevant.  Could include enrollment types (e.g., Part A, Part B, HMO) or just “observable” (as with up-to-standard data in CPRD)
+- Captures periods for which information in each table is relevant.  
+- Could include enrollment types (e.g., Part A, Part B, HMO) or just “observable” (as with up-to-standard data in CPRD)
 - One row per person per enrollment type per table
 
 | column            | type   | description                                                                                                                               |
@@ -216,11 +224,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## Miscellaneous details and questions
 
-- Do we need a table for “facility”, “hospitalization” or “extended care” records (with types for inpatient, long-term, SNF, etc.)
 - What about modifiers – tend to be for laterality (left/right) or multiple physicians and maybe part of ETL
-- Additional physician information -- is it needed?
-- Do we need some types in the data (e.g., “cancer registry”, “claims”, “EHR”)
-- We should require mapping to a vocab for text-based entries (e.g., drugs stored as drug names, labs stored as lab names)
-- Lab-specific normal limits (upper and lower)
-- Is there a way to connect data elements with information periods (i.e., when is prescription data available?)
+- Additional physician information -- do we need something on "care site"?
+- Need to define types in the data
+- Is there a way to connect data elements with information periods (i.e., when is prescription data available?)  Does this matter?
 
