@@ -162,7 +162,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## people
 
-- See OMOP person table
+- Demographic information about the patients in the data.
+- Provider_id is for HMO and similar situations (CPRD) where there is a defined primary care provider
 
 | column               | type   | description                                                                                                                     |
 | -----------------    | ----   | -----------                                                                                                                     |
@@ -173,7 +174,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | ethnicity_concept_id | int    | A foreign key that refers to the standard concept identifier in the Standardized Vocabularies for the ethnicity of the person.  |
 | address_id           | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored. |
 | provider_id          | int    | A foreign key to the primary care provider the person is seeing in the provider table.                                          |
-| care_site_id         | int    | A foreign key to the site of primary care in the care_site table, where the details of the care site are stored.                |
+
 
 ## addresses
 
