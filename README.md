@@ -49,16 +49,16 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 - Vocabularies
   - Place of service
 
-| column            | type   | description                                                                                 |
-| ----------------- | ----   | -----------                                                                                 |
-| id                | serial | Surrogate key for record                                                                    |
-| person_id         | int    | ID of person associated with this record                                                    |
-| start_date        | date   | Date of when record began                                                                   |
-| end_date          | date   | Date of when record ended                                                                   |
-| admit_source_concept_id      | int  | Source of admission (e.g., ED, transfer, etc.; for facility records only) |
-| discharge_location_concept_id   | int | Discharge location (e.g., long-term care, home, dead, etc.; for facility records only) |
-| pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
-| address_id        | int    | FK reference to address table                                                               |
+| column                        | type   | description                                                                                 |
+| -----------------             | ----   | -----------                                                                                 |
+| id                            | serial | Surrogate key for record                                                                    |
+| person_id                     | int    | ID of person associated with this record                                                    |
+| start_date                    | date   | Date of when record began                                                                   |
+| end_date                      | date   | Date of when record ended                                                                   |
+| admit_source_concept_id       | int    | Source of admission (e.g., ED, transfer, etc.; for facility records only)                   |
+| discharge_location_concept_id | int    | Discharge location (e.g., long-term care, home, dead, etc.; for facility records only)      |
+| pos_concept_id                | int    | FK reference to concept table representing the place of service associated with this record |
+| address_id                    | int    | FK reference to address table                                                               |
 
 ## encounters
 
@@ -98,7 +98,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## exposures
 
-- To capture drug and device data 
+- To capture drug and device data
 - Drugs and devices captured in the clinical_codes table should remain in the clinical_codes table.
 - Could include devices if they are reported separately from procedures.  Note that these may be text entries and may have mis-spellings (e.g., MedAssets and other text-based data sources).  Mapping to a vocabulary may or may not be possible.
 - Vocabularies
@@ -176,7 +176,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | address_id           | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored. |
 | provider_id          | int    | A foreign key to the primary care provider the person is seeing in the provider table.                                          |
 
-
 ## addresses
 
 - See OMOP location table – used for persons and care sites
@@ -202,7 +201,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | npi                         | text   | The National Provider Identifier (NPI) of the provider.                            |
 | dea                         | text   | The Drug Enforcement Administration (DEA) number of the provider.                  |
 | specialty_concept_id        | int    | A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies. |
-| address_id                | int    | A foreign key to the address of the location where the provider is practicing.              |
+| address_id                  | int    | A foreign key to the address of the location where the provider is practicing.     |
 | birth_date                  | int    | The date of birth of the Provider.                                                 |
 | gender_concept_id           | int    | The gender of the Provider.                                                        |
 | specialty_source_concept_id | int    | A foreign key to a Concept that refers to the code used in the source.             |
@@ -210,7 +209,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## information_periods
 
-- Captures periods for which information in each table is relevant.  
+- Captures periods for which information in each table is relevant.
 - Could include enrollment types (e.g., Part A, Part B, HMO) or just “observable” (as with up-to-standard data in CPRD)
 - One row per person per enrollment type per table
 
