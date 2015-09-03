@@ -122,8 +122,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 ## deaths
 
 - Capture mortality information – date and cause(s) of death
-- Might want to check diagnosis codes as part of ETL (?)
-- Possibly roll into information period table?
+- Might want to check diagnosis codes and discharge location as part of ETL.
 
 | column                | type   | description                                                                                           |
 | -----------------     | ----   | -----------                                                                                           |
