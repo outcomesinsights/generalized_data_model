@@ -209,7 +209,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## information_periods
 
-- Captures periods for which information in each table is relevant.  Could include enrollment types (e.g., Part A, Part B, HMO) or just “observable” (as with up-to-standard data in CPRD)
+- Captures periods for which information in each table is relevant.  
+- Could include enrollment types (e.g., Part A, Part B, HMO) or just “observable” (as with up-to-standard data in CPRD)
 - One row per person per enrollment type per table
 
 | column            | type   | description                                                                                                                               |
@@ -222,11 +223,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## Miscellaneous details and questions
 
-- Do we need a table for “facility”, “hospitalization” or “extended care” records (with types for inpatient, long-term, SNF, etc.)
 - What about modifiers – tend to be for laterality (left/right) or multiple physicians and maybe part of ETL
-- Additional physician information -- is it needed?
-- Do we need some types in the data (e.g., “cancer registry”, “claims”, “EHR”)
-- We should require mapping to a vocab for text-based entries (e.g., drugs stored as drug names, labs stored as lab names)
-- Lab-specific normal limits (upper and lower)
-- Is there a way to connect data elements with information periods (i.e., when is prescription data available?)
+- Additional physician information -- do we need something on "care site"?
+- Need to define types in the data
+- Is there a way to connect data elements with information periods (i.e., when is prescription data available?)  Does this matter?
 
