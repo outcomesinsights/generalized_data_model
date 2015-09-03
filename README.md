@@ -201,7 +201,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | npi                         | text   | The National Provider Identifier (NPI) of the provider.                            |
 | dea                         | text   | The Drug Enforcement Administration (DEA) number of the provider.                  |
 | specialty_concept_id        | int    | A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies. |
-| care_site_id                | int    | A foreign key to the main Care Site where the provider is practicing.              |
+| address_id                | int    | A foreign key to the address of the location where the provider is practicing.              |
 | birth_date                  | int    | The date of birth of the Provider.                                                 |
 | gender_concept_id           | int    | The gender of the Provider.                                                        |
 | specialty_source_concept_id | int    | A foreign key to a Concept that refers to the code used in the source.             |
