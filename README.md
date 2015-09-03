@@ -21,9 +21,9 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
   - ICD-9 (Proc and CM)
   - ICD-10 (Proc and CM)
   - SNOMED
-  - MEDCODE
+  - Medcode (CPRD)
   - HCPCS/CPT
-- The OMOP specification for procedure_occurrence and condition_occurrence are quite similar.  Having two separate tables follows with OMOP’s philosophy of classifying each concept into a specific domain.  Since we are not interested in domains for our research, and since the tables are so similar, there is no philosophical or technical reason why we can’t combine conditions and procedures into the same table.  After all, Medcodes (in CPRD), SNOMED, HCPCS, ICD-9, and ICD-10 all include multiple domains within their vocabularies.
+- The OMOP specification for procedure and condition tables are quite similar.  Having separate tables follows with OMOP’s philosophy of classifying each concept into a specific domain.  The PCORnet CDM has two condition tables (one for results of diagnostic processes and one for condition lists), and a procedure table.  Again, these are all very similar in structure.  Since domains are semantic classifications, and since all of the tables are so similar, there is no philosophical or technical reason why we can’t combine conditions and procedures into the same table.  After all, all of the above-listed vocabularies include multiple domains.
 - For each code we find in the source data, we will create a new row in this table.  The code from the source data will be matched against OMOP’s concept table and we will save the concept_id in this table, rather than the raw code.
 
 | column              | type   | description                                                                           |
