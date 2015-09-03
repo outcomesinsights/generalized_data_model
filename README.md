@@ -97,13 +97,13 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## exposures
 
-- To capture drug/device data (outside of procedure codes).  See OMOP drug/device exposure tables
-- Could include devices if they are reported separately from procedures
+- To capture drug and device data 
+- Drugs and devices captured in the clinical_codes table should remain in the clinical_codes table.
+- Could include devices if they are reported separately from procedures.  Note that these may be text entries and may have mis-spellings (e.g., MedAssets and other text-based data sources).  Mapping to a vocabulary may or may not be possible.
 - Vocabularies
   - NDC
   - RxNorm
   - Prodcodes (CPRD)
-  - device vocab (?)
 
 | column               | type   | description                                                                                                                            |
 | -----------------    | ----   | -----------                                                                                                                            |
