@@ -79,6 +79,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 - Additional information – measurements, observations, status, and specifications
 - Text-based vocabularies should be mapped to LOINC, if possible (e.g., laboratory data indexed by text names for the lab results)
 - Other vocabularies should be included in their original system (e.g., SEER variables)
+  - This could be implemented by making variable names a vocabulary in themselves
 - May need to add variables for "normal range", or consider a separate table for additional laboratory details
 
 | column              | type   | description                                                                                                                                                                                                                                             |
