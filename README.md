@@ -55,8 +55,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id         | int    | ID of person associated with this record                                                    |
 | start_date        | date   | Date of when record began                                                                   |
 | end_date          | date   | Date of when record ended                                                                   |
-| admit_source      | int  | Source of admission (e.g., ED, transfer, etc.; for facility records only) | 
-| discharge_location   | int | Discharge location (e.g., long-term care, home, dead, etc.; for facility records only) |
+| admit_source_concept_id      | int  | Source of admission (e.g., ED, transfer, etc.; for facility records only) |
+| discharge_location_concept_id   | int | Discharge location (e.g., long-term care, home, dead, etc.; for facility records only) |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
 | address_id        | int    | FK reference to address table                                                               |
 
