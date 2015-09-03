@@ -77,8 +77,9 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 ## details
 
 - Additional information – measurements, observations, status, and specifications
-- Might eventually map to LOINC where possible
-- SEER/Oncology vocab
+- Text-based vocabularies should be mapped to LOINC, if possible (e.g., laboratory data indexed by text names for the lab results)
+- Other vocabularies should be included in their original system (e.g., SEER variables)
+- May need to add variables for "normal range", or consider a separate table for additional laboratory details
 
 | column              | type   | description                                                                                                                                                                                                                                             |
 | -----------------   | ----   | -----------                                                                                                                                                                                                                                             |
