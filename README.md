@@ -42,8 +42,10 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## visits
 
-- Represents an visit between a patient and a particular place of service
-- Can be pointed to by multiple clinical, detail, and exposure records
+- Represents the place of service where an encounter occurs (see the encounters table)
+- Includes office visits, hospital stays, long-term care, hospice, and outpatient facility visits
+- Can be pointed to by multiple encounter, clinical, detail, and exposure records
+- Describes the contiguous dates of service, the place of service, and the manner in which the patient arrived and left (for facility files)
 - Vocabularies
   - Place of service
 
@@ -53,6 +55,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id         | int    | ID of person associated with this record                                                    |
 | start_date        | date   | Date of when record began                                                                   |
 | end_date          | date   | Date of when record ended                                                                   |
+| admit_source      | int  | Source of admission (e.g., ED, transfer, etc.; for facility records only) | 
+| discharge_location   | int | Discharge location (e.g., long-term care, home, dead, etc.; for facility records only) |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record |
 | address_id        | int    | FK reference to address table                                                               |
 
