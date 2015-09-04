@@ -39,6 +39,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | file_type           | text   | Type of the file from which the record was pulled                                     |
 | position            | int    | The position for the variable assigned e.g. dx3 gets position 3                       |
 | type_concept_id     | int    | Type of clinical code (e.g., diagnosis, procedure, etc.)                              |
+| clinical_code_id    | int    | FK reference to clinical code this code is reported with e.g. dx assigned to proc     |
 
 ## visits
 
