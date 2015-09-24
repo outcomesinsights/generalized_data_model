@@ -166,7 +166,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | ingredient_cost               | float  | The portion of the drug expenses due to the cost charged by the manufacturer for the drug, typically a percentage of the Average Wholesale Price.                                 |
 | dispensing_fee                | float  | The portion of the drug expenses due to the dispensing fee charged by the pharmacy, typically a fixed amount.                                                                     |
 | cost                          | float  | Cost of service/device/drug incurred by provider/pharmacy.  Was "average_wholesale_price" which represented: "List price of a Drug set by the manufacturer."                      |
-| information_period_id         | int    | A foreign key to the information_period table, where the details of the Payer, Plan and Family are stored.                                                                        |
 | amount_allowed                | float  | The contracted amount the provider has agreed to accept as payment in full.                                                                                                       |
 | revenue_code_concept_id       | int    | A foreign key referring to a Standard Concept ID in the Standardized Vocabularies for Revenue codes.                                                                              |
 
