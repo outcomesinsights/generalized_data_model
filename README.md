@@ -29,17 +29,17 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | column              | type   | description                                                                           |
 | -----------------   | ----   | -----------                                                                           |
 | id                  | serial | Surrogate key for record                                                              |
+| claim_id            | int    | FK reference to claims                                                                |
+| line_id             | int    | FK reference to lines                                                                 |
 | person_id           | int    | ID of person associated with this record                                              |
 | start_date          | date   | Date of when clinical record began                                                    |
 | end_date            | date   | Date of when clinical record ended                                                    |
-| visit_id            | int    | FK for visit associated with this record                                              |
 | provider_id         | int    | FK for provider associated with this record                                           |
 | clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
 | quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
 | file_type           | text   | Type of the file from which the record was pulled                                     |
 | position            | int    | The position for the variable assigned e.g. dx3 gets position 3                       |
 | type_concept_id     | int    | Type of clinical code (e.g., diagnosis, procedure, etc.)                              |
-| clinical_code_id    | int    | FK reference to clinical code this code is reported with e.g. dx assigned to proc     |
 
 ## claims
 
@@ -95,10 +95,10 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | column              | type   | description                                                                                                                                                                                                                                             |
 | -----------------   | ----   | -----------                                                                                                                                                                                                                                             |
 | id                  | serial | Surrogate key for record                                                                                                                                                                                                                                |
+| claim_id            | int    | FK reference to claims table                                                                                                                                                                                                                            |
 | person_id           | int    | ID of person associated with this record                                                                                                                                                                                                                |
 | start_date          | date   | Date of when record began                                                                                                                                                                                                                               |
 | end_date            | date   | Date of when record ended                                                                                                                                                                                                                               |
-| visit_id            | int    | FK reference to visit table                                                                                                                                                                                                                             |
 | detail_concept_id   | int    | FK reference to concept table representing the topic the detail addresses                                                                                                                                                                               |
 | value_as_number     | float  | The observation result stored as a number. This is applicable to observations where the result is expressed as a numeric value.                                                                                                                         |
 | value_as_string     | text   | The observation result stored as a string. This is applicable to observations where the result is expressed as verbatim text.                                                                                                                           |
@@ -122,7 +122,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id            | int    | ID of person associated with this record                                                                                               |
 | start_date           | date   | Date of when record began                                                                                                              |
 | end_date             | date   | Date of when record ended                                                                                                              |
-| visit_id             | int    | FK reference to visit table                                                                                                            |
 | provider_id          | int    | FK reference to provider table                                                                                                         |
 | exposure_concept_id  | int    | FK reference to concept table representing the exposure represented by this record                                                     |
 | refills              | int    | The number of refills after the initial prescription. The initial prescription is not counted, values start with 0.                    |
