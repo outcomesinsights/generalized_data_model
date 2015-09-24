@@ -29,51 +29,60 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | column              | type   | description                                                                           |
 | -----------------   | ----   | -----------                                                                           |
 | id                  | serial | Surrogate key for record                                                              |
+| claim_id            | int    | FK reference to claims                                                                |
+| line_id             | int    | FK reference to lines                                                                 |
 | person_id           | int    | ID of person associated with this record                                              |
 | start_date          | date   | Date of when clinical record began                                                    |
 | end_date            | date   | Date of when clinical record ended                                                    |
-| visit_id            | int    | FK for visit associated with this record                                              |
 | provider_id         | int    | FK for provider associated with this record                                           |
 | clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
 | quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
 | file_type           | text   | Type of the file from which the record was pulled                                     |
 | position            | int    | The position for the variable assigned e.g. dx3 gets position 3                       |
 | type_concept_id     | int    | Type of clinical code (e.g., diagnosis, procedure, etc.)                              |
-| clinical_code_id    | int    | FK reference to clinical code this code is reported with e.g. dx assigned to proc     |
 
-## visits
+## claims
 
-- Represents the place of service where an encounter occurs (see the encounters table)
-- Includes office visits, hospital stays, long-term care, hospice, and outpatient facility visits
-- Can be pointed to by multiple encounter, clinical, detail, and exposure records
-- Describes the contiguous dates of service, the place of service, and the manner in which the patient arrived and left (for facility files)
+- Represents the place of service where a claim was submitted
+- Includes office visits, hospital stays, long-term care, hospice, and outpatient facility claims
+- Can be pointed to by multiple clinical and detail records
+- Describes the claim level visit information
 - Vocabularies
   - Place of service
 
 | column                        | type   | description                                                                                 |
 | -----------------             | ----   | -----------                                                                                 |
 | id                            | serial | Surrogate key for record                                                                    |
-| person_id                     | int    | ID of person associated with this record                                                    |
+| pos_concept_id                | int    | FK reference to concept table representing the place of service associated with this record |
 | start_date                    | date   | Date of when record began                                                                   |
 | end_date                      | date   | Date of when record ended                                                                   |
-| admit_source_concept_id       | int    | Source of admission (e.g., ED, transfer, etc.; for facility records only)                   |
-| discharge_location_concept_id | int    | Discharge location (e.g., long-term care, home, dead, etc.; for facility records only)      |
-| pos_concept_id                | int    | FK reference to concept table representing the place of service associated with this record |
-| address_id                    | int    | FK reference to address table                                                               |
+| location_id                   | int    | FK reference to providers table                                                             |
 
-## encounters
+## claims_providers
 
-- Links one or more providers with a visit
-- Represents an encounter between a person and a provider in a specific visit
-- Patients can have multiple encounters within a visit (but not the other way around)
-- Encounters captures the role, if any, the provider played in the encounter (e.g., attending physician)
+- Links one or more providers with a claim
+- Represents an encounter between a person and a provider on a specific claim
+- Patients can have multiple encounters within a claim (but not the other way around)
+- Encounters captures the role, if any, the provider played on the claim (e.g., attending physician)
+
+| column            | type   | description                                                                  |
+| ----------------- | ----   | -----------                                                                  |
+| claim_id          | int    | FK reference to claims table                                                 |
+| provider_id       | int    | FK reference to providers table                                              |
+| role_type_id      | int    | FK reference to concepts related to roles providers can play in an encounter |
+
+## lines
+
+- Links one or more providers with a claim
+- Represents an encounter between a person and a provider on a specific claim
+- Patients can have multiple encounters within a claim (but not the other way around)
+- Encounters captures the role, if any, the provider played on the claim (e.g., attending physician)
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
 | id                | serial | Surrogate key for record                                                     |
-| provider_id       | int    | FK reference to providers table                                              |
-| visit_id          | int    | FK reference to visits table                                                 |
-| role_type_id      | int    | FK reference to concepts related to roles providers can play in an encounter |
+| claim_id          | int    | FK reference to claims table                                                 |
+| position          | int    | Line number from original claim                                              |
 
 ## details
 
@@ -86,10 +95,10 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | column              | type   | description                                                                                                                                                                                                                                             |
 | -----------------   | ----   | -----------                                                                                                                                                                                                                                             |
 | id                  | serial | Surrogate key for record                                                                                                                                                                                                                                |
+| claim_id            | int    | FK reference to claims table                                                                                                                                                                                                                            |
 | person_id           | int    | ID of person associated with this record                                                                                                                                                                                                                |
 | start_date          | date   | Date of when record began                                                                                                                                                                                                                               |
 | end_date            | date   | Date of when record ended                                                                                                                                                                                                                               |
-| visit_id            | int    | FK reference to visit table                                                                                                                                                                                                                             |
 | detail_concept_id   | int    | FK reference to concept table representing the topic the detail addresses                                                                                                                                                                               |
 | value_as_number     | float  | The observation result stored as a number. This is applicable to observations where the result is expressed as a numeric value.                                                                                                                         |
 | value_as_string     | text   | The observation result stored as a string. This is applicable to observations where the result is expressed as verbatim text.                                                                                                                           |
@@ -113,7 +122,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id            | int    | ID of person associated with this record                                                                                               |
 | start_date           | date   | Date of when record began                                                                                                              |
 | end_date             | date   | Date of when record ended                                                                                                              |
-| visit_id             | int    | FK reference to visit table                                                                                                            |
 | provider_id          | int    | FK reference to provider table                                                                                                         |
 | exposure_concept_id  | int    | FK reference to concept table representing the exposure represented by this record                                                     |
 | refills              | int    | The number of refills after the initial prescription. The initial prescription is not counted, values start with 0.                    |
@@ -158,7 +166,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | ingredient_cost               | float  | The portion of the drug expenses due to the cost charged by the manufacturer for the drug, typically a percentage of the Average Wholesale Price.                                 |
 | dispensing_fee                | float  | The portion of the drug expenses due to the dispensing fee charged by the pharmacy, typically a fixed amount.                                                                     |
 | cost                          | float  | Cost of service/device/drug incurred by provider/pharmacy.  Was "average_wholesale_price" which represented: "List price of a Drug set by the manufacturer."                      |
-| information_period_id         | int    | A foreign key to the information_period table, where the details of the Payer, Plan and Family are stored.                                                                        |
 | amount_allowed                | float  | The contracted amount the provider has agreed to accept as payment in full.                                                                                                       |
 | revenue_code_concept_id       | int    | A foreign key referring to a Standard Concept ID in the Standardized Vocabularies for Revenue codes.                                                                              |
 
