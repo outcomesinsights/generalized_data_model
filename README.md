@@ -43,8 +43,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## claims
 
-- Represents the place of service where a claim was submitted
-- Includes office visits, hospital stays, long-term care, hospice, and outpatient facility claims
+- Records the claim level information
+- Includes the place of service where a claim was submitted
 - Can be pointed to by multiple clinical and detail records
 - Describes the claim level visit information
 - Vocabularies
@@ -63,7 +63,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 - Links one or more providers with a claim
 - Represents an encounter between a person and a provider on a specific claim
 - Patients can have multiple encounters within a claim (but not the other way around)
-- Encounters captures the role, if any, the provider played on the claim (e.g., attending physician)
+- claims_providers captures the role, if any, the provider played on the claim (e.g., attending physician)
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
@@ -73,10 +73,9 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## lines
 
-- Links one or more providers with a claim
-- Represents an encounter between a person and a provider on a specific claim
-- Patients can have multiple encounters within a claim (but not the other way around)
-- Encounters captures the role, if any, the provider played on the claim (e.g., attending physician)
+- Links one or more lines to a claim
+- Searching clinical codes by line_id will return all lines that happend within a claim allowing to line diagnoses asscoiated with line procedures
+- Kept position for convenience although it is repeated in the clinical_codes table
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
