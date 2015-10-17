@@ -127,6 +127,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | refills              | int    | The number of refills after the initial prescription. The initial prescription is not counted, values start with 0.                    |
 | quantity             | float  | The quantity of drug as recorded in the original prescription or dispensing record.                                                    |
 | days_supply          | int    | The number of days of supply of the medication as recorded in the original prescription or dispensing record.                          |
+| dose_form_concept_id | int    | A foreign key to a predefined concept in the Standardized Vocabularies reflecting the form of the drug (capsule, injection,etc.)       |
 | dose_unit_concept_id | int    | A foreign key to a predefined concept in the Standardized Vocabularies reflecting the unit the effective_drug_dose value is expressed. |
 
 ## deaths
