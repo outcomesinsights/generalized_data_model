@@ -207,7 +207,8 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | -----------------           | ----   | -----------                                                                        |
 | id                          | serial | A unique identifier for each Provider.                                             |
 | provider_name               | text   | A description of the Provider.                                                     |
-| npi                         | text   | The National Provider Identifier (NPI) of the provider.                            |
+| identifier                  | text   | Provider identifier                                                                |
+| identifier_type             | text   | Type of identifier specified in identifier field  (UPIN,NPI,etc)                   |
 | dea                         | text   | The Drug Enforcement Administration (DEA) number of the provider.                  |
 | specialty_concept_id        | int    | A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies. |
 | address_id                  | int    | A foreign key to the address of the location where the provider is practicing.     |
