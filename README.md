@@ -53,10 +53,11 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | column                        | type   | description                                                                                 |
 | -----------------             | ----   | -----------                                                                                 |
 | id                            | serial | Surrogate key for record                                                                    |
+| person_id                     | int    | FK to reference to person table                                                             |
 | pos_concept_id                | int    | FK reference to concept table representing the place of service associated with this record |
 | start_date                    | date   | Date of when record began                                                                   |
 | end_date                      | date   | Date of when record ended                                                                   |
-| location_id                   | int    | FK reference to providers table                                                             |
+| facility_id                   | int    | FK reference to facilities table                                                            |
 
 ## claims_providers
 
@@ -213,6 +214,19 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | gender_concept_id           | int    | The gender of the Provider.                                                        |
 | specialty_source_concept_id | int    | A foreign key to a Concept that refers to the code used in the source.             |
 | gender_source_concept_id    | int    | A foreign key to a Concept that refers to the code used in the source.             |
+
+## facilities
+
+- Unique records for all the facilities in the data
+
+| column                      | type   | description                                                                        |
+| -----------------           | ----   | -----------                                                                        |
+| id                          | serial | A unique identifier for each Provider.                                             |
+| facility_name               | text   | A description of the Provider.                                                     |
+| identifier                  | text   | Provider identifier                                                                |
+| identifier_type             | text   | Type of identifier specified in identifier field  (UPIN,NPI,etc)                   |
+| specialty_concept_id        | int    | A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies. |
+| address_id                  | int    | A foreign key to the address of the location where the provider is practicing.     |
 
 ## information_periods
 
