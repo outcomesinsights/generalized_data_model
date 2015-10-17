@@ -251,4 +251,4 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 - Additional physician information -- do we need something on "care site"?
 - Need to define types in the data
 - Is there a way to connect data elements with information periods (i.e., when is prescription data available?)  Does this matter?
-
+- Do we need to pull some fields out of clinical_codes and put them into lines such as position?
