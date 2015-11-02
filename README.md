@@ -17,14 +17,14 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## clinical_codes
 
-- Instead of having separate condition and procedure tables, we’ll include all codes from the following vocabularies:
+- Instead of having separate condition and procedure tables, we'll include all codes from the following vocabularies:
   - ICD-9 (Proc and CM)
   - ICD-10 (Proc and CM)
   - SNOMED
   - Medcode (CPRD)
   - HCPCS/CPT
-- The OMOP specification for procedure and condition tables are quite similar.  Having separate tables follows with OMOP’s philosophy of classifying each concept into a specific domain.  The PCORnet CDM has two condition tables (one for results of diagnostic processes and one for condition lists), and a procedure table.  Again, these are all very similar in structure.  Since domains are semantic classifications, and since all of the tables are so similar, there is no philosophical or technical reason why we can’t combine conditions and procedures into the same table.  After all, all of the above-listed vocabularies include multiple domains.
-- For each code we find in the source data, we will create a new row in this table.  The code from the source data will be matched against OMOP’s concept table and we will save the concept_id in this table, rather than the raw code.
+- The OMOP specification for procedure and condition tables are quite similar.  Having separate tables follows with OMOP's philosophy of classifying each concept into a specific domain.  The PCORnet CDM has two condition tables (one for results of diagnostic processes and one for condition lists), and a procedure table.  Again, these are all very similar in structure.  Since domains are semantic classifications, and since all of the tables are so similar, there is no philosophical or technical reason why we can't combine conditions and procedures into the same table.  After all, all of the above-listed vocabularies include multiple domains.
+- For each code we find in the source data, we will create a new row in this table.  The code from the source data will be matched against OMOP's concept table and we will save the concept_id in this table, rather than the raw code.
 
 | column              | type   | description                                                                           |
 | -----------------   | ----   | -----------                                                                           |
@@ -87,7 +87,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## details
 
-- Additional information – measurements, observations, status, and specifications
+- Additional information - measurements, observations, status, and specifications
 - Text-based vocabularies should be mapped to LOINC, if possible (e.g., laboratory data indexed by text names for the lab results)
 - Other vocabularies should be included in their original system (e.g., SEER variables)
   - This could be implemented by making variable names a vocabulary in themselves
@@ -133,7 +133,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## deaths
 
-- Capture mortality information – date and cause(s) of death
+- Capture mortality information - date and cause(s) of death
 - Might want to check diagnosis codes and discharge location as part of ETL.
 
 | column                | type   | description                                                                                           |
@@ -188,7 +188,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## addresses
 
-- See OMOP location table – used for persons and care sites
+- See OMOP location table - used for persons and care sites
 
 | column            | type   | description                                                                                                                    |
 | ----------------- | ----   | -----------                                                                                                                    |
@@ -234,7 +234,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 ## information_periods
 
 - Captures periods for which information in each table is relevant.
-- Could include enrollment types (e.g., Part A, Part B, HMO) or just “observable” (as with up-to-standard data in CPRD)
+- Could include enrollment types (e.g., Part A, Part B, HMO) or just "observable" (as with up-to-standard data in CPRD)
 - One row per person per enrollment type per table
 
 | column            | type   | description                                                                                                                               |
@@ -247,7 +247,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 ## Miscellaneous details and questions
 
-- What about modifiers – tend to be for laterality (left/right) or multiple physicians and maybe part of ETL
+- What about modifiers - tend to be for laterality (left/right) or multiple physicians and maybe part of ETL
 - Additional physician information -- do we need something on "care site"?
 - Need to define types in the data
 - Is there a way to connect data elements with information periods (i.e., when is prescription data available?)  Does this matter?
