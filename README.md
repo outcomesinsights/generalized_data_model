@@ -15,31 +15,52 @@ Perhaps the simplest way to explain the philosophy of our CDM is that, if an alg
 
 To this end, we have developed an open-source language, [ConceptQL](https://github.com/outcomesinsights/conceptql), that enables us to create, store, share, and use algorithms that are designed to work on electronic health information.  Our project, [Jigsaw](http://www.jigsawanalytics.com) leverages ConceptQL to create a mechanism for leveraging algorithms and vocabularies separately from the CDM.
 
-## clinical_codes
+## people
 
-- Instead of having separate condition and procedure tables, we'll include all codes from the following vocabularies:
-  - ICD-9 (Proc and CM)
-  - ICD-10 (Proc and CM)
-  - SNOMED
-  - Medcode (CPRD)
-  - HCPCS/CPT
-- The OMOP specification for procedure and condition tables are quite similar.  Having separate tables follows with OMOP's philosophy of classifying each concept into a specific domain.  The PCORnet CDM has two condition tables (one for results of diagnostic processes and one for condition lists), and a procedure table.  Again, these are all very similar in structure.  Since domains are semantic classifications, and since all of the tables are so similar, there is no philosophical or technical reason why we can't combine conditions and procedures into the same table.  After all, all of the above-listed vocabularies include multiple domains.
-- For each code we find in the source data, we will create a new row in this table.  The code from the source data will be matched against OMOP's concept table and we will save the concept_id in this table, rather than the raw code.
+- Demographic information about the patients in the data.
+- Provider_id is for HMO and similar situations (CPRD) where there is a defined primary care provider
 
-| column              | type   | description                                                                           |
-| -----------------   | ----   | -----------                                                                           |
-| id                  | serial | Surrogate key for record                                                              |
-| claim_id            | int    | FK reference to claims                                                                |
-| line_id             | int    | FK reference to lines                                                                 |
-| person_id           | int    | ID of person associated with this record                                              |
-| start_date          | date   | Date of when clinical record began                                                    |
-| end_date            | date   | Date of when clinical record ended                                                    |
-| provider_id         | int    | FK for provider associated with this record                                           |
-| clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
-| quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
-| file_type           | text   | Type of the file from which the record was pulled                                     |
-| position            | int    | The position for the variable assigned e.g. dx3 gets position 3                       |
-| type_concept_id     | int    | Type of clinical code (e.g., diagnosis, procedure, etc.)                              |
+| column               | type   | description                                                                                                                     |
+| -----------------    | ----   | -----------                                                                                                                     |
+| id                   | serial | A unique identifier for each person.                                                                                            |
+| gender_concept_id    | int    | A foreign key that refers to an identifier in the CONCEPT table for the unique gender of the person.                            |
+| birth_date           | date   | Date of birth                                                                                                                   |
+| race_concept_id      | int    | A foreign key that refers to an identifier in the CONCEPT table for the unique race of the person.                              |
+| ethnicity_concept_id | int    | A foreign key that refers to the standard concept identifier in the Standardized Vocabularies for the ethnicity of the person.  |
+| address_id           | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored. |
+| provider_id          | int    | A foreign key to the primary care provider the person is seeing in the provider table.                                          |
+
+## providers
+
+- See OMOP provider table.  Adapt to allow multiple providers via visit table
+
+| column                      | type   | description                                                                        |
+| -----------------           | ----   | -----------                                                                        |
+| id                          | serial | A unique identifier for each Provider.                                             |
+| provider_name               | text   | A description of the Provider.                                                     |
+| identifier                  | text   | Provider identifier                                                                |
+| identifier_type             | text   | Type of identifier specified in identifier field  (UPIN,NPI,etc)                   |
+| dea                         | text   | The Drug Enforcement Administration (DEA) number of the provider.                  |
+| specialty_concept_id        | int    | A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies. |
+| address_id                  | int    | A foreign key to the address of the location where the provider is practicing.     |
+| birth_date                  | int    | The date of birth of the Provider.                                                 |
+| gender_concept_id           | int    | The gender of the Provider.                                                        |
+| specialty_source_concept_id | int    | A foreign key to a Concept that refers to the code used in the source.             |
+| gender_source_concept_id    | int    | A foreign key to a Concept that refers to the code used in the source.             |
+
+
+## facilities
+
+- Unique records for all the facilities in the data
+
+| column                      | type   | description                                                                        |
+| -----------------           | ----   | -----------                                                                        |
+| id                          | serial | A unique identifier for each Provider.                                             |
+| facility_name               | text   | A description of the Provider.                                                     |
+| identifier                  | text   | Provider identifier                                                                |
+| identifier_type             | text   | Type of identifier specified in identifier field  (UPIN,NPI,etc)                   |
+| specialty_concept_id        | int    | A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies. |
+| address_id                  | int    | A foreign key to the address of the location where the provider is practicing.     |
 
 ## claims
 
@@ -84,6 +105,32 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | claim_id          | int    | FK reference to claims table                                                 |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record  |
 | position          | int    | Line number from original claim                                              |
+
+## clinical_codes
+
+- Instead of having separate condition and procedure tables, we'll include all codes from the following vocabularies:
+  - ICD-9 (Proc and CM)
+  - ICD-10 (Proc and CM)
+  - SNOMED
+  - Medcode (CPRD)
+  - HCPCS/CPT
+- The OMOP specification for procedure and condition tables are quite similar.  Having separate tables follows with OMOP's philosophy of classifying each concept into a specific domain.  The PCORnet CDM has two condition tables (one for results of diagnostic processes and one for condition lists), and a procedure table.  Again, these are all very similar in structure.  Since domains are semantic classifications, and since all of the tables are so similar, there is no philosophical or technical reason why we can't combine conditions and procedures into the same table.  After all, all of the above-listed vocabularies include multiple domains.
+- For each code we find in the source data, we will create a new row in this table.  The code from the source data will be matched against OMOP's concept table and we will save the concept_id in this table, rather than the raw code.
+
+| column              | type   | description                                                                           |
+| -----------------   | ----   | -----------                                                                           |
+| id                  | serial | Surrogate key for record                                                              |
+| claim_id            | int    | FK reference to claims                                                                |
+| line_id             | int    | FK reference to lines                                                                 |
+| person_id           | int    | ID of person associated with this record                                              |
+| start_date          | date   | Date of when clinical record began                                                    |
+| end_date            | date   | Date of when clinical record ended                                                    |
+| provider_id         | int    | FK for provider associated with this record                                           |
+| clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
+| quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
+| file_type           | text   | Type of the file from which the record was pulled                                     |
+| position            | int    | The position for the variable assigned e.g. dx3 gets position 3                       |
+| type_concept_id     | int    | Type of clinical code (e.g., diagnosis, procedure, etc.)                              |
 
 ## details
 
@@ -131,21 +178,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | dose_form_concept_id | int    | A foreign key to a predefined concept in the Standardized Vocabularies reflecting the form of the drug (capsule, injection,etc.)       |
 | dose_unit_concept_id | int    | A foreign key to a predefined concept in the Standardized Vocabularies reflecting the unit the effective_drug_dose value is expressed. |
 
-## deaths
-
-- Capture mortality information - date and cause(s) of death
-- Might want to check diagnosis codes and discharge location as part of ETL.
-
-| column                | type   | description                                                                                           |
-| -----------------     | ----   | -----------                                                                                           |
-| id                    | serial | Surrogate key for record                                                                              |
-| person_id             | int    | ID of person associated with this record                                                              |
-| date                  | date   | Date of death                                                                                         |
-| visit_id              | int    | FK reference to visit table                                                                           |
-| cause_concept_id      | int    | FK reference into concept that represents cause of death                                              |
-| cause_type_concept_id | int    | FK reference into concept that represents the type of cause of death (e.g. primary, secondary, etc. ) |
-| provider_id           | int    | FK for provider associated with this record                                                           |
-
 ## costs
 
 - To capture costs (charges, reimbursed amounts, and/or costs) for each provided service
@@ -171,21 +203,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | amount_allowed                | float  | The contracted amount the provider has agreed to accept as payment in full.                                                                                                       |
 | revenue_code_concept_id       | int    | A foreign key referring to a Standard Concept ID in the Standardized Vocabularies for Revenue codes.                                                                              |
 
-## people
-
-- Demographic information about the patients in the data.
-- Provider_id is for HMO and similar situations (CPRD) where there is a defined primary care provider
-
-| column               | type   | description                                                                                                                     |
-| -----------------    | ----   | -----------                                                                                                                     |
-| id                   | serial | A unique identifier for each person.                                                                                            |
-| gender_concept_id    | int    | A foreign key that refers to an identifier in the CONCEPT table for the unique gender of the person.                            |
-| birth_date           | date   | Date of birth                                                                                                                   |
-| race_concept_id      | int    | A foreign key that refers to an identifier in the CONCEPT table for the unique race of the person.                              |
-| ethnicity_concept_id | int    | A foreign key that refers to the standard concept identifier in the Standardized Vocabularies for the ethnicity of the person.  |
-| address_id           | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored. |
-| provider_id          | int    | A foreign key to the primary care provider the person is seeing in the provider table.                                          |
-
 ## addresses
 
 - See OMOP location table - used for persons and care sites
@@ -200,36 +217,20 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | zip               | text   | The zip or postal code.                                                                                                        |
 | county            | text   | The county.                                                                                                                    |
 
-## providers
+## deaths
 
-- See OMOP provider table.  Adapt to allow multiple providers via visit table
+- Capture mortality information - date and cause(s) of death
+- Might want to check diagnosis codes and discharge location as part of ETL.
 
-| column                      | type   | description                                                                        |
-| -----------------           | ----   | -----------                                                                        |
-| id                          | serial | A unique identifier for each Provider.                                             |
-| provider_name               | text   | A description of the Provider.                                                     |
-| identifier                  | text   | Provider identifier                                                                |
-| identifier_type             | text   | Type of identifier specified in identifier field  (UPIN,NPI,etc)                   |
-| dea                         | text   | The Drug Enforcement Administration (DEA) number of the provider.                  |
-| specialty_concept_id        | int    | A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies. |
-| address_id                  | int    | A foreign key to the address of the location where the provider is practicing.     |
-| birth_date                  | int    | The date of birth of the Provider.                                                 |
-| gender_concept_id           | int    | The gender of the Provider.                                                        |
-| specialty_source_concept_id | int    | A foreign key to a Concept that refers to the code used in the source.             |
-| gender_source_concept_id    | int    | A foreign key to a Concept that refers to the code used in the source.             |
-
-## facilities
-
-- Unique records for all the facilities in the data
-
-| column                      | type   | description                                                                        |
-| -----------------           | ----   | -----------                                                                        |
-| id                          | serial | A unique identifier for each Provider.                                             |
-| facility_name               | text   | A description of the Provider.                                                     |
-| identifier                  | text   | Provider identifier                                                                |
-| identifier_type             | text   | Type of identifier specified in identifier field  (UPIN,NPI,etc)                   |
-| specialty_concept_id        | int    | A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies. |
-| address_id                  | int    | A foreign key to the address of the location where the provider is practicing.     |
+| column                | type   | description                                                                                           |
+| -----------------     | ----   | -----------                                                                                           |
+| id                    | serial | Surrogate key for record                                                                              |
+| person_id             | int    | ID of person associated with this record                                                              |
+| date                  | date   | Date of death                                                                                         |
+| visit_id              | int    | FK reference to visit table                                                                           |
+| cause_concept_id      | int    | FK reference into concept that represents cause of death                                              |
+| cause_type_concept_id | int    | FK reference into concept that represents the type of cause of death (e.g. primary, secondary, etc. ) |
+| provider_id           | int    | FK for provider associated with this record                                                           |
 
 ## information_periods
 
