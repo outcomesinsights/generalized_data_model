@@ -105,7 +105,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | id                | serial | Surrogate key for record                                                     |
 | claim_id          | int    | FK reference to claims table                                                 |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record  |
-| position          | int    | Line number from original claim                                              |
 
 ## clinical_codes
 
