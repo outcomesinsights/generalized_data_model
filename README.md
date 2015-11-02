@@ -79,6 +79,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | start_date                    | date   | Date of when record began                                                                   |
 | end_date                      | date   | Date of when record ended                                                                   |
 | facility_id                   | int    | FK reference to facilities table                                                            |
+| file_type                     | text   | Type of the file from which the record was pulled                                           |
 
 ## claims_providers
 
@@ -128,7 +129,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | provider_id         | int    | FK for provider associated with this record                                           |
 | clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
 | quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
-| file_type           | text   | Type of the file from which the record was pulled                                     |
 | position            | int    | The position for the variable assigned e.g. dx3 gets position 3                       |
 | type_concept_id     | int    | Type of clinical code (e.g., diagnosis, procedure, etc.)                              |
 
