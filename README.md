@@ -97,14 +97,14 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 ## lines
 
 - Links one or more lines to a claim
-- Searching clinical codes by line_id will return all lines that happend within a claim allowing to line diagnoses asscoiated with line procedures
-- Kept position for convenience although it is repeated in the clinical_codes table
+- Searching clinical_codes by line_id will return all lines that happened within a claim. This allows linkages between line diagnoses with line procedures
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
 | id                | serial | Surrogate key for record                                                     |
 | claim_id          | int    | FK reference to claims table                                                 |
 | pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record  |
+| provider_id       | int  | FK for provider associated with this record                                           |
 
 ## clinical_codes
 
@@ -125,7 +125,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | person_id           | int    | ID of person associated with this record                                              |
 | start_date          | date   | Date of when clinical record began                                                    |
 | end_date            | date   | Date of when clinical record ended                                                    |
-| provider_id         | int    | FK for provider associated with this record                                           |
 | clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
 | quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
 | position            | int    | The position for the variable assigned e.g. dx3 gets position 3                       |
