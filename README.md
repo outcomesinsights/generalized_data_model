@@ -245,11 +245,3 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | start_date        | date   | Date of when record began                                                                                                                 |
 | end_date          | date   | Date of when record ended                                                                                                                 |
 | information_type  | text   | String representing the type of data availability (e.g., insurance coverage, hospital data, up-to-standard date).  Could be concept type. |
-
-## Miscellaneous details and questions
-
-- What about modifiers - tend to be for laterality (left/right) or multiple physicians and maybe part of ETL
-- Additional physician information -- do we need something on "care site"?
-- Need to define types in the data
-- Is there a way to connect data elements with information periods (i.e., when is prescription data available?)  Does this matter?
-- Do we need to pull some fields out of clinical_codes and put them into lines such as position?
