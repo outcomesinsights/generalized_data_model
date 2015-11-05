@@ -165,7 +165,9 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 | column               | type   | description                                                                                                                            |
 | -----------------    | ----   | -----------                                                                                                                            |
-| id                   | serial | Surrogate key for record                                                                                                               |
+| id                   | serial | Surrogate key for record |
+| claim_id            | int    | FK reference to claims table|
+| line_id             | int    | FK reference to lines                                                        |
 | person_id            | int    | ID of person associated with this record                                                                                               |
 | start_date           | date   | Date of when record began                                                                                                              |
 | end_date             | date   | Date of when record ended                                                                                                              |
