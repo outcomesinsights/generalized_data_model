@@ -151,7 +151,6 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 | value_as_string     | text   | The observation result stored as a string. This is applicable to observations where the result is expressed as verbatim text.                                                                                                                           |
 | value_as_concept_id | int    | A foreign key to an observation result stored as a Concept ID. This is applicable to observations where the result can be expressed as a Standard Concept from the Standardized Vocabularies (e.g., positive/negative, present/absent, low/high, etc.). |
 | unit_concept_id     | int    | A foreign key to a Standard Concept ID of measurement units in the Standardized Vocabularies.                                                                                                                                                           |
-| provider_id         | int    | FK for provider associated with this record                                                                                                                                                                                                             |
 
 ## exposures
 
