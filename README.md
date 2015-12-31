@@ -85,7 +85,7 @@ To this end, we have developed an open-source language, [ConceptQL](https://gith
 
 - Links one or more providers with a claim
 - Represents an encounter between a person and a provider on a specific claim
-- Patients can have multiple encounters within a claim (but not the other way around)
+- Patients can have multiple lines within a claim (but not the other way around)
 - claims_providers captures the role, if any, the provider played on the claim (e.g., attending physician)
 
 | column            | type   | description                                                                  |
