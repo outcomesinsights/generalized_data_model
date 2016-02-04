@@ -245,3 +245,18 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | start_date        | date   | Start date of record (yyyy-mm-dd)                                                                                                                 |
 | end_date          | date   | End date of record (yyyy-mm-dd)                                                                                                                 |
 | information_type  | text   | String representing the type of data availability (e.g., insurance coverage, hospital data, up-to-standard date).  Could be concept type. |
+
+## admission_details
+
+- Captures details about admissions and emergency department encounters that don't go in the clinical_codes, lines, or claims tables
+- One row per admission
+- Should handle this in the same way as "extra" information from exposures table and details table if some of their information is moved into clinical_codes
+- Should we add "stay_type" to capture "observation stays" that are in the hospital but counted as outpatient facility visits?
+
+| column            | type   | description                                                                                                                               |
+| ----------------- | ----   | -----------                                                                                                                               |
+| id                | serial | Surrogate key for record                                                                                                                  |
+| person_id         | int    | FK reference to people table                                                                                                  |
+| claim_id          | int    | FK reference to claims table                                                                                                                |
+| admit_source      | text   | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                                               |
+| discharge_location| text   | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                             |
