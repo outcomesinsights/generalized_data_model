@@ -152,9 +152,9 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 ## exposures
 
 - To capture drug and device data
-- Drugs and devices captured in the clinical_codes table should remain in the clinical_codes table.
-- Could include devices if they are reported separately from procedures.  Note that these may be text entries and may have mis-spellings (e.g., MedAssets and other text-based data sources).  Mapping to a vocabulary may or may not be possible.
-- Vocabularies
+- Drugs and device records recorded in the clinical_codes table should remain in the clinical_codes table (e.g., HCPCS drug codes)
+- Could include devices if they are reported separately from their associated procedures.  Note that these may be text entries and may have mis-spellings.  Mapping to a vocabulary may or may not be possible.
+- Example vocabularies
   - NDC
   - RxNorm
   - Prodcodes (CPRD)
@@ -162,18 +162,19 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column               | type   | description                                                                                                                            |
 | -----------------    | ----   | -----------                                                                                                                            |
 | id                   | serial | Surrogate key for record |
-| claim_id            | int    | FK reference to claims table|
-| line_id             | int    | FK reference to lines                                                        |
-| person_id            | int    | ID of person associated with this record                                                                                               |
-| start_date           | date   | Date of when record began                                                                                                              |
-| end_date             | date   | Date of when record ended                                                                                                              |
-| provider_id          | int    | FK reference to provider table                                                                                                         |
-| exposure_concept_id  | int    | FK reference to concept table representing the exposure represented by this record                                                     |
-| refills              | int    | The number of refills after the initial prescription. The initial prescription is not counted, values start with 0.                    |
-| quantity             | float  | The quantity of drug as recorded in the original prescription or dispensing record.                                                    |
-| days_supply          | int    | The number of days of supply of the medication as recorded in the original prescription or dispensing record.                          |
-| dose_form_concept_id | int    | A foreign key to a predefined concept in the Standardized Vocabularies reflecting the form of the drug (capsule, injection,etc.)       |
-| dose_unit_concept_id | int    | A foreign key to a predefined concept in the Standardized Vocabularies reflecting the unit the effective_drug_dose value is expressed. |
+| claim_id             | int     | FK reference to claims table|
+| line_id              | int     | FK reference to lines table                                                        |
+| person_id            | int    | FK reference to people table                                                                                            |
+| start_date           | date   | Start date of record (yyyy-mm-dd)                                                                                                             |
+| end_date             | date   | End date of record (yyyy-mm-dd)                                                                                                              |
+| provider_id          | int    | FK reference to providers table                                                                                                         |
+| exposure_concept_id  | int    | FK reference to concepts table for the code assigned to the record                                                     |
+| refills              | int    | The number of refills after the initial prescription; the initial prescription is not counted (i.e., values start with 0)              |
+| quantity             | float  | The quantity of drug as recorded in the original prescription or dispensing record (e.g.,, number of pills, vials, etc.)                      |
+| days_supply          | int    | The number of days of supply as recorded in the original prescription or dispensing record                          |
+| dose_form_concept_id | int    | FK reference to concepts table for the form of the drug (capsule, injection, etc.)       |
+| dose_unit_concept_id | int    | FK reference to concepts table for the units in which the dose_value is expressed |
+| dose_value           | float  | Numeric value for the dose of the drug |
 
 ## costs
 
