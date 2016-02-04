@@ -138,16 +138,16 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column              | type   | description                                                                                                                                                                                                                                             |
 | -----------------   | ----   | -----------                                                                                                                                                                                                                                             |
 | id                  | serial | Surrogate key for record                                                                                                                                                                                                                                |
-| claim_id            | int    | FK reference to claims table                                                                                                                                                                                                                            |
-| line_id             | int    | FK reference to lines                                                        |
-| person_id           | int    | ID of person associated with this record                                                                                                                                                                                                                |
-| start_date          | date   | Date of when record began                                                                                                                                                                                                                               |
-| end_date            | date   | Date of when record ended                                                                                                                                                                                                                               |
-| detail_concept_id   | int    | FK reference to concept table representing the topic the detail addresses                                                                                                                                                                               |
-| value_as_number     | float  | The observation result stored as a number. This is applicable to observations where the result is expressed as a numeric value.                                                                                                                         |
-| value_as_string     | text   | The observation result stored as a string. This is applicable to observations where the result is expressed as verbatim text.                                                                                                                           |
-| value_as_concept_id | int    | A foreign key to an observation result stored as a Concept ID. This is applicable to observations where the result can be expressed as a Standard Concept from the Standardized Vocabularies (e.g., positive/negative, present/absent, low/high, etc.). |
-| unit_concept_id     | int    | A foreign key to a Standard Concept ID of measurement units in the Standardized Vocabularies.                                                                                                                                                           |
+| claim_id            | int    | FK reference to claims table                                                    |
+| line_id             | int    | FK reference to lines table                                             |
+| person_id           | int    | FK reference to people table                                                        |
+| start_date          | date   | Start date of record (yyyy-mm-dd)                                     |
+| end_date            | date   | End date of record (yyyy-mm-dd) |
+| detail_concept_id   | int    | FK reference to concepts table for the code assigned to the record     |
+| value_as_number     | float  | The observation result stored as a number, applicable to observations where the result is expressed as a numeric value    |
+| value_as_string     | text   | The observation result stored as a string, applicable to observations where the result is expressed as verbatim text    |
+| value_as_concept_id | int    | FK reference to concepts table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.) |
+| unit_concept_id     | int    | FK reference to concepts table for the measurement units (e.g., mmol/L, mg/dL, etc.)        |
 
 ## exposures
 
