@@ -203,17 +203,17 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## addresses
 
-- See OMOP location table - used for persons and care sites
+- Used for persons, providers, and facilities
 
 | column            | type   | description                                                                                                                    |
 | ----------------- | ----   | -----------                                                                                                                    |
-| id                | serial | A unique identifier for each geographic location.                                                                              |
-| address_1         | text   | The address field 1, typically used for the street address, as it appears in the source data.                                  |
-| address_2         | text   | The address field 2, typically used for additional detail such as buildings, suites, floors, as it appears in the source data. |
-| city              | text   | The city field as it appears in the source data.                                                                               |
-| state             | text   | The state field as it appears in the source data.                                                                              |
-| zip               | text   | The zip or postal code.                                                                                                        |
-| county            | text   | The county.                                                                                                                    |
+| id                | serial | A unique identifier for each geographic location                                                                              |
+| address_1         | text   | Typically used for street address                                  |
+| address_2         | text   | Typically used for additional detail such as building, suite, floor, etc. |
+| city              | text   | The city field as it appears in the source data (should this be standardized?)                                                                               |
+| state             | text   | The state field as it appears in the source data (should this be standardized to 2-letter states?)                                                                             |
+| zip               | text   | The zip or postal code                                                                                                        |
+| county            | text   | The county (should this be standardized to county code?)                                                                                                                    |
 
 ## deaths
 
