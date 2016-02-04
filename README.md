@@ -53,12 +53,12 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 | column                      | type   | description                                                                        |
 | -----------------           | ----   | -----------                                                                        |
-| id                          | serial | A unique identifier for each Provider.                                             |
-| facility_name               | text   | A description of the Provider.                                                     |
-| identifier                  | text   | Provider identifier                                                                |
+| id                          | serial | A unique identifier for each facility                                             |
+| facility_name               | text   | Facility name, if available                                                     |
+| identifier                  | text   | Facility identifier                                                                |
 | identifier_type             | text   | Type of identifier specified in identifier field  (UPIN,NPI,etc)                   |
-| specialty_concept_id        | int    | A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies. |
-| address_id                  | int    | A foreign key to the address of the location where the provider is practicing.     |
+| specialty_concept_id        | int    | A foreign key to an identifier in the concepts table for specialty |
+| address_id                  | int    | A foreign key to the address of the location of the facility     |
 
 ## claims
 
