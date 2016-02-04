@@ -217,18 +217,20 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## deaths
 
-- Capture mortality information - date and cause(s) of death
-- Might want to check diagnosis codes and discharge location as part of ETL.
+- Capture mortality information including date and cause(s) of death
+- Commonly populated from beneficiary or similar administrative data associated with the medical record
+- Might need to check discharge status as part of ETL process to fill this out completely
+- Use of *claim_id* and *line_id* is not necessary since deaths are in the clinical_codes table if they are specific diagnosis codes from an encounter
+- Should this just be in the clinical_codes table?
 
 | column                | type   | description                                                                                           |
 | -----------------     | ----   | -----------                                                                                           |
-| id                    | serial | Surrogate key for record                                                                              |
-| person_id             | int    | ID of person associated with this record                                                              |
-| date                  | date   | Date of death                                                                                         |
-| visit_id              | int    | FK reference to visit table                                                                           |
-| cause_concept_id      | int    | FK reference into concept that represents cause of death                                              |
-| cause_type_concept_id | int    | FK reference into concept that represents the type of cause of death (e.g. primary, secondary, etc. ) |
-| provider_id           | int    | FK for provider associated with this record                                                           |
+| id                    | serial | Surrogate key for record 
+| person_id             | int    | FK reference to people table                                                              |
+| date                  | date   | Date of death (yyyy-mm-dd)                                                                                        |
+| cause_concept_id      | int    | FK reference to concepts table for cause of death (typically ICD-9 or ICD-10 code)                                              |
+| cause_type_concept_id | int    | FK reference to concepts table for the type of cause of death (e.g. primary, secondary, etc. ) |
+| provider_id           | int    | FK reference to providers table                                                           |
 
 ## information_periods
 
