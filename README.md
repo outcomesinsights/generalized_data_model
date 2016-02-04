@@ -103,27 +103,29 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## clinical_codes
 
-- Instead of having separate condition and procedure tables, we'll include all codes from the following vocabularies:
+- Stores clinical codes from all types of records including procedures and diagnoses.
   - ICD-9 (Proc and CM)
   - ICD-10 (Proc and CM)
   - SNOMED
   - Medcode (CPRD)
   - HCPCS/CPT
-- The OMOP specification for procedure and condition tables are quite similar.  Having separate tables follows with OMOP's philosophy of classifying each concept into a specific domain.  The PCORnet CDM has two condition tables (one for results of diagnostic processes and one for condition lists), and a procedure table.  Again, these are all very similar in structure.  Since domains are semantic classifications, and since all of the tables are so similar, there is no philosophical or technical reason why we can't combine conditions and procedures into the same table.  After all, all of the above-listed vocabularies include multiple domains.
-- For each code we find in the source data, we will create a new row in this table.  The code from the source data will be matched against OMOP's concept table and we will save the concept_id in this table, rather than the raw code.
+- Ignores semantic distinctions about the type of information represented within a vocabulary because most vocabularies contain information from more than one domain
+- One record generated for each individual code in the raw data
+- Consider using this as fact table in dimensional schema (if used)
+- Consider moving common fields from the exposures and details tables to this table, and using those tables to store only additional information specific to those domains
 
 | column              | type   | description                                                                           |
 | -----------------   | ----   | -----------                                                                           |
 | id                  | serial | Surrogate key for record                                                              |
-| claim_id            | int    | FK reference to claims                                                                |
-| line_id             | int    | FK reference to lines                                                                 |
-| person_id           | int    | ID of person associated with this record                                              |
-| start_date          | date   | Date of when clinical record began                                                    |
-| end_date            | date   | Date of when clinical record ended                                                    |
-| clinical_concept_id | int    | FK reference into concept table representing the clinical code assigned to the record |
-| quantity            | int    | Sometimes quantity is reported in claims data for procedures                          |
-| position            | int    | The position for the variable assigned e.g. dx3 gets position 3                       |
-| type_concept_id     | int    | Type of clinical code (e.g., diagnosis, procedure, etc.)                              |
+| claim_id            | int    | FK reference to claims table                                                             |
+| line_id             | int    | FK reference to lines table                                                              |
+| person_id           | int    | FK reference to people table                                            |
+| start_date          | date   | Start date of record (yyyy-mm-dd)                                                    |
+| end_date            | date   | End date of record (yyyy-mm-dd)                                                    |
+| clinical_concept_id | int    | FK reference to concepts table for the code assigned to the record   |
+| quantity            | int    | Quantity, if available (e.g., procedures)                           |
+| position            | int    | The position for the variable assigned (e.g. dx3 gets position 3)                       |
+| type_concept_id     | int    | Additional type information.  Do we need this?                                  |
 
 ## details
 
