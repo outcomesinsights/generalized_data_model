@@ -13,7 +13,7 @@ The rationale for separating the vocabulary mapping process from the data model 
 
 Perhaps the simplest way to explain the philosophy of our data model is that, if an algorithm involves a specific code, we should know the data model table in which to look for that code regardless of the structure of the original (raw) data.  Then we should be able to leverage a library of existing algorithms and vocabulary tools to operate on the data and create all of the variables for our study datasets.  To this end, we have developed an open-source language, [ConceptQL](https://github.com/outcomesinsights/conceptql_spec), that enables us to create, store, share, and use algorithms that are designed to work on electronic health information.  Our project, [Jigsaw](http://www.jigsaw.io) leverages ConceptQL to apply algorithms and vocabularies against data in our data model to build study datasets.  (And Jigsaw is designed so that the algorithms work, not only across datasets, but also across data **models**.)
 
-Below is the current version of the schema for the OI Data Model.  We gratefully acknowledge the influence of the open-source OHDSI common data model [specifications](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:cdm) on our thinking in creating this data model.
+Below is the current version of the schema for the OI Data Model.  We gratefully acknowledge the influence of the open-source OHDSI common data model [specifications](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:cdm) on our thinking in creating this data model.  At the moment, all references to the concepts table refer to the OMOP version 5 vocabulary concepts [table](http://www.ohdsi.org/web/athena/).
 
 ## people
 
