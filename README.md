@@ -178,28 +178,28 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## costs
 
-- To capture costs (charges, reimbursed amounts, and/or costs) for each provided service
-- OI cost table
+- To capture costs (charges, paid amounts, and/or costs) for each provided service
+- All costs are linked to a claim and could also be linked to a line, to align with the original data
+- Do we need a column to indicate payer if there is more than 1 row associated with a cost record?
+- Should revenue codes be in clinical_codes table?  Same with DRG and APC codes?
 
 | column                        | type   | description                                                                                                                                                                       |
 | -----------------             | ----   | -----------                                                                                                                                                                       |
-| id                            | serial | A unique identifier for each COST record.                                                                                                                                         |
-| cost_event_id                 | int    | A foreign key identifier to the event (e.g. Measurement, Procedure, Visit, Drug Exposure, etc) record for which cost data are recorded.                                           |
-| table_name                    | text   | The name of the table where the associated event record is found.                                                                                                                 |
-| currency_concept_id           | int    | A concept representing the 3-letter code used to delineate international currencies, such as USD for US Dollar.                                                                   |
-| charge                        | float  | The amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider)                                                                          |
-| paid_copay                    | float  | The amount paid by the Person as a fixed contribution to the expenses. Copay does not contribute to the out of pocket expenses.                                                   |
-| paid_coinsurance              | float  | The amount paid by the Person as a joint assumption of risk. Typically, this is a percentage of the expenses defined by the Payer Plan after the Person's deductible is exceeded. |
-| paid_toward_deductible        | float  | The amount paid by the Person that is counted toward the deductible defined by the Payer Plan.                                                                                    |
-| paid_by_payer                 | float  | The amount paid by the Payer. If there is more than one Payer, several COST records indicate that fact.                                                                           |
-| paid_by_coordination_benefits | float  | The amount paid by a secondary Payer through the coordination of benefits.                                                                                                        |
-| total_out_of_pocket           | float  | The total amount paid by the Person as a share of the expenses.                                                                                                                   |
-| total_paid                    | float  | The total amount paid. This field should not contain an imputed value. Only populate this field if the raw data provides a clear source of information on how much was paid, in total, for this service/exposure. |
-| ingredient_cost               | float  | The portion of the drug expenses due to the cost charged by the manufacturer for the drug, typically a percentage of the Average Wholesale Price.                                 |
-| dispensing_fee                | float  | The portion of the drug expenses due to the dispensing fee charged by the pharmacy, typically a fixed amount.                                                                     |
-| cost                          | float  | Cost of service/device/drug incurred by provider/pharmacy.  Was "average_wholesale_price" which represented: "List price of a Drug set by the manufacturer."                      |
-| amount_allowed                | float  | The contracted amount the provider has agreed to accept as payment in full.                                                                                                       |
-| revenue_code_concept_id       | int    | A foreign key referring to a Standard Concept ID in the Standardized Vocabularies for Revenue codes.                                                                              |
+| id                            | serial | A unique identifier for each COST record                                                                                                                                         |
+| claim_id                      | int    | FK reference to claims table                                                    |
+| line_id                       | int    | FK reference to lines table                                             |
+| currency_concept_id           | int    | FK reference to concepts table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar)                                                                   |
+| total_charge                  | float  | The amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider)                                                                          |
+| paid_copay                    | float  | The amount paid by the person as a fixed contribution to the expenses. Copay does not contribute to the out of pocket expenses.                                                   |
+| paid_coinsurance              | float  | The amount paid by the person as a joint assumption of risk. Typically, this is a percentage of the expenses defined by the payer after the person's deductible is exceeded |
+| paid_toward_deductible        | float  | The amount paid by the person that is counted toward the deductible defined by the Payer Plan.                                                                                    |
+| paid_by_payer                 | float  | The amount paid by the payer. If there is more than one payer, several COST records indicate that fact.  This would be the sum of ingredient cost and dispensing fee for pharmacy records that include both values|
+| paid_by_coordination_benefits | float  | The amount paid by a secondary Payer through the coordination of benefits                                                                                                        |
+| total_out_of_pocket           | float  | The total amount paid by the Person as a share of the expenses                                                                                                                   |
+| total_paid                    | float  | The total amount paid. This field should not contain an imputed value. Only populate this field if the raw data provides a clear source of information on how much was paid, in total, for this service/exposure |
+| total_cost                    | float  | Cost of service/device/drug incurred.  Often calculated from charges using cost to charge ratios.  Corresponds with total_paid and total_charge amounts if all are available      |
+| amount_allowed                | float  | The contracted amount the provider has agreed to accept as payment in full                                                                                                       |
+| revenue_code_concept_id       | int    | FK reference to the revenue code assigned to the record                                                       |
 
 ## addresses
 
