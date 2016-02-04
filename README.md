@@ -62,22 +62,20 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## claims
 
-- Records the claim level information
-- Includes the place of service where a claim was submitted
-- Can be pointed to by multiple clinical and detail records
-- Describes the claim level visit information
-- Vocabularies
-  - Place of service
+- Records the claim level information (also referred to as "headers" in some databases)
+- Often claims refer to groups of records from the lines table
+- Includes the place of service recorded with the record
+- Can be linked with multiple records in the clinical_codes, details, and exposures tables
 
 | column                        | type   | description                                                                                 |
 | -----------------             | ----   | -----------                                                                                 |
 | id                            | serial | Surrogate key for record                                                                    |
 | person_id                     | int    | FK to reference to person table                                                             |
-| pos_concept_id                | int    | FK reference to concept table representing the place of service associated with this record |
-| start_date                    | date   | Date of when record began                                                                   |
-| end_date                      | date   | Date of when record ended                                                                   |
+| pos_concept_id                | int    | FK reference to concepts table representing the place of service associated with this record |
+| start_date                    | date   | Start date of record (yyyy-mm-dd)                                                                  |
+| end_date                      | date   | End date of record (yyyy-mm-dd)                                                                  |
 | facility_id                   | int    | FK reference to facilities table                                                            |
-| file_type                     | text   | Type of the file from which the record was pulled                                           |
+| file_type                     | text   | Type of the file from which the record was pulled (currently a text field; for provenance purposes)      |
 
 ## claims_providers
 
