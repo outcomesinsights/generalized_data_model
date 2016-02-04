@@ -32,21 +32,19 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## providers
 
-- See OMOP provider table.  Adapt to allow multiple providers via visit table
+- All non-facility providers (i.e., physicians, etc.) are listed
 
 | column                      | type   | description                                                                        |
 | -----------------           | ----   | -----------                                                                        |
-| id                          | serial | A unique identifier for each Provider.                                             |
-| provider_name               | text   | A description of the Provider.                                                     |
+| id                          | serial | A unique identifier for each provider                                             |
+| provider_name               | text   | Provider name, if available                                                     |
 | identifier                  | text   | Provider identifier                                                                |
-| identifier_type             | text   | Type of identifier specified in identifier field  (UPIN,NPI,etc)                   |
-| dea                         | text   | The Drug Enforcement Administration (DEA) number of the provider.                  |
-| specialty_concept_id        | int    | A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies. |
-| address_id                  | int    | A foreign key to the address of the location where the provider is practicing.     |
-| birth_date                  | int    | The date of birth of the Provider.                                                 |
-| gender_concept_id           | int    | The gender of the Provider.                                                        |
-| specialty_source_concept_id | int    | A foreign key to a Concept that refers to the code used in the source.             |
-| gender_source_concept_id    | int    | A foreign key to a Concept that refers to the code used in the source.             |
+| identifier_type             | text   | Type of identifier specified in identifier field  (UPIN, NPI, etc)                   |
+| dea                         | text   | The Drug Enforcement Administration (DEA) number of the provider                  |
+| specialty_concept_id        | int    | A foreign key to an identifier in the concepts table for specialty     |
+| address_id                  | int    | A foreign key to the address of the location where the provider is practicing     |
+| birth_date                  | int    | Date of birth (yyyy-mm-dd)                                                |
+| gender_concept_id           | int    | A foreign key that refers to an identifier in the concepts table for the unique gender of the person               |
 
 
 ## facilities
