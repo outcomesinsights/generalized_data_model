@@ -80,15 +80,14 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 ## claims_providers
 
 - Links one or more providers with a claim
-- Represents an encounter between a person and a provider on a specific claim
-- Patients can have multiple lines within a claim (but not the other way around)
-- claims_providers captures the role, if any, the provider played on the claim (e.g., attending physician)
+- Each record represents an encounter between a person and a provider on a specific claim
+- Captures the role, if any, the provider played on the claim (e.g., attending physician)
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
 | claim_id          | int    | FK reference to claims table                                                 |
 | provider_id       | int    | FK reference to providers table                                              |
-| role_type_id      | int    | FK reference to concepts related to roles providers can play in an encounter |
+| role_type_id      | text   | Roles providers can play in an encounter (currently a text field)         |
 
 ## lines
 
