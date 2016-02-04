@@ -260,3 +260,16 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | claim_id          | int    | FK reference to claims table                                                                                                                |
 | admit_source      | text   | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                                               |
 | discharge_location| text   | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                             |
+
+## concepts
+
+- Adapted from OMOP concept table (could add other fields, like domain, if needed)
+
+| column            | type   | description                                                                                                                               |
+| ----------------- | ----   | -----------                                                                                                                               |
+| id                | serial | Surrogate key for record (this is the concept_id)                                                                                                                 |
+| vocabulary_id     | text   | Unique text-string identifier of the vocabulary (see OMOP or UMLS)                                                                                           |
+| concept_code      | text   | Actual code as text string from the source vocabulary (e.g., "410.00" for ICD-9)                                                                                                                |
+| concept_text      | text   | Text descriptor associated with the concept_code                                                              |
+| discharge_location| text   | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                             |
+
