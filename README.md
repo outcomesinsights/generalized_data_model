@@ -234,14 +234,14 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## information_periods
 
-- Captures periods for which information in each table is relevant.
+- Captures periods for which information in each table is relevant
 - Could include enrollment types (e.g., Part A, Part B, HMO) or just "observable" (as with up-to-standard data in CPRD)
 - One row per person per enrollment type per table
 
 | column            | type   | description                                                                                                                               |
 | ----------------- | ----   | -----------                                                                                                                               |
 | id                | serial | Surrogate key for record                                                                                                                  |
-| person_id         | int    | ID of person associated with this record                                                                                                  |
-| start_date        | date   | Date of when record began                                                                                                                 |
-| end_date          | date   | Date of when record ended                                                                                                                 |
+| person_id         | int    | FK reference to people table                                                                                                  |
+| start_date        | date   | Start date of record (yyyy-mm-dd)                                                                                                                 |
+| end_date          | date   | End date of record (yyyy-mm-dd)                                                                                                                 |
 | information_type  | text   | String representing the type of data availability (e.g., insurance coverage, hospital data, up-to-standard date).  Could be concept type. |
