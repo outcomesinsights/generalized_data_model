@@ -17,18 +17,18 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## people
 
-- Demographic information about the patients in the data.
-- Provider_id is for HMO and similar situations (CPRD) where there is a defined primary care provider
+- Demographic information about the patients in the data
+- The column for *provider_id* is intended for situations where there is a defined primary care provider (e.g., HMO or CPRD data)
 
 | column               | type   | description                                                                                                                     |
 | -----------------    | ----   | -----------                                                                                                                     |
-| id                   | serial | A unique identifier for each person.                                                                                            |
-| gender_concept_id    | int    | A foreign key that refers to an identifier in the CONCEPT table for the unique gender of the person.                            |
-| birth_date           | date   | Date of birth                                                                                                                   |
-| race_concept_id      | int    | A foreign key that refers to an identifier in the CONCEPT table for the unique race of the person.                              |
-| ethnicity_concept_id | int    | A foreign key that refers to the standard concept identifier in the Standardized Vocabularies for the ethnicity of the person.  |
-| address_id           | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored. |
-| provider_id          | int    | A foreign key to the primary care provider the person is seeing in the provider table.                                          |
+| id                   | serial | A unique identifier for each person                                                                                            |
+| gender_concept_id    | int    | A foreign key that refers to an identifier in the concepts table for the unique gender of the person                            |
+| birth_date           | date   | Date of birth (yyyy-mm-dd)                                                                                                     |
+| race_concept_id      | int    | A foreign key that refers to an identifier in the concepts table for the unique race of the person                              |
+| ethnicity_concept_id | int    | A foreign key that refers to an identifier in the concepts table for the ethnicity of the person                               |
+| address_id           | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored |
+| provider_id          | int    | A foreign key to the primary care provider the person is seeing in the provider table                                          |
 
 ## providers
 
