@@ -91,15 +91,15 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## lines
 
-- Links one or more lines to a claim
-- Searching clinical_codes by line_id will return all lines that happened within a claim. This allows linkages between line diagnoses with line procedures
+- A line is a set of directly connected pieces of information (e.g., a diagnosis and a procedure), typically occurring on the same day or at the same time
+- Always linked to a single claim
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
 | id                | serial | Surrogate key for record                                                     |
 | claim_id          | int    | FK reference to claims table                                                 |
-| pos_concept_id    | int    | FK reference to concept table representing the place of service associated with this record  |
-| provider_id       | int  | FK for provider associated with this record                                           |
+| pos_concept_id    | int    | FK reference to concepts table representing the place of service associated with this record  |
+| provider_id       | int    | FK for provider associated with this record                                           |
 
 ## clinical_codes
 
