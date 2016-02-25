@@ -1,6 +1,6 @@
 # Outcomes Insights, Inc. Draft Data Model
 
-We define a data model as a set of standard locations in which information of specific types should be stored, and the relationships among the tables.  It defines the end result of an extract, transform, and load (ETL) process for an arbitrary source (or raw) dataset.  The goals of our data model are four-fold:
+We define a data model as a set of standard locations in which information of specific types should be stored, and the relationships among the tables.  It defines the end result of an extract, transform, and load (ETL) process for an arbitrary source (or raw) dataset.  The goals of our data model are five-fold:
 
 1. To simplify table structures making them easier to understand and easier to create in the ETL process
 1. To standardize selected data elements, but only when it makes the data easier to review and/or use
