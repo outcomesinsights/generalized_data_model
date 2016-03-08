@@ -128,7 +128,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | clinical_concept_id | int    | FK reference to concepts table for the code assigned to the record   |
 | quantity            | int    | Quantity, if available (e.g., procedures)                           |
 | seq_num            | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3)                       |
-| type_concept_id     | int    | Additional type information.  Do we need this?                                  |
+| type_concept_id     | int    | Additional type information (ex: primary or admitting)                                 |
 
 ## measurement_details
 
