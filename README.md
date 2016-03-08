@@ -252,6 +252,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 - One row per admission
 - Should handle this in the same way as "extra" information from exposures table and details table if some of their information is moved into clinical_codes
 - Should we add "stay_type" to capture "observation stays" that are in the hospital but counted as outpatient facility visits?
+- Should we add admit and discharge dates here? Currently we set the collections start and end date to admit and discharge for inpatient records at ETL.
 
 | column            | type   | description                                                                                                                               |
 | ----------------- | ----   | -----------                                                                                                                               |
@@ -260,6 +261,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | collection_id          | int    | FK reference to collections table                                                                                                                |
 | admit_source      | text   | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                                               |
 | discharge_location| text   | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                             |
+| los | int   | Length of stay                            |
 
 ## concepts
 
