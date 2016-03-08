@@ -61,12 +61,13 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | specialty_concept_id        | int    | A foreign key to an identifier in the concepts table for specialty |
 | address_id                  | int    | A foreign key to the address of the location of the facility     |
 
-## claims
+## collections
 
-- Records the claim level information (also referred to as "headers" in some databases)
-- Often claims refer to groups of records from the lines table
+- Groups provenances records
+- For claims, records the claim level information (also referred to as "headers" in some databases)
+- For EHR, records the visit level information
 - Includes the place of service recorded with the record
-- Can be linked with multiple records in the clinical_codes, details, and exposures tables
+- Can be linked with multiple records in the provenances table
 
 | column                        | type   | description                                                                                 |
 | -----------------             | ----   | -----------                                                                                 |
@@ -76,31 +77,33 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | start_date                    | date   | Start date of record (yyyy-mm-dd)                                                                  |
 | end_date                      | date   | End date of record (yyyy-mm-dd)                                                                  |
 | facility_id                   | int    | FK reference to facilities table                                                            |
-| file_type                     | text   | Type of the file from which the record was pulled (currently a text field; for provenance purposes)      |
 
-## claims_providers
+## collections_providers
 
-- Links one or more providers with a claim
-- Each record represents an encounter between a person and a provider on a specific claim
-- Captures the role, if any, the provider played on the claim (e.g., attending physician)
+- Links one or more providers with a collection
+- Each record represents an encounter between a person and a provider on a specific collection
+- Captures the role, if any, the provider played on the collection (e.g., attending physician)
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
-| claim_id          | int    | FK reference to claims table                                                 |
+| collection_id          | int    | FK reference to collections table                                                 |
 | provider_id       | int    | FK reference to providers table                                              |
 | role_type_id      | text   | Roles providers can play in an encounter (currently a text field)         |
 
-## lines
+## provenances
 
-- A line is a set of directly connected pieces of information (e.g., a diagnosis and a procedure), typically occurring on the same day or at the same time
-- Always linked to a single claim
+- Holds information about where the clinical_codes and costs come from
+- Groups clinical_codes typically occurring on the same day or at the same timed (e.g., a diagnosis and a procedure)
+- provenance records are always linked to a collection records 
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
 | id                | serial | Surrogate key for record                                                     |
-| claim_id          | int    | FK reference to claims table                                                 |
+| collection_id          | int    | FK reference to collections table                                                 |
 | pos_concept_id    | int    | FK reference to concepts table representing the place of service associated with this record  |
 | provider_id       | int    | FK for provider associated with this record                                           |
+| type_concept_id                     | int   | FK reference to concepts table representing the type of provenance the record is (line, claim, etc.) |
+| file_type                     | text   | Type of the file from which the record was pulled (currently a text field; for provenance purposes)      |
 
 ## clinical_codes
 
@@ -118,8 +121,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column              | type   | description                                                                           |
 | -----------------   | ----   | -----------                                                                           |
 | id                  | serial | Surrogate key for record                                                              |
-| claim_id            | int    | FK reference to claims table                                                             |
-| line_id             | int    | FK reference to lines table                                                              |
+| provenance_id             | int    | FK reference to provenances table                                                              |
 | person_id           | int    | FK reference to people table                                            |
 | start_date          | date   | Start date of record (yyyy-mm-dd)                                                    |
 | end_date            | date   | End date of record (yyyy-mm-dd)                                                    |
@@ -139,8 +141,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column              | type   | description                                                                                                                                                                                                                                             |
 | -----------------   | ----   | -----------                                                                                                                                                                                                                                             |
 | id                  | serial | Surrogate key for record                                                                                                                                                                                                                                |
-| claim_id            | int    | FK reference to claims table                                                    |
-| line_id             | int    | FK reference to lines table                                             |
+| provenance_id             | int    | FK reference to provenances table                                                              |
 | person_id           | int    | FK reference to people table                                                        |
 | start_date          | date   | Start date of record (yyyy-mm-dd)                                     |
 | end_date            | date   | End date of record (yyyy-mm-dd) |
@@ -163,8 +164,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column               | type   | description                                                                                                                            |
 | -----------------    | ----   | -----------                                                                                                                            |
 | id                   | serial | Surrogate key for record |
-| claim_id             | int     | FK reference to claims table|
-| line_id              | int     | FK reference to lines table                                                        |
+| provenance_id             | int    | FK reference to provenances table                                                              |
 | person_id            | int    | FK reference to people table                                                                                            |
 | start_date           | date   | Start date of record (yyyy-mm-dd)                                                                                                             |
 | end_date             | date   | End date of record (yyyy-mm-dd)                                                                                                              |
@@ -187,8 +187,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column                        | type   | description                                                                                                                                                                       |
 | -----------------             | ----   | -----------                                                                                                                                                                       |
 | id                            | serial | A unique identifier for each COST record                                                                                                                                         |
-| claim_id                      | int    | FK reference to claims table                                                    |
-| line_id                       | int    | FK reference to lines table                                             |
+| provenance_id             | int    | FK reference to provenances table                                                              |
 | currency_concept_id           | int    | FK reference to concepts table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar)                                                                   |
 | total_charge                  | float  | The amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider)                                                                          |
 | paid_copay                    | float  | The amount paid by the person as a fixed contribution to the expenses. Copay does not contribute to the out of pocket expenses.                                                   |
@@ -249,7 +248,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## admission_details
 
-- Captures details about admissions and emergency department encounters that don't go in the clinical_codes, lines, or claims tables
+- Captures details about admissions and emergency department encounters that don't go in the clinical_codes, provenances, or collections tables
 - One row per admission
 - Should handle this in the same way as "extra" information from exposures table and details table if some of their information is moved into clinical_codes
 - Should we add "stay_type" to capture "observation stays" that are in the hospital but counted as outpatient facility visits?
@@ -258,7 +257,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | ----------------- | ----   | -----------                                                                                                                               |
 | id                | serial | Surrogate key for record                                                                                                                  |
 | person_id         | int    | FK reference to people table                                                                                                  |
-| claim_id          | int    | FK reference to claims table                                                                                                                |
+| collection_id          | int    | FK reference to collections table                                                                                                                |
 | admit_source      | text   | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                                               |
 | discharge_location| text   | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                             |
 
