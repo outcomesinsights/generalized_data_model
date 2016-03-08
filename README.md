@@ -130,7 +130,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | seq_num            | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3)                       |
 | type_concept_id     | int    | Additional type information.  Do we need this?                                  |
 
-## details
+## measurement_details
 
 - Additional information - measurements, observations, status, and specifications
 - Text-based vocabularies should be mapped to LOINC, if possible (e.g., laboratory data indexed by text names for the lab results)
@@ -141,37 +141,28 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column              | type   | description                                                                                                                                                                                                                                             |
 | -----------------   | ----   | -----------                                                                                                                                                                                                                                             |
 | id                  | serial | Surrogate key for record                                                                                                                                                                                                                                |
-| provenance_id             | int    | FK reference to provenances table                                                              |
+| clinical_code_id             | int    | FK reference to clinical_codes table to the associated clinical code                                                              |
 | person_id           | int    | FK reference to people table                                                        |
-| start_date          | date   | Start date of record (yyyy-mm-dd)                                     |
-| end_date            | date   | End date of record (yyyy-mm-dd) |
-| detail_concept_id   | int    | FK reference to concepts table for the code assigned to the record     |
-| value_as_number     | float  | The observation result stored as a number, applicable to observations where the result is expressed as a numeric value    |
-| value_as_string     | text   | The observation result stored as a string, applicable to observations where the result is expressed as verbatim text    |
-| value_as_concept_id | int    | FK reference to concepts table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.) |
+| result_as_number     | float  | The observation result stored as a number, applicable to observations where the result is expressed as a numeric value    |
+| result_as_string     | text   | The observation result stored as a string, applicable to observations where the result is expressed as verbatim text    |
+| result_as_concept_id | int    | FK reference to concepts table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.) |
+| result_modifier_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
 | unit_concept_id     | int    | FK reference to concepts table for the measurement units (e.g., mmol/L, mg/dL, etc.)        |
+| normal_range_low     | float    | Lower bound of the normal reference range assigned by the laboratory      |
+| normal_range_high     | float    | Upper bound of the normal reference range assigned by the laboratory      |
+| normal_range_low_modifier_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
+| normal_range_high_modifier_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
 
-## exposures
+## drug_exposure_details
 
-- To capture drug and device data
-- Drugs and device records recorded in the clinical_codes table should remain in the clinical_codes table (e.g., HCPCS drug codes)
-- Could include devices if they are reported separately from their associated procedures.  Note that these may be text entries and may have mis-spellings.  Mapping to a vocabulary may or may not be possible.
-- Example vocabularies
-  - NDC
-  - RxNorm
-  - Prodcodes (CPRD)
+- To capture extra details about drug clinical_codes
+- quantity of drug is stored in the clinical_codes field with the code
 
 | column               | type   | description                                                                                                                            |
 | -----------------    | ----   | -----------                                                                                                                            |
 | id                   | serial | Surrogate key for record |
-| provenance_id             | int    | FK reference to provenances table                                                              |
-| person_id            | int    | FK reference to people table                                                                                            |
-| start_date           | date   | Start date of record (yyyy-mm-dd)                                                                                                             |
-| end_date             | date   | End date of record (yyyy-mm-dd)                                                                                                              |
-| provider_id          | int    | FK reference to providers table                                                                                                         |
-| exposure_concept_id  | int    | FK reference to concepts table for the code assigned to the record                                                     |
+| clinical_code_id             | int    | FK reference to clinical_codes table to the associated clinical code                                                              |
 | refills              | int    | The number of refills after the initial prescription; the initial prescription is not counted (i.e., values start with 0)              |
-| quantity             | float  | The quantity of drug as recorded in the original prescription or dispensing record (e.g.,, number of pills, vials, etc.)                      |
 | days_supply          | int    | The number of days of supply as recorded in the original prescription or dispensing record                          |
 | dose_form_concept_id | int    | FK reference to concepts table for the form of the drug (capsule, injection, etc.)       |
 | dose_unit_concept_id | int    | FK reference to concepts table for the units in which the dose_value is expressed |
