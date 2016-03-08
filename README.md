@@ -107,16 +107,16 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## clinical_codes
 
-- Stores clinical codes from all types of records including procedures and diagnoses.
+- Stores clinical codes from all types of records including procedures, diagnoses, drugs, etc.
   - ICD-9 (Proc and CM)
   - ICD-10 (Proc and CM)
   - SNOMED
   - Medcode (CPRD)
   - HCPCS/CPT
+  - NDC
+  - LOINC
 - Ignores semantic distinctions about the type of information represented within a vocabulary because most vocabularies contain information from more than one domain
 - One record generated for each individual code in the raw data
-- Consider using this as fact table in dimensional schema (if used)
-- Consider moving common fields from the exposures and details tables to this table, and using those tables to store only additional information specific to those domains
 
 | column              | type   | description                                                                           |
 | -----------------   | ----   | -----------                                                                           |
