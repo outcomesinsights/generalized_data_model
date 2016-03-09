@@ -30,6 +30,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | ethnicity_concept_id | int    | A foreign key that refers to an identifier in the concepts table for the ethnicity of the person                               |
 | address_id           | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored |
 | provider_id          | int    | A foreign key to the primary care provider the person is seeing in the provider table                                          |
+| person_id_source_value | text    | Originial person identifier defined in the source data                                          |
 
 ## providers
 
