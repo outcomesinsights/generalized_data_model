@@ -61,12 +61,13 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | specialty_concept_id        | int    | A foreign key to an identifier in the concepts table for specialty |
 | address_id                  | int    | A foreign key to the address of the location of the facility     |
 
-## claims
+## collections
 
-- Records the claim level information (also referred to as "headers" in some databases)
-- Often claims refer to groups of records from the lines table
+- Groups provenances records
+- For claims, records the claim level information (also referred to as "headers" in some databases)
+- For EHR, records the visit level information
 - Includes the place of service recorded with the record
-- Can be linked with multiple records in the clinical_codes, details, and exposures tables
+- Can be linked with multiple records in the provenances table
 
 | column                        | type   | description                                                                                 |
 | -----------------             | ----   | -----------                                                                                 |
@@ -76,59 +77,60 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | start_date                    | date   | Start date of record (yyyy-mm-dd)                                                                  |
 | end_date                      | date   | End date of record (yyyy-mm-dd)                                                                  |
 | facility_id                   | int    | FK reference to facilities table                                                            |
-| file_type                     | text   | Type of the file from which the record was pulled (currently a text field; for provenance purposes)      |
 
-## claims_providers
+## collections_providers
 
-- Links one or more providers with a claim
-- Each record represents an encounter between a person and a provider on a specific claim
-- Captures the role, if any, the provider played on the claim (e.g., attending physician)
+- Links one or more providers with a collection
+- Each record represents an encounter between a person and a provider on a specific collection
+- Captures the role, if any, the provider played on the collection (e.g., attending physician)
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
-| claim_id          | int    | FK reference to claims table                                                 |
+| collection_id          | int    | FK reference to collections table                                                 |
 | provider_id       | int    | FK reference to providers table                                              |
 | role_type_id      | text   | Roles providers can play in an encounter (currently a text field)         |
 
-## lines
+## provenances
 
-- A line is a set of directly connected pieces of information (e.g., a diagnosis and a procedure), typically occurring on the same day or at the same time
-- Always linked to a single claim
+- Holds information about where the clinical_codes and costs come from
+- Groups clinical_codes typically occurring on the same day or at the same timed (e.g., a diagnosis and a procedure)
+- provenance records are always linked to a collection records 
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
 | id                | serial | Surrogate key for record                                                     |
-| claim_id          | int    | FK reference to claims table                                                 |
+| collection_id          | int    | FK reference to collections table                                                 |
 | pos_concept_id    | int    | FK reference to concepts table representing the place of service associated with this record  |
 | provider_id       | int    | FK for provider associated with this record                                           |
+| type_concept_id                     | int   | FK reference to concepts table representing the type of provenance the record is (line, claim, etc.) |
+| file_type                     | text   | Type of the file from which the record was pulled (currently a text field; for provenance purposes)      |
 
 ## clinical_codes
 
-- Stores clinical codes from all types of records including procedures and diagnoses.
+- Stores clinical codes from all types of records including procedures, diagnoses, drugs, etc.
   - ICD-9 (Proc and CM)
   - ICD-10 (Proc and CM)
   - SNOMED
   - Medcode (CPRD)
   - HCPCS/CPT
+  - NDC
+  - LOINC
 - Ignores semantic distinctions about the type of information represented within a vocabulary because most vocabularies contain information from more than one domain
 - One record generated for each individual code in the raw data
-- Consider using this as fact table in dimensional schema (if used)
-- Consider moving common fields from the exposures and details tables to this table, and using those tables to store only additional information specific to those domains
 
 | column              | type   | description                                                                           |
 | -----------------   | ----   | -----------                                                                           |
 | id                  | serial | Surrogate key for record                                                              |
-| claim_id            | int    | FK reference to claims table                                                             |
-| line_id             | int    | FK reference to lines table                                                              |
+| provenance_id             | int    | FK reference to provenances table                                                              |
 | person_id           | int    | FK reference to people table                                            |
 | start_date          | date   | Start date of record (yyyy-mm-dd)                                                    |
 | end_date            | date   | End date of record (yyyy-mm-dd)                                                    |
 | clinical_concept_id | int    | FK reference to concepts table for the code assigned to the record   |
 | quantity            | int    | Quantity, if available (e.g., procedures)                           |
-| position            | int    | The position for the variable assigned (e.g. dx3 gets position 3)                       |
-| type_concept_id     | int    | Additional type information.  Do we need this?                                  |
+| seq_num            | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3)                       |
+| type_concept_id     | int    | Additional type information (ex: primary or admitting)                                 |
 
-## details
+## measurement_details
 
 - Additional information - measurements, observations, status, and specifications
 - Text-based vocabularies should be mapped to LOINC, if possible (e.g., laboratory data indexed by text names for the lab results)
@@ -139,39 +141,28 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column              | type   | description                                                                                                                                                                                                                                             |
 | -----------------   | ----   | -----------                                                                                                                                                                                                                                             |
 | id                  | serial | Surrogate key for record                                                                                                                                                                                                                                |
-| claim_id            | int    | FK reference to claims table                                                    |
-| line_id             | int    | FK reference to lines table                                             |
+| clinical_code_id             | int    | FK reference to clinical_codes table to the associated clinical code                                                              |
 | person_id           | int    | FK reference to people table                                                        |
-| start_date          | date   | Start date of record (yyyy-mm-dd)                                     |
-| end_date            | date   | End date of record (yyyy-mm-dd) |
-| detail_concept_id   | int    | FK reference to concepts table for the code assigned to the record     |
-| value_as_number     | float  | The observation result stored as a number, applicable to observations where the result is expressed as a numeric value    |
-| value_as_string     | text   | The observation result stored as a string, applicable to observations where the result is expressed as verbatim text    |
-| value_as_concept_id | int    | FK reference to concepts table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.) |
+| result_as_number     | float  | The observation result stored as a number, applicable to observations where the result is expressed as a numeric value    |
+| result_as_string     | text   | The observation result stored as a string, applicable to observations where the result is expressed as verbatim text    |
+| result_as_concept_id | int    | FK reference to concepts table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.) |
+| result_modifier_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
 | unit_concept_id     | int    | FK reference to concepts table for the measurement units (e.g., mmol/L, mg/dL, etc.)        |
+| normal_range_low     | float    | Lower bound of the normal reference range assigned by the laboratory      |
+| normal_range_high     | float    | Upper bound of the normal reference range assigned by the laboratory      |
+| normal_range_low_modifier_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
+| normal_range_high_modifier_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
 
-## exposures
+## drug_exposure_details
 
-- To capture drug and device data
-- Drugs and device records recorded in the clinical_codes table should remain in the clinical_codes table (e.g., HCPCS drug codes)
-- Could include devices if they are reported separately from their associated procedures.  Note that these may be text entries and may have mis-spellings.  Mapping to a vocabulary may or may not be possible.
-- Example vocabularies
-  - NDC
-  - RxNorm
-  - Prodcodes (CPRD)
+- To capture extra details about drug clinical_codes
+- quantity of drug is stored in the clinical_codes field with the code
 
 | column               | type   | description                                                                                                                            |
 | -----------------    | ----   | -----------                                                                                                                            |
 | id                   | serial | Surrogate key for record |
-| claim_id             | int     | FK reference to claims table|
-| line_id              | int     | FK reference to lines table                                                        |
-| person_id            | int    | FK reference to people table                                                                                            |
-| start_date           | date   | Start date of record (yyyy-mm-dd)                                                                                                             |
-| end_date             | date   | End date of record (yyyy-mm-dd)                                                                                                              |
-| provider_id          | int    | FK reference to providers table                                                                                                         |
-| exposure_concept_id  | int    | FK reference to concepts table for the code assigned to the record                                                     |
+| clinical_code_id             | int    | FK reference to clinical_codes table to the associated clinical code                                                              |
 | refills              | int    | The number of refills after the initial prescription; the initial prescription is not counted (i.e., values start with 0)              |
-| quantity             | float  | The quantity of drug as recorded in the original prescription or dispensing record (e.g.,, number of pills, vials, etc.)                      |
 | days_supply          | int    | The number of days of supply as recorded in the original prescription or dispensing record                          |
 | dose_form_concept_id | int    | FK reference to concepts table for the form of the drug (capsule, injection, etc.)       |
 | dose_unit_concept_id | int    | FK reference to concepts table for the units in which the dose_value is expressed |
@@ -186,22 +177,24 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 | column                        | type   | description                                                                                                                                                                       |
 | -----------------             | ----   | -----------                                                                                                                                                                       |
-| id                            | serial | A unique identifier for each COST record                                                                                                                                         |
-| claim_id                      | int    | FK reference to claims table                                                    |
-| line_id                       | int    | FK reference to lines table                                             |
-| currency_concept_id           | int    | FK reference to concepts table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar)                                                                   |
-| total_charge                  | float  | The amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider)                                                                          |
-| paid_copay                    | float  | The amount paid by the person as a fixed contribution to the expenses. Copay does not contribute to the out of pocket expenses.                                                   |
-| paid_coinsurance              | float  | The amount paid by the person as a joint assumption of risk. Typically, this is a percentage of the expenses defined by the payer after the person's deductible is exceeded |
-| paid_toward_deductible        | float  | The amount paid by the person that is counted toward the deductible defined by the Payer Plan.                                                                                    |
-| paid_by_payer                 | float  | The amount paid by the payer. If there is more than one payer, several COST records indicate that fact.  This would be the sum of ingredient cost and dispensing fee for pharmacy records that include both values|
-| paid_by_coordination_benefits | float  | The amount paid by a secondary Payer through the coordination of benefits                                                                                                        |
-| total_out_of_pocket           | float  | The total amount paid by the Person as a share of the expenses                                                                                                                   |
-| total_paid                    | float  | The total amount paid. This field should not contain an imputed value. Only populate this field if the raw data provides a clear source of information on how much was paid, in total, for this service/exposure |
-| total_cost                    | float  | Cost of service/device/drug incurred.  Often calculated from charges using cost to charge ratios.  Corresponds with total_paid and total_charge amounts if all are available      |
-| amount_allowed                | float  | The contracted amount the provider has agreed to accept as payment in full                                                                                                       |
-| revenue_code_concept_id       | int    | FK reference to the revenue code assigned to the record                                                       |
-
+| id                            | serial | A unique identifier for each COST record |
+| provenance_id             | int    | FK reference to provenances table                                                              |
+| currency_concept_id | int | FK reference to concepts table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar) |
+| total_charged | float | The total amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider) billed to a payer. This information is usually provided in claims data. |
+| total_cost | float | Cost of service/device/drug incurred by provider/pharmacy. This field is more commonly derived from charge information.  |
+| total_cost_type_concept_id | int | FK reference to concepts table for the provenance or the source of the cost data. Shows the provenance or the source of the total_cost data: Calculated from provider revenue, calculated from cost-to-charge ratio, reported from accounting database, etc. |
+| total_paid | float | The total amount paid from all payers for the expenses of the service/device/drug. This field is calculated using the following formula: paid_by_payer + paid_by_patient + paid_by_primary. In claims data, this field is considered the calculated field the payer expects the provider to get reimbursed for the service/device/drug from the payer and from the patient, based on the payer's contractual obligations. |
+| paid_by_payer | float | The amount paid by the Payer for the service/device/drug. In claims data, generally there is one field representing the total payment from the payer for the service/device/drug. However, this field could be a calculated field if the source data provides separate payment information for the ingredient cost and the dispensing fee. If the paid_ingredient_cost or paid_dispensing_fee fields are populated with nonzero values, the paid_by_payer field is calculated using the following formula: paid_ingredient_cost + paid_dispensing_fee. If there is more than one Payer in the source data, several cost records indicate that fact. The Payer reporting this reimbursement should be indicated under the payer_plan_id field. |
+| paid_by_patient | float | The total amount paid by the Person as a share of the expenses. This field is most often used in claims data to report the contracted amount the patient is responsible for reimbursing the provider for said service/device/drug. This is a calculated field using the following formula: paid_patient_copay + paid_patient_coinsurance + paid_patient_deductible. If the source data has actual patient payments (e.g. the patient payment is not a derivative of the payer claim and there is verification the patient paid an amount to the provider), then the patient payment should have it's own cost record with a payer_plan_id set to 0 to indicate the the payer is actually the patient, and the actual patient payment should be noted under the total_paid field. The paid_by_patient field is only used for reporting a patient's responsibility reported on an insurance claim. |
+| paid_patient_copay | float | The amount paid by the Person as a fixed contribution to the expenses. paid_patient_copay does contribute to the paid_by_patient variable. The paid_patient_copay field is only used for reporting a patient's copay amount reported on an insurance claim. |
+| paid_patient_coinsurance | float | The amount paid by the Person as a joint assumption of risk. Typically, this is a percentage of the expenses defined by the Payer Plan after the Person's deductible is exceeded. paid_patient_coinsurance does contribute to the paid_by_patient variable. The paid_patient_coinsurance field is only used for reporting a patient's coinsurance amount reported on an insurance claim. |
+| paid_patient_deductible | float | The amount paid by the Person that is counted toward the deductible defined by the Payer Plan. paid_patient_deductible does contribute to the paid_by_patient variable. The paid_patient_deductible field is only used for reporting a patient's deductible amount reported on an insurance claim. |
+| paid_by_primary | float | The amount paid by a primary Payer through the coordination of benefits. paid_by_primary does contribute to the total_paid variable. The paid_by_primary field is only used for reporting a patient's primary insurance payment amount reported on the secondary payer insurance claim. If the source data has actual primary insurance payments (e.g. the primary insurance payment is not a derivative of the payer claim and there is verification another insurance company paid an amount to the provider), then the primary insurance payment should have it's own cost record with a payer_plan_id set to the applicable payer, and the actual primary insurance payment should be noted under the paid_by_payer field. |
+| paid_ingredient_cost | float | The amount paid by the Payer to a pharmacy for the drug, excluding the amount paid for dispensing the drug. paid_ingredient_cost contributes to the paid_by_payer field if this field is populated with a nonzero value. |
+| paid_dispensing_fee | float | The amount paid by the Payer to a pharmacy for dispensing a drug, excluding the amount paid for the drug ingredient. paid_dispensing_fee contributes to the paid_by_payer field if this field is populated with a nonzero value. |
+| information_period_id | float | FK reference to the information_periods table  |
+| amount_allowed | float | The contracted amount agreed between the payer and provider. This information is generally available in claims data. This is similar to the total_paid amount in that it shows what the payer expects the provider to be reimbursed after the payer and patient pay. This differs from the total_paid amount in that it is not a calculated field, but a field available directly in claims data. Use case: This will capture non-covered services. Noncovered services are indicated by an amount allowed and patient responsibility variables (copay, coinsurance, deductible) will be equal $0 in the source data. This means the patient is responsible for the total_charged value. The amount_allowed field is payer specific and the payer should be indicated by the payer_plan_id field. |
+                                                                     
 ## addresses
 
 - Used for persons, providers, and facilities
@@ -249,18 +242,20 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## admission_details
 
-- Captures details about admissions and emergency department encounters that don't go in the clinical_codes, lines, or claims tables
+- Captures details about admissions and emergency department encounters that don't go in the clinical_codes, provenances, or collections tables
 - One row per admission
 - Should handle this in the same way as "extra" information from exposures table and details table if some of their information is moved into clinical_codes
 - Should we add "stay_type" to capture "observation stays" that are in the hospital but counted as outpatient facility visits?
+- Should we add admit and discharge dates here? Currently we set the collections start and end date to admit and discharge for inpatient records at ETL.
 
 | column            | type   | description                                                                                                                               |
 | ----------------- | ----   | -----------                                                                                                                               |
 | id                | serial | Surrogate key for record                                                                                                                  |
 | person_id         | int    | FK reference to people table                                                                                                  |
-| claim_id          | int    | FK reference to claims table                                                                                                                |
+| collection_id          | int    | FK reference to collections table                                                                                                                |
 | admit_source      | text   | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                                               |
 | discharge_location| text   | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                             |
+| los | int   | Length of stay                            |
 
 ## concepts
 
