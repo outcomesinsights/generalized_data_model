@@ -209,8 +209,8 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | state             | text   | The state field as it appears in the source data (should this be standardized to 2-letter states?)                                                                             |
 | zip               | text   | The zip or postal code                                                                                                        |
 | county            | text   | The county (should this be standardized to county code?)    |
-| census_tract      | text   | The census tract if available (should this be standardized to county code?)   |
-| hsa               | text   | The Health Service Area if available (should this be standardized to county code?)   |
+| census_tract      | text   | The census tract if available (should this be standardized?)   |
+| hsa               | text   | The Health Service Area if available (should this be standardized?)   |
 
 ## deaths
 
