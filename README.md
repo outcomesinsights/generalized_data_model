@@ -79,15 +79,15 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | end_date                      | date   | End date of record (yyyy-mm-dd)                                                                  |
 | facility_id                   | int    | FK reference to facilities table                                                            |
 
-## collections_providers
+## contexts_providers
 
-- Links one or more providers with a collection
-- Each record represents an encounter between a person and a provider on a specific collection
-- Captures the role, if any, the provider played on the collection (e.g., attending physician)
+- Links one or more providers with a contexts record
+- Each record represents an encounter between a person and a provider on a specific context
+- Captures the role, if any, the provider played on the context (e.g., attending physician)
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
-| collection_id          | int    | FK reference to collections table                                                 |
+| context_id          | int    | FK reference to contexts table                                                 |
 | provider_id       | int    | FK reference to providers table                                              |
 | role_type_id      | text   | Roles providers can play in an encounter (currently a text field)         |
 
