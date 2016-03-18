@@ -64,7 +64,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## collections
 
-- Groups provenances records
+- Groups contexts records
 - For claims, records the claim level information (also referred to as "headers" in some databases)
 - For EHR, records the visit level information
 - Includes the place of service recorded with the record
@@ -125,7 +125,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column              | type   | description                                                                           |
 | -----------------   | ----   | -----------                                                                           |
 | id                  | serial | Surrogate key for record                                                              |
-| provenance_id             | int    | FK reference to provenances table                                                              |
+| context_id             | int    | FK reference to contexts table                                                              |
 | person_id           | int    | FK reference to people table                                            |
 | start_date          | date   | Start date of record (yyyy-mm-dd)                                                    |
 | end_date            | date   | End date of record (yyyy-mm-dd)                                                    |
@@ -182,7 +182,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column                        | type   | description                                                                                                                                                                       |
 | -----------------             | ----   | -----------                                                                                                                                                                       |
 | id                            | serial | A unique identifier for each COST record |
-| provenance_id             | int    | FK reference to provenances table                                                              |
+| context_id             | int    | FK reference to context table                                                              |
 | currency_concept_id | int | FK reference to concepts table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar) |
 | total_charged | float | The total amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider) billed to a payer. This information is usually provided in claims data. |
 | total_cost | float | Cost of service/device/drug incurred by provider/pharmacy. This field is more commonly derived from charge information.  |
@@ -248,7 +248,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 ## admission_details
 
-- Captures details about admissions and emergency department encounters that don't go in the clinical_codes, provenances, or collections tables
+- Captures details about admissions and emergency department encounters that don't go in the clinical_codes, contexts, or collections tables
 - One row per admission
 - Should handle this in the same way as "extra" information from exposures table and details table if some of their information is moved into clinical_codes
 - Should we add "stay_type" to capture "observation stays" that are in the hospital but counted as outpatient facility visits?
