@@ -40,9 +40,10 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | -----------------           | ----   | -----------                                                                        |
 | id                          | serial | A unique identifier for each provider                                             |
 | provider_name               | text   | Provider name, if available                                                     |
-| identifier                  | text   | Provider identifier                                                                |
-| identifier_type             | text   | Type of identifier specified in identifier field  (UPIN, NPI, etc)                   |
-| dea                         | text   | The Drug Enforcement Administration (DEA) number of the provider                  |
+| primary_identifier          | text   | Primary provider identifier                                                                |
+| primary_identifier_type     | text   | Type of identifier specified in primary identifier field  (UPIN, NPI, etc)                   |
+| secondary_identifier        | text   | Secondary provider identifier (Optional)                                                              |
+| secondary_identifier_type   | text   | Type of identifier specified in secondary identifier field  (UPIN, NPI, etc)                   |
 | specialty_concept_id        | int    | A foreign key to an identifier in the concepts table for specialty     |
 | address_id                  | int    | A foreign key to the address of the location where the provider is practicing     |
 | birth_date                  | int    | Date of birth (yyyy-mm-dd)                                                |
