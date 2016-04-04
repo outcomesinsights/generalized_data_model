@@ -58,9 +58,11 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | -----------------           | ----   | -----------                                                                        |
 | id                          | serial | A unique identifier for each facility                                             |
 | facility_name               | text   | Facility name, if available                                                     |
-| identifier                  | text   | Facility identifier                                                                |
-| identifier_type             | text   | Type of identifier specified in identifier field  (UPIN,NPI,etc)                   |
-| specialty_concept_id        | int    | A foreign key to an identifier in the concepts table for specialty |
+| primary_identifier          | text   | Primary facility identifier                                                                |
+| primary_identifier_type     | text   | Type of identifier specified in primary identifier field  (UPIN, NPI, etc)                   |
+| secondary_identifier        | text   | Secondary facility identifier (Optional)                                                              |
+| secondary_identifier_type   | text   | Type of identifier specified in secondary identifier field  (UPIN, NPI, etc)                   |
+| specialty_concept_id        | int    | A foreign key to an identifier in the concepts table for specialty     |
 | address_id                  | int    | A foreign key to the address of the location of the facility     |
 
 ## collections
