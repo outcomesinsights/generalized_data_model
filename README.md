@@ -69,6 +69,8 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 - Groups contexts records
 - For claims, records the claim level information (also referred to as "headers" in some databases)
+    - Use claim from and thru date for start and end if available
+    - Admit and discharge dates should go in the admission_details table unless those are the only dates for the records in which case they should be entered in the collections and admission_details
 - For EHR, records the visit level information
 - Includes the place of service recorded with the record
 - Can be linked with multiple records in the provenances table
@@ -81,6 +83,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | start_date                    | date   | Start date of record (yyyy-mm-dd)                                                                  |
 | end_date                      | date   | End date of record (yyyy-mm-dd)                                                                  |
 | facility_id                   | int    | FK reference to facilities table                                                            |
+| admission_detail_id           | int    | FK reference to admission_details table                                                            |
 
 ## contexts_providers
 
@@ -230,7 +233,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | -----------------     | ----   | -----------                                                                                           |
 | id                    | serial | Surrogate key for record 
 | person_id             | int    | FK reference to people table                                                              |
-| date                  | date   | Date of death (yyyy-mm-dd)                                                                                        |
+| date                  | date   | Date of death (yyyy-mm-dd)                                                                                       |
 | cause_concept_id      | int    | FK reference to concepts table for cause of death (typically ICD-9 or ICD-10 code)                                              |
 | cause_type_concept_id | int    | FK reference to concepts table for the type of cause of death (e.g. primary, secondary, etc. ) |
 | provider_id           | int    | FK reference to providers table                                                           |
