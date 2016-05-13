@@ -69,6 +69,8 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 - Groups contexts records
 - For claims, records the claim level information (also referred to as "headers" in some databases)
+    - Use claim from and thru date for start and end if available
+    - Admit and discharge dates should go in the admission_details table unless those are the only dates for the records in which case they should be entered in the collections and admission_details
 - For EHR, records the visit level information
 - Includes the place of service recorded with the record
 - Can be linked with multiple records in the provenances table
@@ -81,6 +83,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | start_date                    | date   | Start date of record (yyyy-mm-dd)                                                                  |
 | end_date                      | date   | End date of record (yyyy-mm-dd)                                                                  |
 | facility_id                   | int    | FK reference to facilities table                                                            |
+| admission_detail_id           | int    | FK reference to admission_details table                                                            |
 
 ## contexts_providers
 
@@ -230,7 +233,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | -----------------     | ----   | -----------                                                                                           |
 | id                    | serial | Surrogate key for record 
 | person_id             | int    | FK reference to people table                                                              |
-| date                  | date   | Date of death (yyyy-mm-dd)                                                                                        |
+| date                  | date   | Date of death (yyyy-mm-dd)                                                                                       |
 | cause_concept_id      | int    | FK reference to concepts table for cause of death (typically ICD-9 or ICD-10 code)                                              |
 | cause_type_concept_id | int    | FK reference to concepts table for the type of cause of death (e.g. primary, secondary, etc. ) |
 | provider_id           | int    | FK reference to providers table                                                           |
@@ -253,18 +256,18 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 - Captures details about admissions and emergency department encounters that don't go in the clinical_codes, contexts, or collections tables
 - One row per admission
-- Should handle this in the same way as "extra" information from exposures table and details table if some of their information is moved into clinical_codes
-- Should we add "stay_type" to capture "observation stays" that are in the hospital but counted as outpatient facility visits?
-- Should we add admit and discharge dates here? Currently we set the collections start and end date to admit and discharge for inpatient records at ETL.
+- Each collection that has admission detail will link to this table
 
 | column            | type   | description                                                                                                                               |
 | ----------------- | ----   | -----------                                                                                                                               |
 | id                | serial | Surrogate key for record                                                                                                                  |
 | person_id         | int    | FK reference to people table                                                                                                  |
-| collection_id          | int    | FK reference to collections table                                                                                                                |
-| admit_source      | text   | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                                               |
-| discharge_location| text   | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                             |
+| admission_date          | date    | Date of admission (yyyy-mm-dd)                                                                                                             |
+| discharge_date          | date    | Date of discharge (yyyy-mm-dd)                                                                                                             |
+| admit_source_id      | in   | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                                               |
+| discharge_location_id| int   | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                             |
 | los | int   | Length of stay                            |
+| type_concept_id | int   | FK reference to concepts table representing the type of admission the record is (Emergency, Elective, etc.)                            |
 
 ## concepts
 
