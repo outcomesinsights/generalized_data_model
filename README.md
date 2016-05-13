@@ -108,6 +108,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | ----------------- | ----   | -----------                                                                  |
 | id                | serial | Surrogate key for record                                                     |
 | collection_id     | int    | FK reference to collections table                                                 |
+| person_id         | int    | FK to reference to person table                                                             |
 | facility_id       | int    | FK reference to facilities table      |
 | facility_type_id  | int    | FK reference to concepts table representing the facility type|
 | pos_concept_id    | int    | FK reference to concepts table representing the place of service associated with this record  |
@@ -173,6 +174,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | -----------------    | ----   | -----------                                                                                                                            |
 | id                   | serial | Surrogate key for record |
 | clinical_code_id             | int    | FK reference to clinical_codes table to the associated clinical code                                                              |
+| person_id                     | int    | FK to reference to person table                                                             |
 | refills              | int    | The number of refills after the initial prescription; the initial prescription is not counted (i.e., values start with 0)              |
 | days_supply          | int    | The number of days of supply as recorded in the original prescription or dispensing record                          |
 | dose_form_concept_id | int    | FK reference to concepts table for the form of the drug (capsule, injection, etc.)       |
@@ -190,6 +192,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | -----------------             | ----   | -----------                                                                                                                                                                       |
 | id                            | serial | A unique identifier for each COST record |
 | context_id             | int    | FK reference to context table                                                              |
+| person_id                     | int    | FK to reference to person table                                                             |
 | currency_concept_id | int | FK reference to concepts table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar) |
 | total_charged | float | The total amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider) billed to a payer. This information is usually provided in claims data. |
 | total_cost | float | Cost of service/device/drug incurred by provider/pharmacy. This field is more commonly derived from charge information.  |
