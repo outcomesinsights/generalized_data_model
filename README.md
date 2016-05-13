@@ -96,6 +96,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | context_id          | int    | FK reference to contexts table                                                 |
 | provider_id       | int    | FK reference to providers table                                              |
 | role_type_id      | text   | Roles providers can play in an encounter (currently a text field)         |
+| specialty_type_concepty_id      | int   | FK reference to concepts table representing the provider's specialty type for the services/diagnoses associated with this record       |
 
 ## contexts
 
