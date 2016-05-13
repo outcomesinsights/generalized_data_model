@@ -137,10 +137,12 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | person_id           | int    | FK reference to people table                                            |
 | start_date          | date   | Start date of record (yyyy-mm-dd)                                                    |
 | end_date            | date   | End date of record (yyyy-mm-dd)                                                    |
-| clinical_concept_id | int    | FK reference to concepts table for the code assigned to the record   |
+| clinical_code_concept_id | int    | FK reference to concepts table for the code assigned to the record   |
 | quantity            | int    | Quantity, if available (e.g., procedures)                           |
 | seq_num            | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3)                       |
 | type_concept_id     | int    | Additional type information (ex: primary or admitting)                                 |
+| clinical_code_source     | text    | Source code from raw data                                |
+| clinical_code_vocabulary_id     | character    | Vocabulary the clinical code comes from                          |
 
 ## measurement_details
 
