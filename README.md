@@ -19,7 +19,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 ## people
 
 - Demographic information about the patients in the data
-- The column for *provider_id* is intended for situations where there is a defined primary care provider (e.g., HMO or CPRD data)
+- The column for *practitioner_id* is intended for situations where there is a defined primary care practitioner (e.g., HMO or CPRD data)
 
 | column               | type   | description                                                                                                                     |
 | -----------------    | ----   | -----------                                                                                                                     |
@@ -29,23 +29,23 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | race_concept_id      | int    | A foreign key that refers to an identifier in the concepts table for the unique race of the person                              |
 | ethnicity_concept_id | int    | A foreign key that refers to an identifier in the concepts table for the ethnicity of the person                               |
 | address_id           | int    | A foreign key to the place of residency for the person in the location table, where the detailed address information is stored |
-| provider_id          | int    | A foreign key to the primary care provider the person is seeing in the provider table                                          |
+| practitioner_id          | int    | A foreign key to the primary care practitioner the person is seeing in the practitioners table                                          |
 | person_id_source_value | text    | Originial person identifier defined in the source data                                          |
 
-## providers
+## practitioners
 
-- All non-facility providers (i.e., physicians, etc.) are listed
+- All non-facility practitioners (i.e., physicians, etc.) are listed
 
 | column                      | type   | description                                                                        |
 | -----------------           | ----   | -----------                                                                        |
-| id                          | serial | A unique identifier for each provider                                             |
-| provider_name               | text   | Provider name, if available                                                     |
-| primary_identifier          | text   | Primary provider identifier                                                                |
+| id                          | serial | A unique identifier for each practitioner                                             |
+| practitioner_name               | text   | Practitioners name, if available                                                     |
+| primary_identifier          | text   | Primary practitioner identifier                                                                |
 | primary_identifier_type     | text   | Type of identifier specified in primary identifier field  (UPIN, NPI, etc)                   |
-| secondary_identifier        | text   | Secondary provider identifier (Optional)                                                              |
+| secondary_identifier        | text   | Secondary practitioner identifier (Optional)                                                              |
 | secondary_identifier_type   | text   | Type of identifier specified in secondary identifier field  (UPIN, NPI, etc)                   |
 | specialty_concept_id        | int    | A foreign key to an identifier in the concepts table for specialty     |
-| address_id                  | int    | A foreign key to the address of the location where the provider is practicing     |
+| address_id                  | int    | A foreign key to the address of the location where the practitioner is practicing     |
 | birth_date                  | int    | Date of birth (yyyy-mm-dd)                                                |
 | gender_concept_id           | int    | A foreign key that refers to an identifier in the concepts table for the unique gender of the person               |
 
@@ -85,18 +85,18 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | facility_id                   | int    | FK reference to facilities table                                                            |
 | admission_detail_id           | int    | FK reference to admission_details table                                                            |
 
-## contexts_providers
+## contexts_practitioners
 
-- Links one or more providers with a contexts record
-- Each record represents an encounter between a person and a provider on a specific context
-- Captures the role, if any, the provider played on the context (e.g., attending physician)
+- Links one or more practitioners with a contexts record
+- Each record represents an encounter between a person and a practitioner on a specific context
+- Captures the role, if any, the practitioner played on the context (e.g., attending physician)
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
 | context_id          | int    | FK reference to contexts table                                                 |
-| provider_id       | int    | FK reference to providers table                                              |
-| role_type_id      | text   | Roles providers can play in an encounter (currently a text field)         |
-| specialty_type_concepty_id      | int   | FK reference to concepts table representing the provider's specialty type for the services/diagnoses associated with this record       |
+| practitioner_id       | int    | FK reference to practitioners table                                              |
+| role_type_id      | text   | Roles practitioners can play in an encounter (currently a text field)         |
+| specialty_type_concepty_id      | int   | FK reference to concepts table representing the practitioner's specialty type for the services/diagnoses associated with this record       |
 
 ## contexts
 
@@ -213,7 +213,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
                                                                      
 ## addresses
 
-- Used for persons, providers, and facilities
+- Used for persons, practitioners, and facilities
 
 | column            | type   | description                                                                                                                    |
 | ----------------- | ----   | -----------                                                                                                                    |
@@ -242,7 +242,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | date                  | date   | Date of death (yyyy-mm-dd)                                                                                       |
 | cause_concept_id      | int    | FK reference to concepts table for cause of death (typically ICD-9 or ICD-10 code)                                              |
 | cause_type_concept_id | int    | FK reference to concepts table for the type of cause of death (e.g. primary, secondary, etc. ) |
-| provider_id           | int    | FK reference to providers table                                                           |
+| practitioner_id           | int    | FK reference to practitioners table                                                           |
 
 ## information_periods
 
