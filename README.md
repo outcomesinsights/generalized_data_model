@@ -112,7 +112,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | facility_id       | int    | FK reference to facilities table      |
 | facility_type_id  | int    | FK reference to concepts table representing the facility type|
 | pos_concept_id    | int    | FK reference to concepts table representing the place of service associated with this record  |
-| file_type         | text   | Type of the file from which the record was pulled (currently a text field; for provenance purposes)      |
+| file_type_concept_id         | int   | FK reference to concepts table representing the type of file from which the record was pulled  |
 | address_id       | int    | FK reference to addresses table representing the location of the service.  If the service location can not be determined this should be set to missing.                            |
 | service_specialty_type_id | int    | FK reference to concepts table representing the specialty type for the services/diagnoses associated with this record      |
 | type_concept_id   | int   | FK reference to concepts table representing the type of contexts the record is (line, claim, etc.) |
