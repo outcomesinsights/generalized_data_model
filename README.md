@@ -46,7 +46,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | secondary_identifier_type   | text   | Type of identifier specified in secondary identifier field  (UPIN, NPI, etc)                   |
 | specialty_concept_id        | int    | A foreign key to an identifier in the concepts table for specialty     |
 | address_id                  | int    | A foreign key to the address of the location where the practitioner is practicing     |
-| birth_date                  | int    | Date of birth (yyyy-mm-dd)                                                |
+| birth_date                  | date    | Date of birth (yyyy-mm-dd)                                                |
 | gender_concept_id           | int    | A foreign key that refers to an identifier in the concepts table for the unique gender of the person               |
 
 
