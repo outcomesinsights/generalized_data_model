@@ -79,7 +79,6 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | -----------------             | ----   | -----------                                                                                 |
 | id                            | serial | Surrogate key for record                                                                    |
 | patient_id                     | int    | FK to reference to patients table                                                             |
-| pos_concept_id                | int    | FK reference to concepts table representing the place of service associated with this record |
 | start_date                    | date   | Start date of record (yyyy-mm-dd)                                                                  |
 | end_date                      | date   | End date of record (yyyy-mm-dd)                                                                  |
 | facility_id                   | int    | FK reference to facilities table                                                            |
