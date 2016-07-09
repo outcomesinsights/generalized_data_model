@@ -257,7 +257,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | patient_id         | int    | FK reference to patients table                                                                                                  |
 | start_date        | date   | Start date of record (yyyy-mm-dd)                                                                                                                 |
 | end_date          | date   | End date of record (yyyy-mm-dd)                                                                                                                 |
-| information_type  | text   | String representing the type of data availability (e.g., insurance coverage, hospital data, up-to-standard date).  Could be concept type. |
+| information_type_concept_id  | id   | FK reference to concepts table representing the information type (e.g., insurance coverage, hospital data, up-to-standard date) |
 
 ## admission_details
 
