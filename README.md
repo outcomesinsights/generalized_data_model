@@ -133,6 +133,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column              | type   | description                                                                           |
 | -----------------   | ----   | -----------                                                                           |
 | id                  | serial | Surrogate key for record                                                              |
+| collection_id     | int    | FK reference to collections table                                                 |
 | context_id             | int    | FK reference to contexts table                                                              |
 | patient_id           | int    | FK reference to patients table                                            |
 | start_date          | date   | Start date of record (yyyy-mm-dd)                                                    |
