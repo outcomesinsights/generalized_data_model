@@ -96,7 +96,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | context_id          | int    | FK reference to contexts table                                                 |
 | practitioner_id       | int    | FK reference to practitioners table                                              |
 | role_type_id      | text   | Roles practitioners can play in an encounter (currently a text field)         |
-| specialty_type_concepty_id      | int   | FK reference to concepts table representing the practitioner's specialty type for the services/diagnoses associated with this record       |
+| specialty_type_concept_id      | int   | FK reference to concepts table representing the practitioner's specialty type for the services/diagnoses associated with this record       |
 
 ## contexts
 
@@ -110,11 +110,11 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | collection_id     | int    | FK reference to collections table                                                 |
 | patient_id         | int    | FK to reference to patients table                                                             |
 | facility_id       | int    | FK reference to facilities table      |
-| facility_type_id  | int    | FK reference to concepts table representing the facility type|
+| facility_type_concept_id  | int    | FK reference to concepts table representing the facility type|
 | pos_concept_id    | int    | FK reference to concepts table representing the place of service associated with this record  |
 | file_type_concept_id         | int   | FK reference to concepts table representing the type of file from which the record was pulled  |
 | address_id       | int    | FK reference to addresses table representing the location of the service.  If the service location can not be determined this should be set to missing.                            |
-| service_specialty_type_id | int    | FK reference to concepts table representing the specialty type for the services/diagnoses associated with this record      |
+| service_specialty_type_concept_id | int    | FK reference to concepts table representing the specialty type for the services/diagnoses associated with this record      |
 | type_concept_id   | int   | FK reference to concepts table representing the type of contexts the record is (line, claim, etc.) |
 
 ## clinical_codes
@@ -161,12 +161,12 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | result_as_number     | float  | The observation result stored as a number, applicable to observations where the result is expressed as a numeric value    |
 | result_as_string     | text   | The observation result stored as a string, applicable to observations where the result is expressed as verbatim text    |
 | result_as_concept_id | int    | FK reference to concepts table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.) |
-| result_modifier_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
+| result_modifier_concept_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
 | unit_concept_id     | int    | FK reference to concepts table for the measurement units (e.g., mmol/L, mg/dL, etc.)        |
 | normal_range_low     | float    | Lower bound of the normal reference range assigned by the laboratory      |
 | normal_range_high     | float    | Upper bound of the normal reference range assigned by the laboratory      |
-| normal_range_low_modifier_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
-| normal_range_high_modifier_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
+| normal_range_low_modifier_concept_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
+| normal_range_high_modifier_concept_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
 
 ## drug_exposure_details
 
