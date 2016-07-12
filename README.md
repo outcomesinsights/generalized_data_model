@@ -32,6 +32,18 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | practitioner_id          | int    | A foreign key to the primary care practitioner the patient is seeing in the practitioners table                                          |
 | patient_id_source_value | text    | Originial patient identifier defined in the source data                                          |
 
+## patient_details
+
+- Extra information about a patient that doesn't fit in the patients table
+
+| column               | type   | description         |
+| -----------------    | ----   | -----------         |
+| id                   | serial | A unique identifier for each patient_detail    |
+| person_id            | int    | FK reference to patients table |
+| person_detail_concept_id  | int  | FK reference to concepts table for the code assigned to the record |
+| person_detail_source_value      | text    | Source code from raw data |
+| person_detail_vocabulary_id | text    | Vocabulary the patient detail comes from |
+
 ## practitioners
 
 - All non-facility practitioners (i.e., physicians, etc.) are listed
