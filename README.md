@@ -1,20 +1,22 @@
 # Outcomes Insights, Inc. Draft Data Model
 
-We define a data model as a set of standard locations in which information of specific types should be stored, and the relationships among the tables.  It defines the end result of an extract, transform, and load (ETL) process for an arbitrary source (or raw) dataset.  The goals of our data model are five-fold:
+We define a data model as a set of standard tables in which information of specific types should be stored combined with the relationships among the tables.  It defines the end result of an extract, transform, and load (ETL) process for an arbitrary source (or raw) dataset.  The goals of our data model are five-fold:
 
-1. To simplify table structures making them easier to understand and easier to create in the ETL process
-1. To standardize selected data elements, but only when it makes the data easier to review and/or use without loss of information
-1. To avoid the mapping/translation of one vocabulary to another
-1. To capture the provenance of the original data in order to enhance the reproducibility of studies 
-1. To enable a straightforward, subsequent ETL process to other data models, including OMOP and PCORnet
+1. To simplify the location of the most important information for creating analysis data sets and studies
+1. To store virtually all data using its **source** vocabulary
+1. To capture hierarchical relationships among data elements within a relational data structure
+1. To retain the provenance of the original data in order to enhance the reproducibility of studies
+1. To facilitate a straightforward, subsequent ETL process to other data models, including OMOP and PCORnet
 
-The focus of our data model is on the information in the source vocabulary (i.e., the vocabularies used in the original data).  This approach will allow us to utilize the substantial literature of validated algorithms based on the the source data vocabularies, enhancing transparency and reproducibility.  Therefore, within the data model, we do not separate clinical events into conditions, procedures, measurements, observations, or drug exposures.  They are all simply clinical events, with codes to identify them.  We store data using their original vocabularies (e.g., ICD-9, HCPCS, CPT, etc.) to retain the original expression of the underlying clinical information.  We use "detail" tables to capture additional information that is specific to a subset of data, but which is not always used (e.g., days supplied for drugs, quantities for procedures, etc.).
+The focus of our data model is on the information in the source vocabulary (i.e., the vocabularies used in the original data).  This approach will allow us to utilize the substantial literature of validated algorithms based on the the source data vocabularies, enhancing transparency and reproducibility.  Therefore, within the data model, we do not separate clinical events into conditions, procedures, measurements, observations, or drug exposures.  They are all simply clinical events, with codes to identify them.  We store data using their original vocabularies (e.g., ICD-9, HCPCS, CPT, etc.) to retain the original expression of the underlying clinical information.  We use "detail" tables to capture additional information that is specific to a subset of data elements, but which is not always used (e.g., days supplied for drugs, quantities for procedures, etc.).
 
-In particular, we avoid translating clinical codes from one vocabulary to another without strong evidence that such a process results in a simpler and/or clearer representation of the underlying information.  This is because these relationships are prone to continuous refinement, and they are not available for all vocabularies (e.g., procedure vocabularies).  Furthermore, the potential efficiencies from expressing queries using a common vocabulary (e.g., SNOMED) do not require that every code in the data be translated **during the ETL process**.  Queries that work across datasets with different source vocabularies can readily be done "on the fly."  The excellent vocabulary mappings provided by the Observational Health Data Science and Informatics (OHDSI) community make such a process easy to implement. 
+In particular, we avoid translating clinical codes from one vocabulary to another without strong evidence that such a process results in a simpler and/or clearer representation of the underlying information.  This is because these relationships are prone to continuous refinement, and they are not available for all vocabularies (e.g., procedure vocabularies).  Furthermore, the potential efficiencies from expressing queries using a common vocabulary (e.g., SNOMED) do not require that every code in the data be translated **during the ETL process**.  Queries that work across datasets with different source vocabularies can readily be done "on the fly."  The excellent vocabulary mappings provided by the Observational Health Data Science and Informatics (OHDSI) community make such a process easy to implement.
 
-The strength of our approach is that, if an algorithm involves a specific code, we will know exactly where to find that code regardless of the structure of the original (raw) data.  This allows us to use vocabulary tools and a broad library of existing algorithms to operate on the data and create all of the variables for our study datasets.  To this end, we have developed an open-source language, [ConceptQL](https://github.com/outcomesinsights/conceptql_spec), that enables us to create, store, share, and use algorithms that are designed to work on electronic health information.  Our project, [Jigsaw](http://www.jigsaw.io) leverages ConceptQL to define and apply algorithms against data in our data model to build study datasets.  (And Jigsaw is designed so that algorithms also work across data **models**.)
+We have the idea of "Contexts" and "Collections" that work across both administrative claims data and electronic medical records.  This avoids the need to try and construct "visits" from claims data which often leads to inaccuracy, loss of information, and complicated ETL processing.  In our model, the "Context" captures both the provenance of the data (where was this data element in the soruce file) as well as the associations among related data elements.  These associations generally involve procedures and associated diagnoses, procedure modifiers, sequences of prescription records, and laboratory measures captured at the same time.
 
-Below is the current version of the schema for the OI Data Model.  We gratefully acknowledge the influence of the open-source OHDSI common data model [specifications](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:cdm) on our thinking in creating our data model.  In addition, we acknowledge the influence of both PCORnet and i2b2 on our approach.  At the moment, all references to the concepts table refer to the OMOP version 5 vocabulary [table](http://www.ohdsi.org/web/athena/) maintained by OHDSI.
+The strength of our approach is that, if an algorithm involves a specific code, we will know exactly where to find that code regardless of the structure of the original (raw) data.  This allows us to use vocabulary tools and a broad library of existing algorithms to operate on the data and create all of the variables for our study datasets.  To this end, we have developed an open-source language, [ConceptQL](https://github.com/outcomesinsights/conceptql_spec), that enables us to create, store, share, and use algorithms that are designed to work on electronic health information.  Our project, [Jigsaw](http://www.jigsaw.io) leverages ConceptQL to define an dapply algorithms against data in our data model to build study datasets.  (And Jigsaw is designed so that algorithms also work across data **models**.)
+
+Below is the current version of the schema for the OI Data Model.  We gratefully acknowledge the influence of the open-source OHDSI common data model [specifications](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:cdm) on our thinking in creating our data model.  In addition, we acknowledge the influence of both PCORnet and i2b2 on our approach, although most of our CDM was designed prior to fully reviewing these data models.  At the moment, all references to the concepts table refer to the OMOP version 5 vocabulary [table](http://www.ohdsi.org/web/athena/) maintained by OHDSI.
 
 ## patients
 
@@ -61,7 +63,6 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | birth_date                  | date    | Date of birth (yyyy-mm-dd)                                                |
 | gender_concept_id           | int    | A foreign key that refers to an identifier in the concepts table for the unique gender of the person               |
 
-
 ## facilities
 
 - Unique records for all the facilities in the data
@@ -81,8 +82,8 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 - Groups contexts records
 - For claims, records the claim level information (also referred to as "headers" in some databases)
-    - Use claim from and thru date for start and end if available
-    - Admit and discharge dates should go in the admission_details table unless those are the only dates for the records in which case they should be entered in the collections and admission_details
+  - Use claim from and thru date for start and end if available
+  - Admit and discharge dates should go in the admission_details table unless those are the only dates for the records in which case they should be entered in the collections and admission_details
 - For EHR, records the visit level information
 - Includes the place of service recorded with the record
 - Can be linked with multiple records in the provenances table
@@ -113,7 +114,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 - Holds information about the context of the clinical_codes and costs
 - Groups clinical_codes typically occurring on the same day or at the same timed (e.g., a diagnosis and a procedure)
-- contexts records are always linked to a collection records 
+- contexts records are always linked to a collection records
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
@@ -222,7 +223,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | paid_dispensing_fee | float | The amount paid by the Payer to a pharmacy for dispensing a drug, excluding the amount paid for the drug ingredient. paid_dispensing_fee contributes to the paid_by_payer field if this field is populated with a nonzero value. |
 | information_period_id | float | FK reference to the information_periods table  |
 | amount_allowed | float | The contracted amount agreed between the payer and provider. This information is generally available in claims data. This is similar to the total_paid amount in that it shows what the payer expects the provider to be reimbursed after the payer and patient pay. This differs from the total_paid amount in that it is not a calculated field, but a field available directly in claims data. Use case: This will capture non-covered services. Noncovered services are indicated by an amount allowed and patient responsibility variables (copay, coinsurance, deductible) will be equal $0 in the source data. This means the patient is responsible for the total_charged value. The amount_allowed field is payer specific and the payer should be indicated by the payer_plan_id field. |
-                                                                     
+
 ## addresses
 
 - Used for patients, practitioners, and facilities
@@ -249,7 +250,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 | column                | type   | description                                                                                           |
 | -----------------     | ----   | -----------                                                                                           |
-| id                    | serial | Surrogate key for record 
+| id                    | serial | Surrogate key for record
 | patient_id             | int    | FK reference to patients table                                                              |
 | date                  | date   | Date of death (yyyy-mm-dd)                                                                                       |
 | cause_concept_id      | int    | FK reference to concepts table for cause of death (typically ICD-9 or ICD-10 code)                                              |
