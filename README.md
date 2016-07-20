@@ -41,10 +41,10 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column               | type   | description         |
 | -----------------    | ----   | -----------         |
 | id                   | serial | A unique identifier for each patient_detail    |
-| person_id            | bigint    | FK reference to patients table |
-| person_detail_concept_id  | bigint  | FK reference to concepts table for the code assigned to the record |
-| person_detail_source_value      | text    | Source code from raw data |
-| person_detail_vocabulary_id | text    | Vocabulary the patient detail comes from |
+| patient_id            | bigint    | FK reference to patients table |
+| patient_detail_concept_id  | bigint  | FK reference to concepts table for the code assigned to the record |
+| patient_detail_source_value      | text    | Source code from raw data |
+| patient_detail_vocabulary_id | text    | Vocabulary the patient detail comes from |
 
 ## practitioners
 
