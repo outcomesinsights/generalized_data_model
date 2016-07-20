@@ -197,6 +197,9 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | dose_form_concept_id | bigint    | FK reference to concepts table for the form of the drug (capsule, injection, etc.)       |
 | dose_unit_concept_id | bigint    | FK reference to concepts table for the units in which the dose_value is expressed |
 | dose_value           | float  | Numeric value for the dose of the drug |
+| strength_source_value           | text  | Drug strength as reported in the raw data.  This can include both dose value and units |
+| generic_name_source_value           | text  | Generic name of drug as reported in the raw data |
+| brand_name_source_value           | text  | Brand name of drug as reported in the raw data |
 
 ## costs
 
