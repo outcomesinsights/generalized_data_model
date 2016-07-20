@@ -155,7 +155,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | seq_num            | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3)                       |
 | type_concept_id     | bigint    | Additional type information (ex: primary or admitting)                                 |
 | clinical_code_source     | text    | Source code from raw data                                |
-| clinical_code_vocabulary_id     | character    | Vocabulary the clinical code comes from                          |
+| clinical_code_vocabulary_id     | text    | Vocabulary the clinical code comes from                          |
 
 ## measurement_details
 
@@ -269,7 +269,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | patient_id         | bigint    | FK reference to patients table                                                                                                  |
 | start_date        | date   | Start date of record (yyyy-mm-dd)                                                                                                                 |
 | end_date          | date   | End date of record (yyyy-mm-dd)                                                                                                                 |
-| information_type_concept_id  | id   | FK reference to concepts table representing the information type (e.g., insurance coverage, hospital data, up-to-standard date) |
+| information_type_concept_id  | bigint   | FK reference to concepts table representing the information type (e.g., insurance coverage, hospital data, up-to-standard date) |
 
 ## admission_details
 
@@ -283,7 +283,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | patient_id         | bigint    | FK reference to patients table                                                                                                  |
 | admission_date          | date    | Date of admission (yyyy-mm-dd)                                                                                                             |
 | discharge_date          | date    | Date of discharge (yyyy-mm-dd)                                                                                                             |
-| admit_source_id      | in   | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                                               |
+| admit_source_id      | int   | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                                               |
 | discharge_location_id| bigint   | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                             |
 | los | int   | Length of stay                            |
 | type_concept_id | bigint   | FK reference to concepts table representing the type of admission the record is (Emergency, Elective, etc.)                            |
