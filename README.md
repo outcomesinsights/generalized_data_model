@@ -26,12 +26,12 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column               | type   | description                                                                                                                     |
 | -----------------    | ----   | -----------                                                                                                                     |
 | id                   | serial | A unique identifier for each patient                                                                                            |
-| gender_concept_id    | int    | A foreign key that refers to an identifier in the concepts table for the unique gender of the patient                            |
+| gender_concept_id    | bigint    | A foreign key that refers to an identifier in the concepts table for the unique gender of the patient                            |
 | birth_date           | date   | Date of birth (yyyy-mm-dd)                                                                                                     |
-| race_concept_id      | int    | A foreign key that refers to an identifier in the concepts table for the unique race of the patient                              |
-| ethnicity_concept_id | int    | A foreign key that refers to an identifier in the concepts table for the ethnicity of the patient                               |
-| address_id           | int    | A foreign key to the place of residency for the patient in the location table, where the detailed address information is stored |
-| practitioner_id          | int    | A foreign key to the primary care practitioner the patient is seeing in the practitioners table                                          |
+| race_concept_id      | bigint    | A foreign key that refers to an identifier in the concepts table for the unique race of the patient                              |
+| ethnicity_concept_id | bigint    | A foreign key that refers to an identifier in the concepts table for the ethnicity of the patient                               |
+| address_id           | bigint    | A foreign key to the place of residency for the patient in the location table, where the detailed address information is stored |
+| practitioner_id          | bigint    | A foreign key to the primary care practitioner the patient is seeing in the practitioners table                                          |
 | patient_id_source_value | text    | Originial patient identifier defined in the source data                                          |
 
 ## patient_details
@@ -41,8 +41,8 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column               | type   | description         |
 | -----------------    | ----   | -----------         |
 | id                   | serial | A unique identifier for each patient_detail    |
-| person_id            | int    | FK reference to patients table |
-| person_detail_concept_id  | int  | FK reference to concepts table for the code assigned to the record |
+| person_id            | bigint    | FK reference to patients table |
+| person_detail_concept_id  | bigint  | FK reference to concepts table for the code assigned to the record |
 | person_detail_source_value      | text    | Source code from raw data |
 | person_detail_vocabulary_id | text    | Vocabulary the patient detail comes from |
 
@@ -58,10 +58,10 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | primary_identifier_type     | text   | Type of identifier specified in primary identifier field  (UPIN, NPI, etc)                   |
 | secondary_identifier        | text   | Secondary practitioner identifier (Optional)                                                              |
 | secondary_identifier_type   | text   | Type of identifier specified in secondary identifier field  (UPIN, NPI, etc)                   |
-| specialty_concept_id        | int    | A foreign key to an identifier in the concepts table for specialty     |
-| address_id                  | int    | A foreign key to the address of the location where the practitioner is practicing     |
+| specialty_concept_id        | bigint    | A foreign key to an identifier in the concepts table for specialty     |
+| address_id                  | bigint    | A foreign key to the address of the location where the practitioner is practicing     |
 | birth_date                  | date    | Date of birth (yyyy-mm-dd)                                                |
-| gender_concept_id           | int    | A foreign key that refers to an identifier in the concepts table for the unique gender of the person               |
+| gender_concept_id           | bigint    | A foreign key that refers to an identifier in the concepts table for the unique gender of the person               |
 
 ## facilities
 
@@ -75,8 +75,8 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | primary_identifier_type     | text   | Type of identifier specified in primary identifier field  (UPIN, NPI, etc)                   |
 | secondary_identifier        | text   | Secondary facility identifier (Optional)                                                              |
 | secondary_identifier_type   | text   | Type of identifier specified in secondary identifier field  (UPIN, NPI, etc)                   |
-| specialty_concept_id        | int    | A foreign key to an identifier in the concepts table for specialty     |
-| address_id                  | int    | A foreign key to the address of the location of the facility     |
+| specialty_concept_id        | bigint    | A foreign key to an identifier in the concepts table for specialty     |
+| address_id                  | bigint    | A foreign key to the address of the location of the facility     |
 
 ## collections
 
@@ -91,11 +91,11 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column                        | type   | description                                                                                 |
 | -----------------             | ----   | -----------                                                                                 |
 | id                            | serial | Surrogate key for record                                                                    |
-| patient_id                     | int    | FK to reference to patients table                                                             |
+| patient_id                     | bigint    | FK to reference to patients table                                                             |
 | start_date                    | date   | Start date of record (yyyy-mm-dd)                                                                  |
 | end_date                      | date   | End date of record (yyyy-mm-dd)                                                                  |
-| facility_id                   | int    | FK reference to facilities table                                                            |
-| admission_detail_id           | int    | FK reference to admission_details table                                                            |
+| facility_id                   | bigint    | FK reference to facilities table                                                            |
+| admission_detail_id           | bigint    | FK reference to admission_details table                                                            |
 
 ## contexts_practitioners
 
@@ -105,10 +105,10 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
-| context_id          | int    | FK reference to contexts table                                                 |
-| practitioner_id       | int    | FK reference to practitioners table                                              |
+| context_id          | bigint    | FK reference to contexts table                                                 |
+| practitioner_id       | bigint    | FK reference to practitioners table                                              |
 | role_type_id      | text   | Roles practitioners can play in an encounter (currently a text field)         |
-| specialty_type_concept_id      | int   | FK reference to concepts table representing the practitioner's specialty type for the services/diagnoses associated with this record       |
+| specialty_type_concept_id      | bigint   | FK reference to concepts table representing the practitioner's specialty type for the services/diagnoses associated with this record       |
 
 ## contexts
 
@@ -119,15 +119,15 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column            | type   | description                                                                  |
 | ----------------- | ----   | -----------                                                                  |
 | id                | serial | Surrogate key for record                                                     |
-| collection_id     | int    | FK reference to collections table                                                 |
-| patient_id         | int    | FK to reference to patients table                                                             |
-| facility_id       | int    | FK reference to facilities table      |
-| facility_type_concept_id  | int    | FK reference to concepts table representing the facility type|
-| pos_concept_id    | int    | FK reference to concepts table representing the place of service associated with this record  |
-| file_type_concept_id         | int   | FK reference to concepts table representing the type of file from which the record was pulled  |
-| address_id       | int    | FK reference to addresses table representing the location of the service.  If the service location can not be determined this should be set to missing.                            |
-| service_specialty_type_concept_id | int    | FK reference to concepts table representing the specialty type for the services/diagnoses associated with this record      |
-| type_concept_id   | int   | FK reference to concepts table representing the type of contexts the record is (line, claim, etc.) |
+| collection_id     | bigint    | FK reference to collections table                                                 |
+| patient_id         | bigint    | FK to reference to patients table                                                             |
+| facility_id       | bigint    | FK reference to facilities table      |
+| facility_type_concept_id  | bigint    | FK reference to concepts table representing the facility type|
+| pos_concept_id    | bigint    | FK reference to concepts table representing the place of service associated with this record  |
+| file_type_concept_id         | bigint   | FK reference to concepts table representing the type of file from which the record was pulled  |
+| address_id       | bigint    | FK reference to addresses table representing the location of the service.  If the service location can not be determined this should be set to missing.                            |
+| service_specialty_type_concept_id | bigint    | FK reference to concepts table representing the specialty type for the services/diagnoses associated with this record      |
+| type_concept_id   | bigint   | FK reference to concepts table representing the type of contexts the record is (line, claim, etc.) |
 
 ## clinical_codes
 
@@ -145,15 +145,15 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column              | type   | description                                                                           |
 | -----------------   | ----   | -----------                                                                           |
 | id                  | serial | Surrogate key for record                                                              |
-| collection_id     | int    | FK reference to collections table                                                 |
-| context_id             | int    | FK reference to contexts table                                                              |
-| patient_id           | int    | FK reference to patients table                                            |
+| collection_id     | bigint    | FK reference to collections table                                                 |
+| context_id             | bigint    | FK reference to contexts table                                                              |
+| patient_id           | bigint    | FK reference to patients table                                            |
 | start_date          | date   | Start date of record (yyyy-mm-dd)                                                    |
 | end_date            | date   | End date of record (yyyy-mm-dd)                                                    |
-| clinical_code_concept_id | int    | FK reference to concepts table for the code assigned to the record   |
-| quantity            | int    | Quantity, if available (e.g., procedures)                           |
+| clinical_code_concept_id | bigint    | FK reference to concepts table for the code assigned to the record   |
+| quantity            | bigint    | Quantity, if available (e.g., procedures)                           |
 | seq_num            | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3)                       |
-| type_concept_id     | int    | Additional type information (ex: primary or admitting)                                 |
+| type_concept_id     | bigint    | Additional type information (ex: primary or admitting)                                 |
 | clinical_code_source     | text    | Source code from raw data                                |
 | clinical_code_vocabulary_id     | character    | Vocabulary the clinical code comes from                          |
 
@@ -168,17 +168,17 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column              | type   | description                                                                                                                                                                                                                                             |
 | -----------------   | ----   | -----------                                                                                                                                                                                                                                             |
 | id                  | serial | Surrogate key for record                                                                                                                                                                                                                                |
-| clinical_code_id             | int    | FK reference to clinical_codes table to the associated clinical code                                                              |
-| patient_id           | int    | FK reference to patients table                                                        |
+| clinical_code_id             | bigint    | FK reference to clinical_codes table to the associated clinical code                                                              |
+| patient_id           | bigint    | FK reference to patients table                                                        |
 | result_as_number     | float  | The observation result stored as a number, applicable to observations where the result is expressed as a numeric value    |
 | result_as_string     | text   | The observation result stored as a string, applicable to observations where the result is expressed as verbatim text    |
-| result_as_concept_id | int    | FK reference to concepts table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.) |
-| result_modifier_concept_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
-| unit_concept_id     | int    | FK reference to concepts table for the measurement units (e.g., mmol/L, mg/dL, etc.)        |
+| result_as_concept_id | bigint    | FK reference to concepts table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.) |
+| result_modifier_concept_id | bigint    | FK reference to concepts table for result modifier (=, <, >, etc.) |
+| unit_concept_id     | bigint    | FK reference to concepts table for the measurement units (e.g., mmol/L, mg/dL, etc.)        |
 | normal_range_low     | float    | Lower bound of the normal reference range assigned by the laboratory      |
 | normal_range_high     | float    | Upper bound of the normal reference range assigned by the laboratory      |
-| normal_range_low_modifier_concept_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
-| normal_range_high_modifier_concept_id | int    | FK reference to concepts table for result modifier (=, <, >, etc.) |
+| normal_range_low_modifier_concept_id | bigint    | FK reference to concepts table for result modifier (=, <, >, etc.) |
+| normal_range_high_modifier_concept_id | bigint    | FK reference to concepts table for result modifier (=, <, >, etc.) |
 
 ## drug_exposure_details
 
@@ -188,12 +188,12 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column               | type   | description                                                                                                                            |
 | -----------------    | ----   | -----------                                                                                                                            |
 | id                   | serial | Surrogate key for record |
-| clinical_code_id             | int    | FK reference to clinical_codes table to the associated clinical code                                                              |
-| patient_id                     | int    | FK to reference to patients table                                                             |
+| clinical_code_id             | bigint    | FK reference to clinical_codes table to the associated clinical code                                                              |
+| patient_id                     | bigint    | FK to reference to patients table                                                             |
 | refills              | int    | The number of refills after the initial prescription; the initial prescription is not counted (i.e., values start with 0)              |
 | days_supply          | int    | The number of days of supply as recorded in the original prescription or dispensing record                          |
-| dose_form_concept_id | int    | FK reference to concepts table for the form of the drug (capsule, injection, etc.)       |
-| dose_unit_concept_id | int    | FK reference to concepts table for the units in which the dose_value is expressed |
+| dose_form_concept_id | bigint    | FK reference to concepts table for the form of the drug (capsule, injection, etc.)       |
+| dose_unit_concept_id | bigint    | FK reference to concepts table for the units in which the dose_value is expressed |
 | dose_value           | float  | Numeric value for the dose of the drug |
 
 ## costs
@@ -206,12 +206,12 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column                        | type   | description                                                                                                                                                                       |
 | -----------------             | ----   | -----------                                                                                                                                                                       |
 | id                            | serial | A unique identifier for each COST record |
-| context_id             | int    | FK reference to context table                                                              |
-| patient_id                     | int    | FK to reference to patients table                                                             |
-| currency_concept_id | int | FK reference to concepts table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar) |
+| context_id             | bigint    | FK reference to context table                                                              |
+| patient_id                     | bigint    | FK to reference to patients table                                                             |
+| currency_concept_id | bigint | FK reference to concepts table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar) |
 | total_charged | float | The total amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider) billed to a payer. This information is usually provided in claims data. |
 | total_cost | float | Cost of service/device/drug incurred by provider/pharmacy. This field is more commonly derived from charge information.  |
-| total_cost_type_concept_id | int | FK reference to concepts table for the provenance or the source of the cost data. Shows the provenance or the source of the total_cost data: Calculated from provider revenue, calculated from cost-to-charge ratio, reported from accounting database, etc. |
+| total_cost_type_concept_id | bigint | FK reference to concepts table for the provenance or the source of the cost data. Shows the provenance or the source of the total_cost data: Calculated from provider revenue, calculated from cost-to-charge ratio, reported from accounting database, etc. |
 | total_paid | float | The total amount paid from all payers for the expenses of the service/device/drug. This field is calculated using the following formula: paid_by_payer + paid_by_patient + paid_by_primary. In claims data, this field is considered the calculated field the payer expects the provider to get reimbursed for the service/device/drug from the payer and from the patient, based on the payer's contractual obligations. |
 | paid_by_payer | float | The amount paid by the Payer for the service/device/drug. In claims data, generally there is one field representing the total payment from the payer for the service/device/drug. However, this field could be a calculated field if the source data provides separate payment information for the ingredient cost and the dispensing fee. If the paid_ingredient_cost or paid_dispensing_fee fields are populated with nonzero values, the paid_by_payer field is calculated using the following formula: paid_ingredient_cost + paid_dispensing_fee. If there is more than one Payer in the source data, several cost records indicate that fact. The Payer reporting this reimbursement should be indicated under the payer_plan_id field. |
 | paid_by_patient | float | The total amount paid by the patient as a share of the expenses. This field is most often used in claims data to report the contracted amount the patient is responsible for reimbursing the provider for said service/device/drug. This is a calculated field using the following formula: paid_patient_copay + paid_patient_coinsurance + paid_patient_deductible. If the source data has actual patient payments (e.g. the patient payment is not a derivative of the payer claim and there is verification the patient paid an amount to the provider), then the patient payment should have it's own cost record with a payer_plan_id set to 0 to indicate the the payer is actually the patient, and the actual patient payment should be noted under the total_paid field. The paid_by_patient field is only used for reporting a patient's responsibility reported on an insurance claim. |
@@ -251,11 +251,11 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column                | type   | description                                                                                           |
 | -----------------     | ----   | -----------                                                                                           |
 | id                    | serial | Surrogate key for record
-| patient_id             | int    | FK reference to patients table                                                              |
+| patient_id             | bigint    | FK reference to patients table                                                              |
 | date                  | date   | Date of death (yyyy-mm-dd)                                                                                       |
-| cause_concept_id      | int    | FK reference to concepts table for cause of death (typically ICD-9 or ICD-10 code)                                              |
-| cause_type_concept_id | int    | FK reference to concepts table for the type of cause of death (e.g. primary, secondary, etc. ) |
-| practitioner_id           | int    | FK reference to practitioners table                                                           |
+| cause_concept_id      | bigint    | FK reference to concepts table for cause of death (typically ICD-9 or ICD-10 code)                                              |
+| cause_type_concept_id | bigint    | FK reference to concepts table for the type of cause of death (e.g. primary, secondary, etc. ) |
+| practitioner_id           | bigint    | FK reference to practitioners table                                                           |
 
 ## information_periods
 
@@ -266,7 +266,7 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column            | type   | description                                                                                                                               |
 | ----------------- | ----   | -----------                                                                                                                               |
 | id                | serial | Surrogate key for record                                                                                                                  |
-| patient_id         | int    | FK reference to patients table                                                                                                  |
+| patient_id         | bigint    | FK reference to patients table                                                                                                  |
 | start_date        | date   | Start date of record (yyyy-mm-dd)                                                                                                                 |
 | end_date          | date   | End date of record (yyyy-mm-dd)                                                                                                                 |
 | information_type_concept_id  | id   | FK reference to concepts table representing the information type (e.g., insurance coverage, hospital data, up-to-standard date) |
@@ -280,13 +280,13 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | column            | type   | description                                                                                                                               |
 | ----------------- | ----   | -----------                                                                                                                               |
 | id                | serial | Surrogate key for record                                                                                                                  |
-| patient_id         | int    | FK reference to patients table                                                                                                  |
+| patient_id         | bigint    | FK reference to patients table                                                                                                  |
 | admission_date          | date    | Date of admission (yyyy-mm-dd)                                                                                                             |
 | discharge_date          | date    | Date of discharge (yyyy-mm-dd)                                                                                                             |
 | admit_source_id      | in   | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                                               |
-| discharge_location_id| int   | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                             |
+| discharge_location_id| bigint   | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                             |
 | los | int   | Length of stay                            |
-| type_concept_id | int   | FK reference to concepts table representing the type of admission the record is (Emergency, Elective, etc.)                            |
+| type_concept_id | bigint   | FK reference to concepts table representing the type of admission the record is (Emergency, Elective, etc.)                            |
 
 ## concepts
 
