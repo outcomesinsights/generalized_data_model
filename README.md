@@ -121,6 +121,8 @@ Below is the current version of the schema for the OI Data Model.  We gratefully
 | id                | serial | Surrogate key for record                                                     |
 | collection_id     | bigint    | FK reference to collections table                                                 |
 | patient_id         | bigint    | FK to reference to patients table                                                             |
+| start_date          | date   | Start date of record (yyyy-mm-dd)                                                    |
+| end_date            | date   | End date of record (yyyy-mm-dd)                                                    |
 | facility_id       | bigint    | FK reference to facilities table      |
 | facility_type_concept_id  | bigint    | FK reference to concepts table representing the facility type|
 | pos_concept_id    | bigint    | FK reference to concepts table representing the place of service associated with this record  |
