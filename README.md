@@ -23,60 +23,60 @@ Below is the current version of the schema for the OI Data Model. We gratefully 
 - Demographic information about the patients in the data
 - The column for _practitioner_id_ is intended for situations where there is a defined primary care practitioner (e.g., HMO or CPRD data)
 
-column                  | type   | description
------------------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------
-id                      | serial | A unique identifier for each patient
-gender_concept_id       | bigint | A foreign key that refers to an identifier in the concepts table for the unique gender of the patient
-birth_date              | date   | Date of birth (yyyy-mm-dd)
-race_concept_id         | bigint | A foreign key that refers to an identifier in the concepts table for the unique race of the patient
-ethnicity_concept_id    | bigint | A foreign key that refers to an identifier in the concepts table for the ethnicity of the patient
-address_id              | bigint | A foreign key to the place of residency for the patient in the location table, where the detailed address information is stored
-practitioner_id         | bigint | A foreign key to the primary care practitioner the patient is seeing in the practitioners table
-patient_id_source_value | text   | Originial patient identifier defined in the source data
+column                  | type   | description                                                                                                                     | foreign key
+----------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------
+id                      | serial | A unique identifier for each patient                                                                                            |
+gender_concept_id       | bigint | A foreign key that refers to an identifier in the concepts table for the unique gender of the patient                           | [concepts](#concepts)
+birth_date              | date   | Date of birth (yyyy-mm-dd)                                                                                                      |
+race_concept_id         | bigint | A foreign key that refers to an identifier in the concepts table for the unique race of the patient                             | [concepts](#concepts)
+ethnicity_concept_id    | bigint | A foreign key that refers to an identifier in the concepts table for the ethnicity of the patient                               | [concepts](#concepts)
+address_id              | bigint | A foreign key to the place of residency for the patient in the location table, where the detailed address information is stored | [addresses](#addresses)
+practitioner_id         | bigint | A foreign key to the primary care practitioner the patient is seeing in the practitioners table                                 | [practitioners](#practitioners)
+patient_id_source_value | text   | Originial patient identifier defined in the source data                                                                         |
 
 ## patient_details
 
 - Extra information about a patient that doesn't fit in the patients table
 
-column                       | type   | description
----------------------------- | ------ | ------------------------------------------------------------------
-id                           | serial | A unique identifier for each patient_detail
-patient_id                   | bigint | FK reference to patients table
-patient_detail_concept_id    | bigint | FK reference to concepts table for the code assigned to the record
-patient_detail_source_value  | text   | Source code from raw data
-patient_detail_vocabulary_id | text   | Vocabulary the patient detail comes from
+column                       | type   | description                                                        | foreign key
+---------------------------- | ------ | ------------------------------------------------------------------ | -----------------------------
+id                           | serial | A unique identifier for each patient_detail                        |
+patient_id                   | bigint | FK reference to patients table                                     | [patients](#patients)
+patient_detail_concept_id    | bigint | FK reference to concepts table for the code assigned to the record | [concepts](#concepts)
+patient_detail_source_value  | text   | Source code from raw data                                          |
+patient_detail_vocabulary_id | text   | Vocabulary the patient detail comes from                           | [vocabularies](#vocabularies)
 
 ## practitioners
 
 - All non-facility practitioners (i.e., physicians, etc.) are listed
 
-column                    | type   | description
-------------------------- | ------ | ----------------------------------------------------------------------------------------------------
-id                        | serial | A unique identifier for each practitioner
-practitioner_name         | text   | Practitioners name, if available
-primary_identifier        | text   | Primary practitioner identifier
-primary_identifier_type   | text   | Type of identifier specified in primary identifier field (UPIN, NPI, etc)
-secondary_identifier      | text   | Secondary practitioner identifier (Optional)
-secondary_identifier_type | text   | Type of identifier specified in secondary identifier field (UPIN, NPI, etc)
-specialty_concept_id      | bigint | A foreign key to an identifier in the concepts table for specialty
-address_id                | bigint | A foreign key to the address of the location where the practitioner is practicing
-birth_date                | date   | Date of birth (yyyy-mm-dd)
-gender_concept_id         | bigint | A foreign key that refers to an identifier in the concepts table for the unique gender of the person
+column                    | type   | description                                                                                          | foreign key
+------------------------- | ------ | ---------------------------------------------------------------------------------------------------- | -----------------------
+id                        | serial | A unique identifier for each practitioner                                                            |
+practitioner_name         | text   | Practitioners name, if available                                                                     |
+primary_identifier        | text   | Primary practitioner identifier                                                                      |
+primary_identifier_type   | text   | Type of identifier specified in primary identifier field (UPIN, NPI, etc)                            |
+secondary_identifier      | text   | Secondary practitioner identifier (Optional)                                                         |
+secondary_identifier_type | text   | Type of identifier specified in secondary identifier field (UPIN, NPI, etc)                          |
+specialty_concept_id      | bigint | A foreign key to an identifier in the concepts table for specialty                                   | [concepts](#concepts)
+address_id                | bigint | A foreign key to the address of the location where the practitioner is practicing                    | [addresses](#addresses)
+birth_date                | date   | Date of birth (yyyy-mm-dd)                                                                           |
+gender_concept_id         | bigint | A foreign key that refers to an identifier in the concepts table for the unique gender of the person | [concepts](#concepts)
 
 ## facilities
 
 - Unique records for all the facilities in the data
 
-column                    | type   | description
-------------------------- | ------ | ---------------------------------------------------------------------------
-id                        | serial | A unique identifier for each facility
-facility_name             | text   | Facility name, if available
-primary_identifier        | text   | Primary facility identifier
-primary_identifier_type   | text   | Type of identifier specified in primary identifier field (UPIN, NPI, etc)
-secondary_identifier      | text   | Secondary facility identifier (Optional)
-secondary_identifier_type | text   | Type of identifier specified in secondary identifier field (UPIN, NPI, etc)
-specialty_concept_id      | bigint | A foreign key to an identifier in the concepts table for specialty
-address_id                | bigint | A foreign key to the address of the location of the facility
+column                    | type   | description                                                                 | foreign key
+------------------------- | ------ | --------------------------------------------------------------------------- | -----------------------
+id                        | serial | A unique identifier for each facility                                       |
+facility_name             | text   | Facility name, if available                                                 |
+primary_identifier        | text   | Primary facility identifier                                                 |
+primary_identifier_type   | text   | Type of identifier specified in primary identifier field (UPIN, NPI, etc)   |
+secondary_identifier      | text   | Secondary facility identifier (Optional)                                    |
+secondary_identifier_type | text   | Type of identifier specified in secondary identifier field (UPIN, NPI, etc) |
+specialty_concept_id      | bigint | A foreign key to an identifier in the concepts table for specialty          | [concepts](#concepts)
+address_id                | bigint | A foreign key to the address of the location of the facility                | [addresses](#addresses)
 
 ## collections
 
@@ -87,17 +87,19 @@ address_id                | bigint | A foreign key to the address of the locatio
   - Admit and discharge dates should go in the admission_details table unless those are the only dates for the records in which case they should be entered in the collections and admission_details
 
 - For EHR, records the visit level information
+
 - Includes the place of service recorded with the record
+
 - Can be linked with multiple records in the provenances table
 
-column              | type   | description
-------------------- | ------ | ---------------------------------------
-id                  | serial | Surrogate key for record
-patient_id          | bigint | FK to reference to patients table
-start_date          | date   | Start date of record (yyyy-mm-dd)
-end_date            | date   | End date of record (yyyy-mm-dd)
-facility_id         | bigint | FK reference to facilities table
-admission_detail_id | bigint | FK reference to admission_details table
+column              | type   | description                             | foreign key
+------------------- | ------ | --------------------------------------- | ---------------------------------------
+id                  | serial | Surrogate key for record                |
+patient_id          | bigint | FK to reference to patients table       | [patients](#patients)
+start_date          | date   | Start date of record (yyyy-mm-dd)       |
+end_date            | date   | End date of record (yyyy-mm-dd)         |
+facility_id         | bigint | FK reference to facilities table        | [facilities](#facilities)
+admission_detail_id | bigint | FK reference to admission_details table | [admission_details](#admission_details)
 
 ## contexts_practitioners
 
@@ -105,12 +107,12 @@ admission_detail_id | bigint | FK reference to admission_details table
 - Each record represents an encounter between a patient and a practitioner on a specific context
 - Captures the role, if any, the practitioner played on the context (e.g., attending physician)
 
-column                    | type   | description
-------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------
-context_id                | bigint | FK reference to contexts table
-practitioner_id           | bigint | FK reference to practitioners table
-role_type_id              | text   | Roles practitioners can play in an encounter (currently a text field)
-specialty_type_concept_id | bigint | FK reference to concepts table representing the practitioner's specialty type for the services/diagnoses associated with this record
+column                    | type   | description                                                                                                                          | foreign key
+------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------
+context_id                | bigint | FK reference to contexts table                                                                                                       | [contexts](#contexts)
+practitioner_id           | bigint | FK reference to practitioners table                                                                                                  | [practitioners](#practitioners)
+role_type_id              | text   | Roles practitioners can play in an encounter (currently a text field)                                                                |
+specialty_type_concept_id | bigint | FK reference to concepts table representing the practitioner's specialty type for the services/diagnoses associated with this record | [concepts](#concepts)
 
 ## contexts
 
@@ -118,20 +120,20 @@ specialty_type_concept_id | bigint | FK reference to concepts table representing
 - Groups clinical_codes typically occurring on the same day or at the same timed (e.g., a diagnosis and a procedure)
 - contexts records are always linked to a collection records
 
-column                            | type   | description
---------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------
-id                                | serial | Surrogate key for record
-collection_id                     | bigint | FK reference to collections table
-patient_id                        | bigint | FK to reference to patients table
-start_date                        | date   | Start date of record (yyyy-mm-dd)
-end_date                          | date   | End date of record (yyyy-mm-dd)
-facility_id                       | bigint | FK reference to facilities table
-facility_type_concept_id          | bigint | FK reference to concepts table representing the facility type
-pos_concept_id                    | bigint | FK reference to concepts table representing the place of service associated with this record
-file_type_concept_id              | bigint | FK reference to concepts table representing the type of file from which the record was pulled
-address_id                        | bigint | FK reference to addresses table representing the location of the service. If the service location can not be determined this should be set to missing.
-service_specialty_type_concept_id | bigint | FK reference to concepts table representing the specialty type for the services/diagnoses associated with this record
-type_concept_id                   | bigint | FK reference to concepts table representing the type of contexts the record is (line, claim, etc.)
+column                            | type   | description                                                                                                                                            | foreign key
+--------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------
+id                                | serial | Surrogate key for record                                                                                                                               |
+collection_id                     | bigint | FK reference to collections table                                                                                                                      | [collections](#collections)
+patient_id                        | bigint | FK to reference to patients table                                                                                                                      | [patients](#patients)
+start_date                        | date   | Start date of record (yyyy-mm-dd)                                                                                                                      |
+end_date                          | date   | End date of record (yyyy-mm-dd)                                                                                                                        |
+facility_id                       | bigint | FK reference to facilities table                                                                                                                       | [facilities](#facilities)
+facility_type_concept_id          | bigint | FK reference to concepts table representing the facility type                                                                                          | [concepts](#concepts)
+pos_concept_id                    | bigint | FK reference to concepts table representing the place of service associated with this record                                                           | [concepts](#concepts)
+file_type_concept_id              | bigint | FK reference to concepts table representing the type of file from which the record was pulled                                                          | [concepts](#concepts)
+address_id                        | bigint | FK reference to addresses table representing the location of the service. If the service location can not be determined this should be set to missing. | [addresses](#addresses)
+service_specialty_type_concept_id | bigint | FK reference to concepts table representing the specialty type for the services/diagnoses associated with this record                                  | [concepts](#concepts)
+type_concept_id                   | bigint | FK reference to concepts table representing the type of contexts the record is (line, claim, etc.)                                                     | [concepts](#concepts)
 
 ## clinical_codes
 
@@ -146,22 +148,23 @@ type_concept_id                   | bigint | FK reference to concepts table repr
   - LOINC
 
 - Ignores semantic distinctions about the type of information represented within a vocabulary because most vocabularies contain information from more than one domain
+
 - One record generated for each individual code in the raw data
 
-column                      | type   | description
---------------------------- | ------ | -------------------------------------------------------------------------------
-id                          | serial | Surrogate key for record
-collection_id               | bigint | FK reference to collections table
-context_id                  | bigint | FK reference to contexts table
-patient_id                  | bigint | FK reference to patients table
-start_date                  | date   | Start date of record (yyyy-mm-dd)
-end_date                    | date   | End date of record (yyyy-mm-dd)
-clinical_code_concept_id    | bigint | FK reference to concepts table for the code assigned to the record
-quantity                    | bigint | Quantity, if available (e.g., procedures)
-seq_num                     | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3)
-type_concept_id             | bigint | Additional type information (ex: primary or admitting)
-clinical_code_source        | text   | Source code from raw data
-clinical_code_vocabulary_id | text   | Vocabulary the clinical code comes from
+column                      | type   | description                                                                     | foreign key
+--------------------------- | ------ | ------------------------------------------------------------------------------- | -----------------------------
+id                          | serial | Surrogate key for record                                                        |
+collection_id               | bigint | FK reference to collections table                                               | [collections](#collections)
+context_id                  | bigint | FK reference to contexts table                                                  | [contexts](#contexts)
+patient_id                  | bigint | FK reference to patients table                                                  | [patients](#patients)
+start_date                  | date   | Start date of record (yyyy-mm-dd)                                               |
+end_date                    | date   | End date of record (yyyy-mm-dd)                                                 |
+clinical_code_concept_id    | bigint | FK reference to concepts table for the code assigned to the record              | [concepts](#concepts)
+quantity                    | bigint | Quantity, if available (e.g., procedures)                                       |
+seq_num                     | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3) |
+type_concept_id             | bigint | Additional type information (ex: primary or admitting)                          | [concepts](#concepts)
+clinical_code_source        | text   | Source code from raw data                                                       |
+clinical_code_vocabulary_id | text   | Vocabulary the clinical code comes from                                         | [vocabularies](#vocabularies)
 
 ## measurement_details
 
@@ -173,39 +176,39 @@ clinical_code_vocabulary_id | text   | Vocabulary the clinical code comes from
 
 - May need to add variables for "normal range", or consider a separate table for additional laboratory details
 
-column                                | type   | description
-------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------
-id                                    | serial | Surrogate key for record
-clinical_code_id                      | bigint | FK reference to clinical_codes table to the associated clinical code
-patient_id                            | bigint | FK reference to patients table
-result_as_number                      | float  | The observation result stored as a number, applicable to observations where the result is expressed as a numeric value
-result_as_string                      | text   | The observation result stored as a string, applicable to observations where the result is expressed as verbatim text
-result_as_concept_id                  | bigint | FK reference to concepts table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.)
-result_modifier_concept_id            | bigint | FK reference to concepts table for result modifier (=, <, >, etc.)
-unit_concept_id                       | bigint | FK reference to concepts table for the measurement units (e.g., mmol/L, mg/dL, etc.)
-normal_range_low                      | float  | Lower bound of the normal reference range assigned by the laboratory
-normal_range_high                     | float  | Upper bound of the normal reference range assigned by the laboratory
-normal_range_low_modifier_concept_id  | bigint | FK reference to concepts table for result modifier (=, <, >, etc.)
-normal_range_high_modifier_concept_id | bigint | FK reference to concepts table for result modifier (=, <, >, etc.)
+column                                | type   | description                                                                                                                                   | foreign key
+------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------
+id                                    | serial | Surrogate key for record                                                                                                                      |
+clinical_code_id                      | bigint | FK reference to clinical_codes table to the associated clinical code                                                                          | [clinical_codes](#clinical_codes)
+patient_id                            | bigint | FK reference to patients table                                                                                                                | [patients](#patients)
+result_as_number                      | float  | The observation result stored as a number, applicable to observations where the result is expressed as a numeric value                        |
+result_as_string                      | text   | The observation result stored as a string, applicable to observations where the result is expressed as verbatim text                          |
+result_as_concept_id                  | bigint | FK reference to concepts table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.) | [concepts](#concepts)
+result_modifier_concept_id            | bigint | FK reference to concepts table for result modifier (=, <, >, etc.)                                                                            | [concepts](#concepts)
+unit_concept_id                       | bigint | FK reference to concepts table for the measurement units (e.g., mmol/L, mg/dL, etc.)                                                          | [concepts](#concepts)
+normal_range_low                      | float  | Lower bound of the normal reference range assigned by the laboratory                                                                          |
+normal_range_high                     | float  | Upper bound of the normal reference range assigned by the laboratory                                                                          |
+normal_range_low_modifier_concept_id  | bigint | FK reference to concepts table for result modifier (=, <, >, etc.)                                                                            | [concepts](#concepts)
+normal_range_high_modifier_concept_id | bigint | FK reference to concepts table for result modifier (=, <, >, etc.)                                                                            | [concepts](#concepts)
 
 ## drug_exposure_details
 
 - To capture extra details about drug clinical_codes
 - quantity of drug is stored in the clinical_codes field with the code
 
-column                    | type   | description
-------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------
-id                        | serial | Surrogate key for record
-clinical_code_id          | bigint | FK reference to clinical_codes table to the associated clinical code
-patient_id                | bigint | FK to reference to patients table
-refills                   | int    | The number of refills after the initial prescription; the initial prescription is not counted (i.e., values start with 0)
-days_supply               | int    | The number of days of supply as recorded in the original prescription or dispensing record
-dose_form_concept_id      | bigint | FK reference to concepts table for the form of the drug (capsule, injection, etc.)
-dose_unit_concept_id      | bigint | FK reference to concepts table for the units in which the dose_value is expressed
-dose_value                | float  | Numeric value for the dose of the drug
-strength_source_value     | text   | Drug strength as reported in the raw data. This can include both dose value and units
-generic_name_source_value | text   | Generic name of drug as reported in the raw data
-brand_name_source_value   | text   | Brand name of drug as reported in the raw data
+column                    | type   | description                                                                                                               | foreign key
+------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------
+id                        | serial | Surrogate key for record                                                                                                  |
+clinical_code_id          | bigint | FK reference to clinical_codes table to the associated clinical code                                                      | [clinical_codes](#clinical_codes)
+patient_id                | bigint | FK to reference to patients table                                                                                         | [patients](#patients)
+refills                   | int    | The number of refills after the initial prescription; the initial prescription is not counted (i.e., values start with 0) |
+days_supply               | int    | The number of days of supply as recorded in the original prescription or dispensing record                                |
+dose_form_concept_id      | bigint | FK reference to concepts table for the form of the drug (capsule, injection, etc.)                                        | [concepts](#concepts)
+dose_unit_concept_id      | bigint | FK reference to concepts table for the units in which the dose_value is expressed                                         | [concepts](#concepts)
+dose_value                | float  | Numeric value for the dose of the drug                                                                                    |
+strength_source_value     | text   | Drug strength as reported in the raw data. This can include both dose value and units                                     |
+generic_name_source_value | text   | Generic name of drug as reported in the raw data                                                                          |
+brand_name_source_value   | text   | Brand name of drug as reported in the raw data                                                                            |
 
 ## costs
 
@@ -214,42 +217,42 @@ brand_name_source_value   | text   | Brand name of drug as reported in the raw d
 - Do we need a column to indicate payer if there is more than 1 row associated with a cost record?
 - Should revenue codes be in clinical_codes table? Same with DRG and APC codes?
 
-column                     | type   | description
--------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-id                         | serial | A unique identifier for each COST record
-context_id                 | bigint | FK reference to context table
-patient_id                 | bigint | FK to reference to patients table
-currency_concept_id        | bigint | FK reference to concepts table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar)
-total_charged              | float  | The total amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider) billed to a payer. This information is usually provided in claims data.
-total_cost                 | float  | Cost of service/device/drug incurred by provider/pharmacy. This field is more commonly derived from charge information.
-total_cost_type_concept_id | bigint | FK reference to concepts table for the provenance or the source of the cost data. Shows the provenance or the source of the total_cost data: Calculated from provider revenue, calculated from cost-to-charge ratio, reported from accounting database, etc.
-total_paid                 | float  | The total amount paid from all payers for the expenses of the service/device/drug. This field is calculated using the following formula: paid_by_payer + paid_by_patient + paid_by_primary. In claims data, this field is considered the calculated field the payer expects the provider to get reimbursed for the service/device/drug from the payer and from the patient, based on the payer's contractual obligations.
-paid_by_payer              | float  | The amount paid by the Payer for the service/device/drug. In claims data, generally there is one field representing the total payment from the payer for the service/device/drug. However, this field could be a calculated field if the source data provides separate payment information for the ingredient cost and the dispensing fee. If the paid_ingredient_cost or paid_dispensing_fee fields are populated with nonzero values, the paid_by_payer field is calculated using the following formula: paid_ingredient_cost + paid_dispensing_fee. If there is more than one Payer in the source data, several cost records indicate that fact. The Payer reporting this reimbursement should be indicated under the payer_plan_id field.
-paid_by_patient            | float  | The total amount paid by the patient as a share of the expenses. This field is most often used in claims data to report the contracted amount the patient is responsible for reimbursing the provider for said service/device/drug. This is a calculated field using the following formula: paid_patient_copay + paid_patient_coinsurance + paid_patient_deductible. If the source data has actual patient payments (e.g. the patient payment is not a derivative of the payer claim and there is verification the patient paid an amount to the provider), then the patient payment should have it's own cost record with a payer_plan_id set to 0 to indicate the payer is actually the patient, and the actual patient payment should be noted under the total_paid field. The paid_by_patient field is only used for reporting a patient's responsibility reported on an insurance claim.
-paid_patient_copay         | float  | The amount paid by the patient as a fixed contribution to the expenses. paid_patient_copay does contribute to the paid_by_patient variable. The paid_patient_copay field is only used for reporting a patient's copay amount reported on an insurance claim.
-paid_patient_coinsurance   | float  | The amount paid by the patient as a joint assumption of risk. Typically, this is a percentage of the expenses defined by the Payer Plan after the patient's deductible is exceeded. paid_patient_coinsurance does contribute to the paid_by_patient variable. The paid_patient_coinsurance field is only used for reporting a patient's coinsurance amount reported on an insurance claim.
-paid_patient_deductible    | float  | The amount paid by the patient that is counted toward the deductible defined by the Payer Plan. paid_patient_deductible does contribute to the paid_by_patient variable. The paid_patient_deductible field is only used for reporting a patient's deductible amount reported on an insurance claim.
-paid_by_primary            | float  | The amount paid by a primary Payer through the coordination of benefits. paid_by_primary does contribute to the total_paid variable. The paid_by_primary field is only used for reporting a patient's primary insurance payment amount reported on the secondary payer insurance claim. If the source data has actual primary insurance payments (e.g. the primary insurance payment is not a derivative of the payer claim and there is verification another insurance company paid an amount to the provider), then the primary insurance payment should have it's own cost record with a payer_plan_id set to the applicable payer, and the actual primary insurance payment should be noted under the paid_by_payer field.
-paid_ingredient_cost       | float  | The amount paid by the Payer to a pharmacy for the drug, excluding the amount paid for dispensing the drug. paid_ingredient_cost contributes to the paid_by_payer field if this field is populated with a nonzero value.
-paid_dispensing_fee        | float  | The amount paid by the Payer to a pharmacy for dispensing a drug, excluding the amount paid for the drug ingredient. paid_dispensing_fee contributes to the paid_by_payer field if this field is populated with a nonzero value.
-information_period_id      | float  | FK reference to the information_periods table
-amount_allowed             | float  | The contracted amount agreed between the payer and provider. This information is generally available in claims data. This is similar to the total_paid amount in that it shows what the payer expects the provider to be reimbursed after the payer and patient pay. This differs from the total_paid amount in that it is not a calculated field, but a field available directly in claims data. Use case: This will capture non-covered services. Non-covered services are indicated by an amount allowed and patient responsibility variables (copay, coinsurance, deductible) will be equal $0 in the source data. This means the patient is responsible for the total_charged value. The amount_allowed field is payer specific and the payer should be indicated by the payer_plan_id field.
+column                     | type   | description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | foreign key
+-------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------
+id                         | serial | A unique identifier for each COST record                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+context_id                 | bigint | FK reference to context table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | [contexts](#contexts)
+patient_id                 | bigint | FK to reference to patients table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | [patients](#patients)
+currency_concept_id        | bigint | FK reference to concepts table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | [concepts](#concepts)
+total_charged              | float  | The total amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider) billed to a payer. This information is usually provided in claims data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+total_cost                 | float  | Cost of service/device/drug incurred by provider/pharmacy. This field is more commonly derived from charge information.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+total_cost_type_concept_id | bigint | FK reference to concepts table for the provenance or the source of the cost data. Shows the provenance or the source of the total_cost data: Calculated from provider revenue, calculated from cost-to-charge ratio, reported from accounting database, etc.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | [concepts](#concepts)
+total_paid                 | float  | The total amount paid from all payers for the expenses of the service/device/drug. This field is calculated using the following formula: paid_by_payer + paid_by_patient + paid_by_primary. In claims data, this field is considered the calculated field the payer expects the provider to get reimbursed for the service/device/drug from the payer and from the patient, based on the payer's contractual obligations.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+paid_by_payer              | float  | The amount paid by the Payer for the service/device/drug. In claims data, generally there is one field representing the total payment from the payer for the service/device/drug. However, this field could be a calculated field if the source data provides separate payment information for the ingredient cost and the dispensing fee. If the paid_ingredient_cost or paid_dispensing_fee fields are populated with nonzero values, the paid_by_payer field is calculated using the following formula: paid_ingredient_cost + paid_dispensing_fee. If there is more than one Payer in the source data, several cost records indicate that fact. The Payer reporting this reimbursement should be indicated under the payer_plan_id field.                                                                                                                                                 |
+paid_by_patient            | float  | The total amount paid by the patient as a share of the expenses. This field is most often used in claims data to report the contracted amount the patient is responsible for reimbursing the provider for said service/device/drug. This is a calculated field using the following formula: paid_patient_copay + paid_patient_coinsurance + paid_patient_deductible. If the source data has actual patient payments (e.g. the patient payment is not a derivative of the payer claim and there is verification the patient paid an amount to the provider), then the patient payment should have it's own cost record with a payer_plan_id set to 0 to indicate the payer is actually the patient, and the actual patient payment should be noted under the total_paid field. The paid_by_patient field is only used for reporting a patient's responsibility reported on an insurance claim. |
+paid_patient_copay         | float  | The amount paid by the patient as a fixed contribution to the expenses. paid_patient_copay does contribute to the paid_by_patient variable. The paid_patient_copay field is only used for reporting a patient's copay amount reported on an insurance claim.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+paid_patient_coinsurance   | float  | The amount paid by the patient as a joint assumption of risk. Typically, this is a percentage of the expenses defined by the Payer Plan after the patient's deductible is exceeded. paid_patient_coinsurance does contribute to the paid_by_patient variable. The paid_patient_coinsurance field is only used for reporting a patient's coinsurance amount reported on an insurance claim.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+paid_patient_deductible    | float  | The amount paid by the patient that is counted toward the deductible defined by the Payer Plan. paid_patient_deductible does contribute to the paid_by_patient variable. The paid_patient_deductible field is only used for reporting a patient's deductible amount reported on an insurance claim.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+paid_by_primary            | float  | The amount paid by a primary Payer through the coordination of benefits. paid_by_primary does contribute to the total_paid variable. The paid_by_primary field is only used for reporting a patient's primary insurance payment amount reported on the secondary payer insurance claim. If the source data has actual primary insurance payments (e.g. the primary insurance payment is not a derivative of the payer claim and there is verification another insurance company paid an amount to the provider), then the primary insurance payment should have it's own cost record with a payer_plan_id set to the applicable payer, and the actual primary insurance payment should be noted under the paid_by_payer field.                                                                                                                                                                |
+paid_ingredient_cost       | float  | The amount paid by the Payer to a pharmacy for the drug, excluding the amount paid for dispensing the drug. paid_ingredient_cost contributes to the paid_by_payer field if this field is populated with a nonzero value.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+paid_dispensing_fee        | float  | The amount paid by the Payer to a pharmacy for dispensing a drug, excluding the amount paid for the drug ingredient. paid_dispensing_fee contributes to the paid_by_payer field if this field is populated with a nonzero value.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+information_period_id      | float  | FK reference to the information_periods table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+amount_allowed             | float  | The contracted amount agreed between the payer and provider. This information is generally available in claims data. This is similar to the total_paid amount in that it shows what the payer expects the provider to be reimbursed after the payer and patient pay. This differs from the total_paid amount in that it is not a calculated field, but a field available directly in claims data. Use case: This will capture non-covered services. Non-covered services are indicated by an amount allowed and patient responsibility variables (copay, coinsurance, deductible) will be equal $0 in the source data. This means the patient is responsible for the total_charged value. The amount_allowed field is payer specific and the payer should be indicated by the payer_plan_id field.                                                                                            |
 
 ## addresses
 
 - Used for patients, practitioners, and facilities
 
-column       | type   | description
------------- | ------ | --------------------------------------------------------------------------------------------------
-id           | serial | A unique identifier for each geographic location
-address_1    | text   | Typically used for street address
-address_2    | text   | Typically used for additional detail such as building, suite, floor, etc.
-city         | text   | The city field as it appears in the source data (should this be standardized?)
-state        | text   | The state field as it appears in the source data (should this be standardized to 2-letter states?)
-zip          | text   | The zip or postal code
-county       | text   | The county (should this be standardized to county code?)
-census_tract | text   | The census tract if available (should this be standardized?)
-hsa          | text   | The Health Service Area if available (should this be standardized?)
+column       | type   | description                                                                                        | foreign key
+------------ | ------ | -------------------------------------------------------------------------------------------------- | -----------
+id           | serial | A unique identifier for each geographic location                                                   |
+address_1    | text   | Typically used for street address                                                                  |
+address_2    | text   | Typically used for additional detail such as building, suite, floor, etc.                          |
+city         | text   | The city field as it appears in the source data (should this be standardized?)                     |
+state        | text   | The state field as it appears in the source data (should this be standardized to 2-letter states?) |
+zip          | text   | The zip or postal code                                                                             |
+county       | text   | The county (should this be standardized to county code?)                                           |
+census_tract | text   | The census tract if available (should this be standardized?)                                       |
+hsa          | text   | The Health Service Area if available (should this be standardized?)                                |
 
 ## deaths
 
@@ -259,14 +262,14 @@ hsa          | text   | The Health Service Area if available (should this be sta
 - Use of _claim_id_ and _line_id_ is not necessary since deaths are in the clinical_codes table if they are specific diagnosis codes from an encounter
 - Should this just be in the clinical_codes table?
 
-column                | type   | description
---------------------- | ------ | ----------------------------------------------------------------------------------------------
-id                    | serial | Surrogate key for record
-patient_id            | bigint | FK reference to patients table
-date                  | date   | Date of death (yyyy-mm-dd)
-cause_concept_id      | bigint | FK reference to concepts table for cause of death (typically ICD-9 or ICD-10 code)
-cause_type_concept_id | bigint | FK reference to concepts table for the type of cause of death (e.g. primary, secondary, etc. )
-practitioner_id       | bigint | FK reference to practitioners table
+column                | type   | description                                                                                    | foreign key
+--------------------- | ------ | ---------------------------------------------------------------------------------------------- | -------------------------------
+id                    | serial | Surrogate key for record                                                                       |
+patient_id            | bigint | FK reference to patients table                                                                 | [patients](#patients)
+date                  | date   | Date of death (yyyy-mm-dd)                                                                     |
+cause_concept_id      | bigint | FK reference to concepts table for cause of death (typically ICD-9 or ICD-10 code)             | [concepts](#concepts)
+cause_type_concept_id | bigint | FK reference to concepts table for the type of cause of death (e.g. primary, secondary, etc. ) | [concepts](#concepts)
+practitioner_id       | bigint | FK reference to practitioners table                                                            | [practitioners](#practitioners)
 
 ## information_periods
 
@@ -274,13 +277,13 @@ practitioner_id       | bigint | FK reference to practitioners table
 - Could include enrollment types (e.g., Part A, Part B, HMO) or just "observable" (as with up-to-standard data in CPRD)
 - One row per patient per enrollment type per table
 
-column                      | type   | description
---------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------
-id                          | serial | Surrogate key for record
-patient_id                  | bigint | FK reference to patients table
-start_date                  | date   | Start date of record (yyyy-mm-dd)
-end_date                    | date   | End date of record (yyyy-mm-dd)
-information_type_concept_id | bigint | FK reference to concepts table representing the information type (e.g., insurance coverage, hospital data, up-to-standard date)
+column                      | type   | description                                                                                                                     | foreign key
+--------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------
+id                          | serial | Surrogate key for record                                                                                                        |
+patient_id                  | bigint | FK reference to patients table                                                                                                  | [patients](#patients)
+start_date                  | date   | Start date of record (yyyy-mm-dd)                                                                                               |
+end_date                    | date   | End date of record (yyyy-mm-dd)                                                                                                 |
+information_type_concept_id | bigint | FK reference to concepts table representing the information type (e.g., insurance coverage, hospital data, up-to-standard date) | [concepts](#concepts)
 
 ## admission_details
 
@@ -288,24 +291,24 @@ information_type_concept_id | bigint | FK reference to concepts table representi
 - One row per admission
 - Each collection that has admission detail will link to this table
 
-column                | type   | description
---------------------- | ------ | -----------------------------------------------------------------------------------------------------------
-id                    | serial | Surrogate key for record
-patient_id            | bigint | FK reference to patients table
-admission_date        | date   | Date of admission (yyyy-mm-dd)
-discharge_date        | date   | Date of discharge (yyyy-mm-dd)
-admit_source_id       | int    | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)
-discharge_location_id | bigint | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)
-los                   | int    | Length of stay
-type_concept_id       | bigint | FK reference to concepts table representing the type of admission the record is (Emergency, Elective, etc.)
+column                | type   | description                                                                                                 | foreign key
+--------------------- | ------ | ----------------------------------------------------------------------------------------------------------- | ---------------------
+id                    | serial | Surrogate key for record                                                                                    |
+patient_id            | bigint | FK reference to patients table                                                                              | [patients](#patients)
+admission_date        | date   | Date of admission (yyyy-mm-dd)                                                                              |
+discharge_date        | date   | Date of discharge (yyyy-mm-dd)                                                                              |
+admit_source_id       | int    | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                      |
+discharge_location_id | bigint | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)   |
+los                   | int    | Length of stay                                                                                              |
+type_concept_id       | bigint | FK reference to concepts table representing the type of admission the record is (Emergency, Elective, etc.) | [concepts](#concepts)
 
 ## concepts
 
 - Adapted from OMOP concept table (could add other fields, like domain, if needed)
 
-column        | type   | description
-------------- | ------ | --------------------------------------------------------------------------------
-id            | serial | Surrogate key for record (this is the concept_id)
-vocabulary_id | text   | Unique text-string identifier of the vocabulary (see OMOP or UMLS)
-concept_code  | text   | Actual code as text string from the source vocabulary (e.g., "410.00" for ICD-9)
-concept_text  | text   | Text descriptor associated with the concept_code
+column        | type   | description                                                                      | foreign key
+------------- | ------ | -------------------------------------------------------------------------------- | -----------------------------
+id            | serial | Surrogate key for record (this is the concept_id)                                |
+vocabulary_id | text   | Unique text-string identifier of the vocabulary (see OMOP or UMLS)               | [vocabularies](#vocabularies)
+concept_code  | text   | Actual code as text string from the source vocabulary (e.g., "410.00" for ICD-9) |
+concept_text  | text   | Text descriptor associated with the concept_code                                 |
