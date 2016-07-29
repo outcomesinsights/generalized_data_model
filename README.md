@@ -312,3 +312,13 @@ id            | serial | Surrogate key for record (this is the concept_id)      
 vocabulary_id | text   | Unique text-string identifier of the vocabulary (see OMOP or UMLS)               | [vocabularies](#vocabularies)
 concept_code  | text   | Actual code as text string from the source vocabulary (e.g., "410.00" for ICD-9) |
 concept_text  | text   | Text descriptor associated with the concept_code                                 |
+
+## [vocabularies](#vocabularies)
+
+- Adapted from the OMOP vocabulary table
+
+column               | type | description                                                         | foreign key | required
+-------------------- | ---- | ------------------------------------------------------------------- | ----------- | --------
+id                   | text | Short name of the vocabulary which acts as a natural key for record |             | Y
+omopv4_vocabulary_id | int  | Old ID used in OMOPv4                                               |             |
+vocabulary_name      | text | Full name of the vocabulary                                         |             |
