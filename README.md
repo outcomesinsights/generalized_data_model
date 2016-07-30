@@ -322,3 +322,13 @@ column               | type | description                                       
 id                   | text | Short name of the vocabulary which acts as a natural key for record |             |     x
 omopv4_vocabulary_id | int  | Old ID used in OMOPv4                                               |             |     x
 vocabulary_name      | text | Full name of the vocabulary                                         |             |     x
+
+## [mappings](#mappings)
+
+- Adapted from the OMOP concept_relationship table
+
+column               | type   | description                                                              | foreign key                   | required
+-------------------- | -----  | ------------------------------------------------------------------------ | ----------------------------- | --------
+concept_id_1         | bigint | FK reference to [concepts](#concepts) table for the source concept       | [concepts](#concepts)         |     x
+relationship_id      | text   | The type or nature of the relationship (e.g., "is_a")                    |                               |     x
+concept_id_2         | bigint | FK reference to [concepts](#concepts) table for the destination concept  | [concepts](#concepts)         |     x
