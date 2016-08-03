@@ -163,7 +163,7 @@ clinical_code_concept_id    | bigint | FK reference to [concepts](#concepts) tab
 quantity                    | bigint | Quantity, if available (e.g., procedures)                                       |                              |          
 seq_num                     | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3) |                              |          
 type_concept_id             | bigint | Additional type information (ex: primary or admitting)                          | [concepts](#concepts)        |          
-clinical_code_source        | text   | Source code from raw data                                                       |                              |     x    
+clinical_code_source_value        | text   | Source code from raw data                                                       |                              |     x    
 clinical_code_vocabulary_id | text   | Vocabulary the clinical code comes from                                         | [vocabularies](#vocabularies)|     x    
 
 ## [measurement_details](#measurement_details)
