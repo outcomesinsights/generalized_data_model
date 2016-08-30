@@ -214,8 +214,6 @@ brand_name_source_value   | text   | Brand name of drug as reported in the raw d
 
 - To capture [costs](#costs) (charges, paid amounts, and/or [costs](#costs)) for each provided service
 - All [costs](#costs) are linked to a claim and could also be linked to a line, to align with the original data
-- Do we need a column to indicate payer if there is more than 1 row associated with a cost record?
-- Should revenue codes be in [clinical_codes](#clinical_codes) table? Same with DRG and APC codes?
 
 column                     | type   | description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | foreign key          | required   
 -------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------| -------- 
@@ -247,12 +245,12 @@ column       | type   | description                                             
 id           | serial | A unique identifier for each geographic location                                                   |             |     x    
 address_1    | text   | Typically used for street address                                                                  |             |          
 address_2    | text   | Typically used for additional detail such as building, suite, floor, etc.                          |             |           
-city         | text   | The city field as it appears in the source data (should this be standardized?)                     |             |           
-state        | text   | The state field as it appears in the source data (should this be standardized to 2-letter states?) |             |           
+city         | text   | The city field as it appears in the source data 								                   |             |           
+state        | text   | The state field as it appears in the source data 												   |             |           
 zip          | text   | The zip or postal code                                                                             |             |           
-county       | text   | The county (should this be standardized to county code?)                                           |             |             
-census_tract | text   | The census tract if available (should this be standardized?)                                       |             |           
-hsa          | text   | The Health Service Area if available (should this be standardized?)                                |             |            
+county       | text   | The county                                                                                         |             |             
+census_tract | text   | The census tract if available                                                                      |             |           
+hsa          | text   | The Health Service Area if available                                                               |             |            
 
 ## [deaths](#deaths)
 
@@ -260,7 +258,6 @@ hsa          | text   | The Health Service Area if available (should this be sta
 - Commonly populated from beneficiary or similar administrative data associated with the medical record
 - Might need to check discharge status as part of ETL process to fill this out completely
 - Use of _claim_id_ and _line_id_ is not necessary since [deaths](#deaths) are in the [clinical_codes](#clinical_codes) table if they are specific diagnosis codes from an encounter
-- Should this just be in the [clinical_codes](#clinical_codes) table?
 
 column                | type   | description                                                                                                 | foreign key                    | required          
 --------------------- | ------ | ----------------------------------------------------------------------------------------------------------- | -------------------------------| --------  
