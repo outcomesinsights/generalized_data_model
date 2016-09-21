@@ -66,6 +66,7 @@ gender_concept_id         | bigint | A foreign key that refers to an identifier 
 ## [facilities](#facilities)
 
 - Unique records for all the [facilities](#facilities) in the data
+- facility_type_concept_id should be used to describe the whole facility (e.g., Academic Medical Center or Community Medical Center). Specific departments in the facility should be entered in the [contexts](#contexts) table using the care_site_type_concept_id field.
 
 column                    | type   | description                                                                     | foreign key            | required 
 ------------------------- | ------ | ------------------------------------------------------------------------------- | -----------------------| --------
@@ -74,7 +75,8 @@ facility_name             | text   | Facility name, if available                
 primary_identifier        | text   | Primary facility identifier                                                     |                        |     x    
 primary_identifier_type   | text   | Type of identifier specified in primary identifier field (UPIN, NPI, etc)       |                        |     x    
 secondary_identifier      | text   | Secondary facility identifier (Optional)                                        |                        |         
-secondary_identifier_type | text   | Type of identifier specified in secondary identifier field (UPIN, NPI, etc)     |                        |         
+secondary_identifier_type | text   | Type of identifier specified in secondary identifier field (UPIN, NPI, etc)     |                        |
+facility_type_concept_id  | bigint | FK reference to [concepts](#concepts) table representing the facility type      | [concepts](#concepts)  |         
 specialty_concept_id      | bigint | A foreign key to an identifier in the [concepts](#concepts) table for specialty | [concepts](#concepts)  |         
 address_id                | bigint | A foreign key to the address of the location of the facility                    | [addresses](#addresses)|         
 
@@ -119,6 +121,7 @@ specialty_type_concept_id | bigint | FK reference to [concepts](#concepts) table
 - Holds information about the context of the [clinical_codes](#clinical_codes) and [costs](#costs)
 - Groups [clinical_codes](#clinical_codes) typically occurring on the same day or at the same timed (e.g., a diagnosis and a procedure)
 - [contexts](#contexts) records are always linked to a collection records
+- care_site_type_concept_id is used to describe the department the service was done in
 
 column                            | type   | description                                                                                                                                                          | foreign key                | required 
 --------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------| --------
@@ -128,7 +131,7 @@ patient_id                        | bigint | FK to reference to [patients](#pati
 start_date                        | date   | Start date of record (yyyy-mm-dd)                                                                                                                                    |                            |     x      
 end_date                          | date   | End date of record (yyyy-mm-dd)                                                                                                                                      |                            |     x      
 facility_id                       | bigint | FK reference to [facilities](#facilities) table                                                                                                                      | [facilities](#facilities)  |           
-facility_type_concept_id          | bigint | FK reference to [concepts](#concepts) table representing the facility type                                                                                           | [concepts](#concepts)      |           
+care_site_type_concept_id          | bigint | FK reference to [concepts](#concepts) table representing the care site type within the facility                                                                                           | [concepts](#concepts)      |           
 pos_concept_id                    | bigint | FK reference to [concepts](#concepts) table representing the place of service associated with this record                                                            | [concepts](#concepts)      |           
 file_type_concept_id              | bigint | FK reference to [concepts](#concepts) table representing the type of file from which the record was pulled                                                           | [concepts](#concepts)      |     x      
 address_id                        | bigint | FK reference to [addresses](#addresses) table representing the location of the service. If the service location can not be determined this should be set to missing. | [addresses](#addresses)    |           
