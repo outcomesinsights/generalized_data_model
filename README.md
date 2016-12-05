@@ -113,7 +113,7 @@ column                    | type   | description                                
 ------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------| --------
 context_id                | bigint | FK reference to [contexts](#contexts) table                                                                                                       | [contexts](#contexts)          |     x     
 practitioner_id           | bigint | FK reference to [practitioners](#practitioners) table                                                                                             | [practitioners](#practitioners)|     x     
-role_type_id              | text   | Roles [practitioners](#practitioners) can play in an encounter (currently a text field)                                                           |                                |           
+role_type_concept_id              | text   | Roles [practitioners](#practitioners) can play in an encounter                                                           |                                |           
 specialty_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the practitioner's specialty type for the services/diagnoses associated with this record | [concepts](#concepts)          |
 
 ## [contexts](#contexts)
