@@ -1,22 +1,22 @@
-# Outcomes Insights, Inc. Draft Data Model
+# Outcomes Insights, Inc. Generalized Data Model
 
-We define a data model as a set of standard tables in which specific information should be stored. It defines the end result of an extract, transform, and load (ETL) process for an arbitrary source (or raw) healthcare dataset. The goals of our data model are five-fold:
+We define a data model as a set of standard tables in which specific information should be stored. It defines the end result of an extract, transform, and load (ETL) process for an arbitrary source (or raw) healthcare dataset. The goals of the generalized data model are three-fold:
 
-1. To simplify the location of the most important information for creating analysis data sets and studies
-2. To store virtually all data using its **source** vocabulary for transparency and compatibility with existing knowledge
-3. To capture hierarchical relationships among data elements within a relational data structure to retain as much information as possible
-4. To track the provenance of the original data elements in order to enhance the reproducibility of studies
-5. To facilitate a straightforward, subsequent ETL process to other data models, including OMOP and PCORnet
+1. To simplify the location of clinical codes without needing specialized mappings and tables to support different types of codes
+2. To capture hierarchical relationships among data elements within a relational data structure without requiring visits to be created and used for establishing these relationships
+3. To develop a sufficiently generalized data model that can be readily transformed to other data models, including OMOP and Sentinel
 
-The focus of our data model is on the information in the source vocabulary (i.e., the vocabularies used in the original data). This facilitates using a substantial literature of validated algorithms, enhancing transparency and reproducibility. Therefore, within the data model, we do not separate clinical events into conditions, procedures, measurements, observations, or drug exposures. They are all simply clinical events, with codes to identify them. We store all codes in the "Clinical Codes" table using their original vocabularies (e.g., ICD-9, HCPCS, CPT, etc.) to retain the original semantic expression of the underlying clinical information. We use "detail" tables to capture additional information that is specific to a subset of data elements, but which is not always used (e.g., days supplied for drugs, quantities for procedures, laboratory values, etc.).
+The focus of our data model is on the information in the source vocabulary (i.e., the vocabularies used in the original data), as stored in the [clinical_codes](#clinical_codes) table. In particular, we avoid translating codes from one vocabulary to another.  In a few very simple cases like gender and race/ethnicity, we include mappings to make it easier for users of our study-builder to filter data; however, we still retain and return the original coding for these variables. 
 
-In particular, we avoid translating clinical codes from one vocabulary to another. In a few very simple cases like gender and race/ethnicity, we include mappings to make it easier for users of our study-builder to filter data because it results in a simpler and/or clearer representation of the underlying information. However, we still retain the original coding. This is because most cross-vocabulary relationships are prone to continuous refinement, and they are not available for all vocabularies (e.g., procedure vocabularies). Furthermore, the potential efficiencies from expressing queries using a common vocabulary (e.g., SNOMED) do not require that every code in the data be translated **during the ETL process**. Queries that work across datasets with different source vocabularies can readily be done "on the fly." The excellent vocabulary mappings provided by the Observational Health Data Science and Informatics (OHDSI) community make such a process easy to implement. In fact, we include a Mappings table to make it easier to retain the relationships among similar data sources.
+By storing all codes of any kind in a single, large table, we gain substantial flexibility in capturing the relationships among these data elements. This is operationalized using the "[contexts](#contexts)" and "[collections](#collections)" tables. In our model, the "context" captures both the provenance of the data as well as the types of relationships among related data elements that share a context id. These relationship types depend on the data and can be identified using the record_type_concept_id. In administrative billing data, related records are often "lines" or "details" which are records that associate procedures with specific diagnoses, procedures with procedure modifiers, or procedures with [costs](#costs). In electronic health record data, relationship types may include sequences of prescription records or laboratory measures captured at the one time. 
 
-By storing all codes of any kind in a single, large table, we gain substantial flexibility in capturing the relationships among these data elements. This is operationalized using the "[contexts](#contexts)" and "[collections](#collections)" tables. In our model, the "Context" captures both the provenance of the data as well as the types of relationships among related data elements. These relationship types depend on the data and can be identified using a type concept id. In administrative billing data, related records are often "lines" or "details" which are records that associate procedures with specific diagnoses, procedures with procedure modifiers, or procedures with [costs](#costs). In electronic health record data, relationship types may include sequences of prescription records or laboratory measures captured at the one time. The [collections](#collections) table represents a higher level of hierarchy for records in the [contexts](#contexts) table. That is, [collections](#collections) are groups of [contexts](#contexts). This kind of grouping occurs when multiple billable units ("lines" or "details") are combined into invoices ("claims" or "headers"). It also occurs when prescriptions, laboratory measures, diagnoses and/or procedures are all recorded at a single office visit. In short, a "Collection" is typically a "claim" or a "visit" depending on whether the source data is administrative billing or electronic health record data. In organizing the data this way, we avoid the need to construct "visits" from claims data which often leads to inaccuracy, loss of information, and complicated ETL processing.
+The [collections](#collections) table represents a higher level of hierarchy for records in the [contexts](#contexts) table. That is, [collections](#collections) are groups of [contexts](#contexts). This kind of grouping occurs when multiple billable units ("lines" or "details") are combined into invoices ("claims" or "headers"). It also occurs when prescriptions, laboratory measures, diagnoses and/or procedures are all recorded at a single office visit. In short, a "Collection" is typically a "claim" or a "visit" depending on whether the source data is administrative billing or electronic health record data. In organizing the data this way, we avoid the need to construct "visits" from claims data which often leads to inaccuracy, loss of information, and complicated ETL processing.
 
-The strength of our structure is that we make it simple to create algorithms to identify clinical constructs used in research. These constructs include clinical conditions like "diabetes" or "breast cancer" as well as clinical encounters like "visits", "hospitalizations", or "emergency room visits". Virtually every algorithm begins by selecting patients with at least one of a set of relevant codes, all of which are found in the Clinical Codes table. In a properly designed database, this can be an efficient way to select a superset of all patients that are needed for research. After identifying the superset, the rest of the processing becomes an exercise in filtering, often using information from [contexts](#contexts) or additional information in one of the "Details" tables. This allows us to use vocabulary tools and a broad library of existing algorithms to operate on the data and create all of the variables for our study datasets. To this end, we have developed an open-source language, [ConceptQL](https://github.com/outcomesinsights/conceptql_spec), that enables us to create, store, share, and use algorithms that are designed to work on electronic health information. Our project, [Jigsaw](http://www.jigsaw.io) leverages ConceptQL to define and apply algorithms against data in our data model to build study datasets. (And Jigsaw is designed so that algorithms also work across data **models** as well.)
+The strength of the generalized structure is that it allows users to query data according to its native set of relationships instead of using visits, which are not native to all data sources.  This facilitates the use of a substantial literature of validated algorithms, enhancing transparency and reproducibility.  These algorithms can be used to identify clinical conditions like "diabetes" or "breast cancer" as well as clinical encounters like "visits", "hospitalizations", or "emergency room visits". 
 
-Below is the current version of the schema for the OI Data Model. We gratefully acknowledge the influence of the open-source OHDSI common data model [specifications](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:cdm) on our thinking in creating our data model. In addition, we acknowledge the influence of both PCORnet and i2b2 on our approach, although most of our CDM was designed prior to fully reviewing these data models. At the moment, all references to the [concepts](#concepts) table refer to the OMOP version 5 vocabulary [table](http://www.ohdsi.org/web/athena/) maintained by OHDSI.
+Virtually every algorithm begins by selecting patients with at least one of a set of relevant codes, all of which are found in the [clinical_codes](#clinical_codes) table. This allows researchers to use vocabulary tools and/or a broad library of existing algorithms to create all of the variables for study datasets. To this end, we have developed an open-source language, [ConceptQL](https://github.com/outcomesinsights/conceptql_spec), that enables researchers to create, store, share, and use algorithms that are designed to work on electronic health information. Our project, [Jigsaw](http://www.jigsaw.io) leverages ConceptQL to define and apply algorithms against data in our data model to build study datasets. (And Jigsaw is designed so that algorithms also work across data supported data models as well.)
+
+Below is the current version of the schema for the Generalized Data Model. We gratefully acknowledge the influence of the open-source OHDSI common data model [specifications](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:cdm) on our thinking in creating our data model. In addition, we acknowledge the influence of both Sentinel and i2b2 on our approach, although most of our data model was designed prior to fully reviewing other data models. At the moment, many references to the [concepts](#concepts) table refer to the OMOP version 5 vocabulary [table](http://www.ohdsi.org/web/athena/) maintained by OHDSI.  However, any internally consistent set of vocabularies with unique concept ids would be sufficient (e.g., the [National Library of Medicine Metathesaurus](https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/)).
 
 ## [patients](#patients)
 
@@ -82,17 +82,16 @@ address_id                | bigint | A foreign key to the address of the locatio
 
 ## [collections](#collections)
 
-- Groups [contexts](#contexts) records
+- Used to group [contexts](#contexts) records
 - For claims, records the claim level information (also referred to as "headers" in some databases)
 
-  - Use claim from and thru date for start and end if available
-  - Admit and discharge dates should go in the [admission_details](#admission_details) table unless those are the only dates for the records in which case they should be entered in the [collections](#collections) and [admission_details](#admission_details)
+  - Use claim from and thru date for start and end date, if available
+  - Admit and discharge dates should go in the [admission_details](#admission_details) table unless those are the only dates for the records in which case they should be entered into both the [collections](#collections) and [admission_details](#admission_details) tables
 
 - For EHR, records the visit level information
 
 - Includes the place of service recorded with the record
 
-- Can be linked with multiple records in the provenances table
 
 column              | type   | description                                                   | foreign key                            | required 
 ------------------- | ------ | ------------------------------------------------------------- | ---------------------------------------| --------
@@ -113,15 +112,15 @@ column                    | type   | description                                
 ------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------| --------
 context_id                | bigint | FK reference to [contexts](#contexts) table                                                                                                       | [contexts](#contexts)          |     x     
 practitioner_id           | bigint | FK reference to [practitioners](#practitioners) table                                                                                             | [practitioners](#practitioners)|     x     
-role_type_id              | text   | Roles [practitioners](#practitioners) can play in an encounter (currently a text field)                                                           |                                |           
+role_type_concept_id              | text   | Roles [practitioners](#practitioners) can play in an encounter                                                           |                                |           
 specialty_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the practitioner's specialty type for the services/diagnoses associated with this record | [concepts](#concepts)          |
 
 ## [contexts](#contexts)
 
-- Holds information about the context of the [clinical_codes](#clinical_codes) and [costs](#costs)
-- Groups [clinical_codes](#clinical_codes) typically occurring on the same day or at the same timed (e.g., a diagnosis and a procedure)
+- Stores information about the context of the [clinical_codes](#clinical_codes) and [costs](#costs)
+- Used to group [clinical_codes](#clinical_codes) typically occurring on the same day or at the same time (e.g., a diagnosis and a procedure, or a systolic and diastolic blood pressure)
 - [contexts](#contexts) records are always linked to a collection records
-- care_site_type_concept_id is used to describe the department the service was done in
+- care_site_type_concept_id is used to describe the department in which the service was performed
 
 column                            | type   | description                                                                                                                                                          | foreign key                | required 
 --------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------| --------
@@ -134,25 +133,18 @@ facility_id                       | bigint | FK reference to [facilities](#facil
 care_site_type_concept_id          | bigint | FK reference to [concepts](#concepts) table representing the care site type within the facility                                                                                           | [concepts](#concepts)      |           
 pos_concept_id                    | bigint | FK reference to [concepts](#concepts) table representing the place of service associated with this record                                                            | [concepts](#concepts)      |           
 file_type_concept_id              | bigint | FK reference to [concepts](#concepts) table representing the type of file from which the record was pulled                                                           | [concepts](#concepts)      |     x      
-address_id                        | bigint | FK reference to [addresses](#addresses) table representing the location of the service. If the service location can not be determined this should be set to missing. | [addresses](#addresses)    |           
 service_specialty_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the specialty type for the services/diagnoses associated with this record                                   | [concepts](#concepts)      |           
-type_concept_id                   | bigint | FK reference to [concepts](#concepts) table representing the type of [contexts](#contexts) the record is (line, claim, etc.)                                         | [concepts](#concepts)      |     x      
+record_type_concept_id                   | bigint | FK reference to [concepts](#concepts) table representing the type of [contexts](#contexts) the record represents (line, claim, etc.)                                         | [concepts](#concepts)      |     x      
 
 ## [clinical_codes](#clinical_codes)
 
-- Stores clinical codes from all types of records including procedures, diagnoses, drugs, etc.
-
-  - ICD-9 (Proc and CM)
-  - ICD-10 (Proc and CM)
-  - SNOMED
-  - Medcode (CPRD)
-  - HCPCS/CPT
-  - NDC
-  - LOINC
+- Stores clinical codes from all types of records including procedures, diagnoses, drugs, laboratory records and other sources.  Some common vocabularies include ICD-9, ICD-10, SNOMED, Read, HCPCS, CPT, NDC, and LOINC
 
 - Ignores semantic distinctions about the type of information represented within a vocabulary because most vocabularies contain information from more than one domain
 
 - One record generated for each individual code in the raw data
+
+- The clinical code id is used as a foreign key in the [measurement_details](#measurement_details) and [drug_exposure_details](#drug_exposure_details) tables to add additional information for those domains
 
 column                      | type   | description                                                                     | foreign key                  | required  
 --------------------------- | ------ | ------------------------------------------------------------------------------- | -----------------------------| --------  
@@ -165,19 +157,18 @@ end_date                    | date   | End date of record (yyyy-mm-dd)          
 clinical_code_concept_id    | bigint | FK reference to [concepts](#concepts) table for the code assigned to the record | [concepts](#concepts)        |     x    
 quantity                    | bigint | Quantity, if available (e.g., procedures)                                       |                              |          
 seq_num                     | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3) |                              |          
-type_concept_id             | bigint | Additional type information (ex: primary or admitting)                          | [concepts](#concepts)        |          
+provenance_concept_id             | bigint | Additional type information (ex: primary, admitting, problem list, etc)                          | [concepts](#concepts)        |          
 clinical_code_source_value        | text   | Source code from raw data                                                       |                              |     x    
 clinical_code_vocabulary_id | text   | Vocabulary the clinical code comes from                                         | [vocabularies](#vocabularies)|     x    
 
 ## [measurement_details](#measurement_details)
 
-- Additional information - measurements, observations, status, and specifications
-- Text-based vocabularies should be mapped to LOINC, if possible (e.g., laboratory data indexed by text names for the lab results)
-- Other vocabularies should be included in their original system (e.g., SEER variables)
+- Stores additional information related to measurements, observations, status, and specifications
+- Text-based vocabularies are sufficient, but could also be mapped to LOINC and stored in the [mappings](#mappings) table  (e.g., laboratory data indexed by text names for the lab results)
+- Other vocabularies should be included in their original system (e.g., oncology may be comprised of separate vocabularies for location, histology, grade, behavior, etc.)
 
-  - This could be implemented by making variable names a vocabulary in themselves
+  - This could be implemented by making variable names a vocabulary in themselves, depending on the use case
 
-- May need to add variables for "normal range", or consider a separate table for additional laboratory details
 
 column                                | type   | description                                                                                                                                                | foreign key                      | required  
 ------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------| -------- 
@@ -196,8 +187,8 @@ normal_range_high_modifier_concept_id | bigint | FK reference to [concepts](#con
 
 ## [drug_exposure_details](#drug_exposure_details)
 
-- To capture extra details about drug [clinical_codes](#clinical_codes)
-- quantity of drug is stored in the [clinical_codes](#clinical_codes) field with the code
+- Designed to capture extra details about drug-specific [clinical_codes](#clinical_codes)
+- The quantity of a drug is stored in the [clinical_codes](#clinical_codes) quantity field
 
 column                    | type   | description                                                                                                               | foreign key                      | required  
 ------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------| -------- 
@@ -215,8 +206,9 @@ brand_name_source_value   | text   | Brand name of drug as reported in the raw d
 
 ## [costs](#costs)
 
-- To capture [costs](#costs) (charges, paid amounts, and/or [costs](#costs)) for each provided service
-- All [costs](#costs) are linked to a claim and could also be linked to a line, to align with the original data
+- To store costs (i.e., charges, paid amounts, and/or [costs](#costs)) for each provided service
+- All costs are linked to a record in the [contexts](#contexts) table which identifies the type of cost (generally a line-level or claim-level cost)
+- Note that claim-level costs do not always sum to the individual line-level costs, so caution should be used when querying records
 
 column                     | type   | description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | foreign key          | required   
 -------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------| -------- 
@@ -241,7 +233,8 @@ amount_allowed             | float  | The contracted amount agreed between the p
 
 ## [addresses](#addresses)
 
-- Used for [patients](#patients), [practitioners](#practitioners), and [facilities](#facilities)
+- Used to store location information for [patients](#patients), [practitioners](#practitioners), and [facilities](#facilities)
+- One record for each geographic location in the data
 
 column       | type   | description                                                                                        | foreign key | required  
 ------------ | ------ | -------------------------------------------------------------------------------------------------- | ----------- | -------- 
@@ -251,16 +244,16 @@ address_2    | text   | Typically used for additional detail such as building, s
 city         | text   | The city field as it appears in the source data 								                   |             |           
 state        | text   | The state field as it appears in the source data 												   |             |           
 zip          | text   | The zip or postal code                                                                             |             |           
-county       | text   | The county                                                                                         |             |             
+county       | text   | The county, if available                                                                                         |             |             
 census_tract | text   | The census tract if available                                                                      |             |           
-hsa          | text   | The Health Service Area if available                                                               |             |            
+hsa          | text   | The Health Service Area, if available (originally defined by the National Center for Health Statistics)                                                              |             |            
+country       | text   | The country if necessary                                                               |             |            
 
 ## [deaths](#deaths)
 
-- Capture mortality information including date and cause(s) of death
+- Stores mortality information including date of death and cause(s) of death
 - Commonly populated from beneficiary or similar administrative data associated with the medical record
-- Might need to check discharge status as part of ETL process to fill this out completely
-- Use of _claim_id_ and _line_id_ is not necessary since [deaths](#deaths) are in the [clinical_codes](#clinical_codes) table if they are specific diagnosis codes from an encounter
+- Deaths identified from diagnosis codes or discharge status are not necessary since such records are in the [clinical_codes](#clinical_codes) and [admission_details](#admission_details) tables and can be queried separately
 
 column                | type   | description                                                                                                 | foreign key                    | required          
 --------------------- | ------ | ----------------------------------------------------------------------------------------------------------- | -------------------------------| --------  
@@ -273,9 +266,9 @@ practitioner_id       | bigint | FK reference to [practitioners](#practitioners)
 
 ## [information_periods](#information_periods)
 
-- Captures periods for which information in each table is relevant
+- Captures periods for which information in each table is relevant for each person
 - Could include enrollment types (e.g., Part A, Part B, HMO) or just "observable" (as with up-to-standard data in CPRD)
-- One row per patient per enrollment type per table
+- One row per patient per enrollment/information period type
 
 column                      | type   | description                                                                                                                                  | foreign key          | required      
 --------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------| --------   
@@ -287,9 +280,9 @@ information_type_concept_id | bigint | FK reference to [concepts](#concepts) tab
 
 ## [admission_details](#admission_details)
 
-- Captures details about admissions and emergency department encounters that don't go in the [clinical_codes](#clinical_codes), [contexts](#contexts), or [collections](#collections) tables
+- Captures details about admissions and emergency department encounters that cannot be stored in the [clinical_codes](#clinical_codes), [contexts](#contexts), or [collections](#collections) tables
 - One row per admission
-- Each collection that has admission detail will link to this table
+- Each admission record in the [collections](#collections) table will link to this table
 
 column                | type   | description                                                                                                              | foreign key          | required    
 --------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------ | ---------------------| -------- 
@@ -297,14 +290,16 @@ id                    | serial | Surrogate key for record                       
 patient_id            | bigint | FK reference to [patients](#patients) table                                                                              | [patients](#patients)|     x    
 admission_date        | date   | Date of admission (yyyy-mm-dd)                                                                                           |                      |     x       
 discharge_date        | date   | Date of discharge (yyyy-mm-dd)                                                                                           |                      |     x     
-admit_source_id       | int    | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                   |                      |         
-discharge_location_id | bigint | Database specific code indicating source of discharge (e.g., death, home, transfer, long-term care, etc.)                |                      |
+admit_source_concept_id       | int    | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                   |                      |         
+discharge_location_concept_id | bigint | Database specific code indicating discharge location (e.g., death, home, transfer, long-term care, etc.)                |                      |
 los                   | int    | Length of stay                                                                                                           |                      |
-type_concept_id       | bigint | FK reference to [concepts](#concepts) table representing the type of admission the record is (Emergency, Elective, etc.) | [concepts](#concepts)|
+admission_type_concept_id       | bigint | FK reference to [concepts](#concepts) table representing the type of admission the record is (Emergency, Elective, etc.) | [concepts](#concepts)|
 
 ## [concepts](#concepts)
 
 - Adapted from OMOP concept table (could add other fields, like domain, if needed)
+- Can be created *de novo* for each data source or could use a different source like the [National Library of Medicine Metathesaurus](https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/)
+- The [mappings](#mappings) table can be used to establish relationships among concept ids
 
 column        | type   | description                                                                      | foreign key                  | required   
 ------------- | ------ | -------------------------------------------------------------------------------- | -----------------------------| --------  
@@ -315,7 +310,7 @@ concept_text  | text   | Text descriptor associated with the concept_code       
 
 ## [vocabularies](#vocabularies)
 
-- Adapted from the OMOP vocabulary table
+- A list of vocabularies, currently adapted from the OMOP vocabulary table (e.g., ICD9)
 
 column               | type | description                                                         | foreign key | required
 -------------------- | ---- | ------------------------------------------------------------------- | ----------- | --------
@@ -325,7 +320,11 @@ vocabulary_name      | text | Full name of the vocabulary                       
 
 ## [mappings](#mappings)
 
-- Adapted from the OMOP concept_relationship table
+- A set of relationships, currently adapted from the OMOP concept_relationship table
+- This can be used to establish relationships between database-specific information and standardized information.
+- It is preferable to store the raw data in the [concepts](#concepts) table and establish a mapping to standard concepts in this table.  
+	- For example, if sex were coded as "male" and "female", these terms would be stored in the [concepts](#concepts) table, and would be linked to standard concepts (if any) in the [mappings](#mappings) table
+	- This moves such "hidden" mappings from the ETL process to the data itself, makes ETL easier, and increases transparency and reproducibility of studies
 
 column               | type   | description                                                              | foreign key                   | required
 -------------------- | -----  | ------------------------------------------------------------------------ | ----------------------------- | --------
