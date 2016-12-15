@@ -144,7 +144,7 @@ record_type_concept_id                   | bigint | FK reference to [concepts](#
 
 - One record generated for each individual code in the raw data
 
-- The clinical code id is used as a foreign key in the [measurement_details](#measurement_details) and [drug_exposure_details](#drug_exposure_details) tables to add additional information for those domains
+- Extra detail can be found about a code in the [measurement_details](#measurement_details) and [drug_exposure_details](#drug_exposure_details) tables if that information exists
 
 column                      | type   | description                                                                     | foreign key                  | required  
 --------------------------- | ------ | ------------------------------------------------------------------------------- | -----------------------------| --------  
@@ -159,7 +159,9 @@ quantity                    | bigint | Quantity, if available (e.g., procedures)
 seq_num                     | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3) |                              |          
 provenance_concept_id             | bigint | Additional type information (ex: primary, admitting, problem list, etc)                          | [concepts](#concepts)        |          
 clinical_code_source_value        | text   | Source code from raw data                                                       |                              |     x    
-clinical_code_vocabulary_id | text   | Vocabulary the clinical code comes from                                         | [vocabularies](#vocabularies)|     x    
+clinical_code_vocabulary_id | text   | Vocabulary the clinical code comes from                                         | [vocabularies](#vocabularies)|     x 
+measurement_detail_id		| bigint   | FK reference to [measurement_details](#measurement_details) table             | [measurement_details](#measurement_details)|        
+drug_exposure_detail_id	 	| bigint   | FK reference to [drug_exposure_details](#drug_exposure_details) table 			   | [drug_exposure_details](#drug_exposure_details)|           
 
 ## [measurement_details](#measurement_details)
 
@@ -173,7 +175,6 @@ clinical_code_vocabulary_id | text   | Vocabulary the clinical code comes from  
 column                                | type   | description                                                                                                                                                | foreign key                      | required  
 ------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------| -------- 
 id                                    | serial | Surrogate key for record                                                                                                                                   |                                  |     x       
-clinical_code_id                      | bigint | FK reference to [clinical_codes](#clinical_codes) table to the associated clinical code                                                                    | [clinical_codes](#clinical_codes)|     x     
 patient_id                            | bigint | FK reference to [patients](#patients) table                                                                                                                | [patients](#patients)            |     x        
 result_as_number                      | float  | The observation result stored as a number, applicable to observations where the result is expressed as a numeric value                                     |                                  |          
 result_as_string                      | text   | The observation result stored as a string, applicable to observations where the result is expressed as verbatim text                                       |                                  |           
