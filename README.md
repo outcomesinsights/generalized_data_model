@@ -194,7 +194,6 @@ normal_range_high_modifier_concept_id | bigint | FK reference to [concepts](#con
 column                    | type   | description                                                                                                               | foreign key                      | required  
 ------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------| -------- 
 id                        | serial | Surrogate key for record                                                                                                  |                                  |     x    
-clinical_code_id          | bigint | FK reference to [clinical_codes](#clinical_codes) table to the associated clinical code                                   | [clinical_codes](#clinical_codes)|     x    
 patient_id                | bigint | FK to reference to [patients](#patients) table                                                                            | [patients](#patients)            |     x    
 refills                   | int    | The number of refills after the initial prescription; the initial prescription is not counted (i.e., values start with 0) |                                  |         
 days_supply               | int    | The number of days of supply as recorded in the original prescription or dispensing record                                |                                  |         
