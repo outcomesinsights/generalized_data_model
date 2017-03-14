@@ -290,7 +290,7 @@ id                    | serial | Surrogate key for record                       
 patient_id            | bigint | FK reference to [patients](#patients) table                                                                              | [patients](#patients)|     x    
 admission_date        | date   | Date of admission (yyyy-mm-dd)                                                                                           |                      |     x       
 discharge_date        | date   | Date of discharge (yyyy-mm-dd)                                                                                           |                      |     x     
-admit_source_concept_id       | int    | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                   |                      |         
+admit_source_concept_id       | bigint | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                   |                      |         
 discharge_location_concept_id | bigint | Database specific code indicating discharge location (e.g., death, home, transfer, long-term care, etc.)                |                      |
 los                   | int    | Length of stay                                                                                                           |                      |
 admission_type_concept_id       | bigint | FK reference to [concepts](#concepts) table representing the type of admission the record is (Emergency, Elective, etc.) | [concepts](#concepts)|
