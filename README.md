@@ -101,6 +101,7 @@ start_date          | date   | Start date of record (yyyy-mm-dd)                
 end_date            | date   | End date of record (yyyy-mm-dd)                               |                                        |     x     
 facility_id         | bigint | FK reference to [facilities](#facilities) table               | [facilities](#facilities)              |           
 admission_detail_id | bigint | FK reference to [admission_details](#admission_details) table | [admission_details](#admission_details)|           
+collection_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the type of collection this record represents | [concepts](#concepts)   |          
 
 ## [contexts](#contexts)_[practitioners](#practitioners)
 
