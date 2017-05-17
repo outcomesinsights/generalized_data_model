@@ -206,8 +206,8 @@ dose_unit_concept_id      | bigint | FK reference to [concepts](#concepts) table
 route_concept_id	      | bigint | FK reference to [concepts](#concepts) table for route in which drug is given				                               | [concepts](#concepts)            |         
 dose_value                | float  | Numeric value for the dose of the drug                                                                                    |                                  |         
 strength_source_value     | text   | Drug strength as reported in the raw data. This can include both dose value and units                                     |                                  |         
-generic_name_source_value | text   | Generic name of drug as reported in the raw data                                                                          |                                  |               
-brand_name_source_value   | text   | Brand name of drug as reported in the raw data                                                                            |                                  |         
+ingredient_source_value   | text   | Ingredient/Generic name of drug as reported in the raw data                                                               |                                  |               
+drug_name_source_value    | text   | Product/Brand name of drug as reported in the raw data                                                                    |                                  |         
 
 ## [costs](#costs)
 
