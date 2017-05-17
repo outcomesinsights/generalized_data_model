@@ -203,6 +203,7 @@ days_supply               | int    | The number of days of supply as recorded in
 number_per_day            | float  | The number of pills taken per day 														                                   |                                  |         
 dose_form_concept_id      | bigint | FK reference to [concepts](#concepts) table for the form of the drug (capsule, injection, etc.)                           | [concepts](#concepts)            |         
 dose_unit_concept_id      | bigint | FK reference to [concepts](#concepts) table for the units in which the dose_value is expressed                            | [concepts](#concepts)            |         
+route_concept_id	      | bigint | FK reference to [concepts](#concepts) table for route in which drug is given				                               | [concepts](#concepts)            |         
 dose_value                | float  | Numeric value for the dose of the drug                                                                                    |                                  |         
 strength_source_value     | text   | Drug strength as reported in the raw data. This can include both dose value and units                                     |                                  |         
 generic_name_source_value | text   | Generic name of drug as reported in the raw data                                                                          |                                  |               
