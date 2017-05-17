@@ -99,6 +99,8 @@ id                  | serial | Surrogate key for record                         
 patient_id          | bigint | FK to reference to [patients](#patients) table                | [patients](#patients)                  |     x     
 start_date          | date   | Start date of record (yyyy-mm-dd)                             |                                        |     x     
 end_date            | date   | End date of record (yyyy-mm-dd)                               |                                        |     x     
+duration            | float  | Duration of collection. (e.g. hospitalization length of stay) |                                        |          
+duration_unit_concept_id | bigint  | FK reference to [concepts](#concepts) table representing the unit of duration (hours, days, weeks etc.)|                                        |          
 facility_id         | bigint | FK reference to [facilities](#facilities) table               | [facilities](#facilities)              |           
 admission_detail_id | bigint | FK reference to [admission_details](#admission_details) table | [admission_details](#admission_details)|           
 collection_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the type of collection this record represents | [concepts](#concepts)   |          
@@ -294,7 +296,6 @@ admission_date        | date   | Date of admission (yyyy-mm-dd)                 
 discharge_date        | date   | Date of discharge (yyyy-mm-dd)                                                                                           |                      |     x     
 admit_source_concept_id       | bigint | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                   |                      |         
 discharge_location_concept_id | bigint | Database specific code indicating discharge location (e.g., death, home, transfer, long-term care, etc.)                |                      |
-los                   | int    | Length of stay                                                                                                           |                      |
 admission_type_concept_id       | bigint | FK reference to [concepts](#concepts) table representing the type of admission the record is (Emergency, Elective, etc.) | [concepts](#concepts)|
 
 ## [concepts](#concepts)
