@@ -198,6 +198,7 @@ id                        | serial | Surrogate key for record                   
 patient_id                | bigint | FK to reference to [patients](#patients) table                                                                            | [patients](#patients)            |     x    
 refills                   | int    | The number of refills after the initial prescription; the initial prescription is not counted (i.e., values start with 0) |                                  |         
 days_supply               | int    | The number of days of supply as recorded in the original prescription or dispensing record                                |                                  |         
+number_per_day            | float  | The number of pills taken per day 														                                   |                                  |         
 dose_form_concept_id      | bigint | FK reference to [concepts](#concepts) table for the form of the drug (capsule, injection, etc.)                           | [concepts](#concepts)            |         
 dose_unit_concept_id      | bigint | FK reference to [concepts](#concepts) table for the units in which the dose_value is expressed                            | [concepts](#concepts)            |         
 dose_value                | float  | Numeric value for the dose of the drug                                                                                    |                                  |         
