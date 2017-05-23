@@ -54,8 +54,8 @@ column                    | type   | description                                
 ------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------- | -----------------------| -------- 
 id                        | serial | A unique identifier for each practitioner                                                                         |                        |     x    
 practitioner_name         | text   | [practitioners](#practitioners) name, if available                                                                |                        |          
-primary_identifier        | text   | Primary practitioner identifier                                                                                   |                        |     x    
-primary_identifier_type   | text   | Type of identifier specified in primary identifier field (UPIN, NPI, etc)                                         |                        |     x    
+primary_identifier        | text   | Primary practitioner identifier                                                                                   |                        |         
+primary_identifier_type   | text   | Type of identifier specified in primary identifier field (UPIN, NPI, etc)                                         |                        |         
 secondary_identifier      | text   | Secondary practitioner identifier (Optional)                                                                      |                        |          
 secondary_identifier_type | text   | Type of identifier specified in secondary identifier field (UPIN, NPI, etc)                                       |                        |          
 specialty_concept_id      | bigint | A foreign key to an identifier in the [concepts](#concepts) table for specialty                                   | [concepts](#concepts)  |          
@@ -72,8 +72,8 @@ column                    | type   | description                                
 ------------------------- | ------ | ------------------------------------------------------------------------------- | -----------------------| --------
 id                        | serial | A unique identifier for each facility                                           |                        |     x    
 facility_name             | text   | Facility name, if available                                                     |                        |         
-primary_identifier        | text   | Primary facility identifier                                                     |                        |     x    
-primary_identifier_type   | text   | Type of identifier specified in primary identifier field (UPIN, NPI, etc)       |                        |     x    
+primary_identifier        | text   | Primary facility identifier                                                     |                        |         
+primary_identifier_type   | text   | Type of identifier specified in primary identifier field (UPIN, NPI, etc)       |                        |         
 secondary_identifier      | text   | Secondary facility identifier (Optional)                                        |                        |         
 secondary_identifier_type | text   | Type of identifier specified in secondary identifier field (UPIN, NPI, etc)     |                        |
 facility_type_concept_id  | bigint | FK reference to [concepts](#concepts) table representing the facility type      | [concepts](#concepts)  |         
@@ -98,7 +98,7 @@ column              | type   | description                                      
 id                  | serial | Surrogate key for record                                      |                                        |     x     
 patient_id          | bigint | FK to reference to [patients](#patients) table                | [patients](#patients)                  |     x     
 start_date          | date   | Start date of record (yyyy-mm-dd)                             |                                        |     x     
-end_date            | date   | End date of record (yyyy-mm-dd)                               |                                        |     x     
+end_date            | date   | End date of record (yyyy-mm-dd)                               |                                        |         
 duration            | float  | Duration of collection. (e.g. hospitalization length of stay) |                                        |          
 duration_unit_concept_id | bigint  | FK reference to [concepts](#concepts) table representing the unit of duration (hours, days, weeks etc.)|                                        |          
 facility_id         | bigint | FK reference to [facilities](#facilities) table               | [facilities](#facilities)              |           
@@ -131,7 +131,7 @@ id                                | serial | Surrogate key for record           
 collection_id                     | bigint | FK reference to [collections](#collections) table                                                                                                                    | [collections](#collections)|     x      
 patient_id                        | bigint | FK to reference to [patients](#patients) table                                                                                                                       | [patients](#patients)      |     x      
 start_date                        | date   | Start date of record (yyyy-mm-dd)                                                                                                                                    |                            |     x      
-end_date                          | date   | End date of record (yyyy-mm-dd)                                                                                                                                      |                            |     x      
+end_date                          | date   | End date of record (yyyy-mm-dd)                                                                                                                                      |                            |           
 facility_id                       | bigint | FK reference to [facilities](#facilities) table                                                                                                                      | [facilities](#facilities)  |           
 care_site_type_concept_id          | bigint | FK reference to [concepts](#concepts) table representing the care site type within the facility                                                                                           | [concepts](#concepts)      |           
 pos_concept_id                    | bigint | FK reference to [concepts](#concepts) table representing the place of service associated with this record                                                            | [concepts](#concepts)      |           
@@ -156,7 +156,7 @@ collection_id               | bigint | FK reference to [collections](#collection
 context_id                  | bigint | FK reference to [contexts](#contexts) table                                     | [contexts](#contexts)        |     x    
 patient_id                  | bigint | FK reference to [patients](#patients) table                                     | [patients](#patients)        |     x    
 start_date                  | date   | Start date of record (yyyy-mm-dd)                                               |                              |     x    
-end_date                    | date   | End date of record (yyyy-mm-dd)                                                 |                              |     x    
+end_date                    | date   | End date of record (yyyy-mm-dd)                                                 |                              |         
 clinical_code_concept_id    | bigint | FK reference to [concepts](#concepts) table for the code assigned to the record | [concepts](#concepts)        |     x    
 quantity                    | bigint | Quantity, if available (e.g., procedures)                                       |                              |          
 seq_num                     | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3) |                              |          
