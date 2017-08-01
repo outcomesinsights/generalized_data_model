@@ -235,6 +235,22 @@ paid_dispensing_fee        | float  | The amount paid by the Payer to a pharmacy
 information_period_id      | float  | FK reference to the [information_periods](#information_periods) table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |                      |           
 amount_allowed             | float  | The contracted amount agreed between the payer and provider. This information is generally available in claims data. This is similar to the total_paid amount in that it shows what the payer expects the provider to be reimbursed after the payer and patient pay. This differs from the total_paid amount in that it is not a calculated field, but a field available directly in claims data. Use case: This will capture non-covered services. Non-covered services are indicated by an amount allowed and patient responsibility variables (copay, coinsurance, deductible) will be equal $0 in the source data. This means the patient is responsible for the total_charged value. The amount_allowed field is payer specific and the payer should be indicated by the payer_plan_id field.                                                                                            |                      |           
 
+## [costs](#costs)
+
+- Used to capture all none reimbursement costs
+- Examples of things captured in this table are things like cost-to-charge ratio, calculated cost (for situations where the ETL process calculates a cost based on the available data), reported cost (where the ETL process imputes a cost from another source), and some other things that may become apparent with more use cases.
+
+column       | type   | description                                                                                        | foreign key | required  
+------------ | ------ | -------------------------------------------------------------------------------------------------- | ----------- | -------- 
+id           | serial | A unique identifier for each geographic location                                                   |             |     x    
+context_id   | bigint | FK reference to context table | [contexts](#contexts)|     x     
+patient_id   | bigint | FK to reference to [patients](#patients) table   | [patients](#patients)|     x     
+clinical_code_id | bigint | FK reference to [clinical_codes](#clinical_codes) table to be used if a specific code is the direct cause for the reimbursement | [clinical_codes](#clinical_codes)|   
+currency_concept_id | bigint | FK reference to [concepts](#concepts) table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar) | [concepts](#concepts)|     x   
+cost_base | float | Defines the basis for the cost in the table (e.g., 2013 for a specific cost-to-charge ratio, or a specific cost from an external cost | |     x   
+value 		 | float  | Cost value 																									|			 |     x   
+value_type_concept_id | bigint  | FK reference to [concepts](#concepts) table to concept that defines the type of economic information in the value field (e.g., cost-to-charge ratio, calculated cost, reported cost) | [concepts](#concepts) |     x   
+
 ## [addresses](#addresses)
 
 - Used to store location information for [patients](#patients), [practitioners](#practitioners), and [facilities](#facilities)
