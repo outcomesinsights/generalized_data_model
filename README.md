@@ -237,7 +237,7 @@ amount_allowed             | float  | The contracted amount agreed between the p
 
 ## [costs](#costs)
 
-- Used to capture all none reimbursement costs
+- Used to capture all non reimbursement costs
 - Examples of things captured in this table are things like cost-to-charge ratio, calculated cost (for situations where the ETL process calculates a cost based on the available data), reported cost (where the ETL process imputes a cost from another source), and some other things that may become apparent with more use cases.
 
 column       | type   | description                                                                                        | foreign key | required  
