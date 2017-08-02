@@ -247,7 +247,7 @@ context_id   | bigint | FK reference to context table | [contexts](#contexts)|  
 patient_id   | bigint | FK to reference to [patients](#patients) table   | [patients](#patients)|     x     
 clinical_code_id | bigint | FK reference to [clinical_codes](#clinical_codes) table to be used if a specific code is the direct cause for the reimbursement | [clinical_codes](#clinical_codes)|   
 currency_concept_id | bigint | FK reference to [concepts](#concepts) table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar) | [concepts](#concepts)|     x   
-cost_base | float | Defines the basis for the cost in the table (e.g., 2013 for a specific cost-to-charge ratio, or a specific cost from an external cost | |     x   
+cost_base | text | Defines the basis for the cost in the table (e.g., 2013 for a specific cost-to-charge ratio, or a specific cost from an external cost | |     x   
 value 		 | float  | Cost value 																									|			 |     x   
 value_type_concept_id | bigint  | FK reference to [concepts](#concepts) table to concept that defines the type of economic information in the value field (e.g., cost-to-charge ratio, calculated cost, reported cost) | [concepts](#concepts) |     x   
 
