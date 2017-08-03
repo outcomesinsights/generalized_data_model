@@ -1,0 +1,13 @@
+language: ruby
+rvm:
+  - 2.2
+sudo: false
+env:
+  secure: qrouMQOs3wCY1hIct8aHKKv+k+BmAqRoda3IdsGj6iFbVdqqENh8PxE1iQhFo54h068N1iuUVijIoeKQ8KBbAB46p529sYhhDRvq5KP8sR1xxT5fl/JdfM04xdK5mo4Cw1v1WVh45dc45nLofEaIQBiXHxIxKJ8m5unvbaIlURyBXqUEYcNZnZnUPcEsF4oBSz3Is6/BgD1wifL8wmnoXc1sAaxg1SenguFk/lr1R8mx3wEmJrRTJ2L/80ltXeMfsqubNBgJK2NQyo0FcTQ4QEfLnoPMLfBcw7q8BmwkkvlzZMZyFJr9gLLZDiCMvuM5na5Ck5daKSkQLEY4+2ZWJ/YkGZUwK222RoLKkZPGKZ/6QOY8HZuE3grLIVL5wlo/2Fgjq+3iHYvKh/bzjZ4xPdhHPRHUGxzhJg8+x3gL1MOxzYgt/cyoh9u6Nh/JE8cGbIaUJNPV9nbT844uLjVl9NoOH0Ot1Ca6wK/fQIIQR5fGINBaBp1leeFDUYFUGHNw48yrAu+kxqnIsrKhtGrWImiylE3/ZCR2uQpi/d0NZia6EzNmcPjObTS5Gcif2BMpdGm5NDVAgbSHhdF3Gt6Gs6Aoxni/IJy6//fg7d7uP3mhxaCVx3WBUIJAB9ZBL5EVvLCf79ypDERbOxdmSyj01Y6wNfybExtpBF1SEfNAN20=
+before_install:
+  - gem install dropbox-deployment mdl 
+script: 
+  - sh check_readme.sh
+after_success:
+  - ruby converter.rb
+  - dropbox-deployment
