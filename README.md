@@ -90,8 +90,6 @@ address_id                | bigint | A foreign key to the address of the locatio
 
 - For EHR, records the visit level information
 
-- Includes the place of service recorded with the record
-
 column              | type   | description                                                   | foreign key                            | required
 ------------------- | ------ | ------------------------------------------------------------- | ---------------------------------------| --------
 id                  | serial | Surrogate key for record                                      |                                        |     x
