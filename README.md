@@ -1,22 +1,10 @@
-# Generalized Data Model
+# Generalized Data Model (GDM)
 
-We define a data model as a set of standard tables in which specific information should be stored. It defines the end result of an extract, transform, and load (ETL) process for an arbitrary source (or raw) healthcare dataset. The goals of the generalized data model are three-fold:
-
-1. To simplify the location of clinical codes without needing specialized mappings and tables to support different types of codes
-1. To capture hierarchical relationships among data elements within a relational data structure without requiring visits to be created and used for establishing these relationships
-1. To develop a sufficiently generalized data model that can be readily transformed to other data models, including OMOP and Sentinel
-
-The focus of our data model is on the information in the source vocabulary (i.e., the vocabularies used in the original data), as stored in the [clinical_codes](#clinical_codes) table. In particular, we avoid translating codes from one vocabulary to another.  In a few very simple cases like gender and race/ethnicity, we include mappings to make it easier for users of our study-builder to filter data; however, we still retain and return the original coding for these variables.
-
-By storing all codes of any kind in a single, large table, we gain substantial flexibility in capturing the relationships among these data elements. This is operationalized using the "[contexts](#contexts)" and "[collections](#collections)" tables. In our model, the "context" captures both the provenance of the data as well as the types of relationships among related data elements that share a context id. These relationship types depend on the data and can be identified using the record_type_concept_id. In administrative billing data, related records are often "lines" or "details" which are records that associate procedures with specific diagnoses, procedures with procedure modifiers, or procedures with [payer_reimbursements](#payer_reimbursements). In electronic health record data, relationship types may include sequences of prescription records or laboratory measures captured at the one time.
-
-The [collections](#collections) table represents a higher level of hierarchy for records in the [contexts](#contexts) table. That is, [collections](#collections) are groups of [contexts](#contexts). This kind of grouping occurs when multiple billable units ("lines" or "details") are combined into invoices ("claims" or "headers"). It also occurs when prescriptions, laboratory measures, diagnoses and/or procedures are all recorded at a single office visit. In short, a "Collection" is typically a "claim" or a "visit" depending on whether the source data is administrative billing or electronic health record data. In organizing the data this way, we avoid the need to construct "visits" from claims data which often leads to inaccuracy, loss of information, and complicated ETL processing.
-
-The strength of the generalized structure is that it allows users to query data according to its native set of relationships instead of using visits, which are not native to all data sources.  This facilitates the use of a substantial literature of validated algorithms, enhancing transparency and reproducibility.  These algorithms can be used to identify clinical conditions like "diabetes" or "breast cancer" as well as clinical encounters like "visits", "hospitalizations", or "emergency room visits".
-
-Virtually every algorithm begins by selecting patients with at least one of a set of relevant codes, all of which are found in the [clinical_codes](#clinical_codes) table. This allows researchers to use vocabulary tools and/or a broad library of existing algorithms to create all of the variables for study datasets. To this end, we have developed an open-source language, [ConceptQL](https://github.com/outcomesinsights/conceptql_spec), that enables researchers to create, store, share, and use algorithms that are designed to work on electronic health information. Our project, [Jigsaw](http://www.jigsaw.io) leverages ConceptQL to define and apply algorithms against data in our data model to build study datasets. (And Jigsaw is designed so that algorithms also work across supported data models as well.)
+We have a [preprint available](https://doi.org/10.1101/194597) for the manuscript describing the design of the Generalized Data Model (GDM).  
 
 Below is the current version of the schema for the Generalized Data Model. We gratefully acknowledge the influence of the OHDSI community and the open-source OMOP common data model [specifications](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:cdm) on our thinking. In addition, we acknowledge the influence of both Sentinel and i2b2 on our approach, although most of our data model was designed prior to fully reviewing other data models. At the moment, many references to the [concepts](#concepts) table refer to the OMOP version 5 vocabulary [table](http://www.ohdsi.org/web/athena/) maintained by OHDSI.  However, any internally consistent set of vocabularies with unique concept ids would be sufficient (e.g., the [National Library of Medicine Metathesaurus](https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/)).
+
+# GDM Tables
 
 ## [patients](#patients)
 
