@@ -1,12 +1,12 @@
 # Generalized Data Model (GDM)
 
-We have a [preprint available](https://doi.org/10.1101/194597) for the manuscript describing the design of the Generalized Data Model (GDM).  
+We have a [preprint available](https://doi.org/10.1101/194597) for the manuscript describing the design of the Generalized Data Model (GDM).
 
 Below is the current version of the schema for the Generalized Data Model. We gratefully acknowledge the influence of the OHDSI community and the open-source OMOP common data model [specifications](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:cdm) on our thinking. In addition, we acknowledge the influence of both Sentinel and i2b2 on our approach, although most of our data model was designed prior to fully reviewing other data models. At the moment, many references to the [concepts](#concepts) table refer to the OMOP version 5 vocabulary [table](http://www.ohdsi.org/web/athena/) maintained by OHDSI.  However, any internally consistent set of vocabularies with unique concept ids would be sufficient (e.g., the [National Library of Medicine Metathesaurus](https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/)).
 
-# GDM Tables
+## GDM Tables
 
-## [patients](#patients)
+### [patients](#patients)
 
 - Demographic information about the [patients](#patients) in the data
 - The column for _practitioner_id_ is intended for situations where there is a defined primary care practitioner (e.g., HMO or CPRD data)
@@ -22,7 +22,7 @@ address_id              | bigint | A foreign key to the place of residency for t
 practitioner_id         | bigint | A foreign key to the primary care practitioner the patient is seeing in the [practitioners](#practitioners) table               | [practitioners](#practitioners)|          |
 patient_id_source_value | text   | Originial patient identifier defined in the source data                                                                         |                                |     x    |
 
-## [patient_details](#patient_details)
+### [patient_details](#patient_details)
 
 - Extra information about a patient that doesn't fit in the [patients](#patients) table
 
@@ -34,7 +34,7 @@ patient_detail_concept_id    | bigint | FK reference to [concepts](#concepts) ta
 patient_detail_source_value  | text   | Source code from raw data                                                       |                              |     x    |
 patient_detail_vocabulary_id | text   | Vocabulary the patient detail comes from                                        | [vocabularies](#vocabularies)|     x    |
 
-## [practitioners](#practitioners)
+### [practitioners](#practitioners)
 
 - All non-facility [practitioners](#practitioners) (i.e., physicians, etc.) are listed
 
@@ -51,7 +51,7 @@ address_id                | bigint | A foreign key to the address of the locatio
 birth_date                | date   | Date of birth (yyyy-mm-dd)                                                                                        |                        |
 gender_concept_id         | bigint | A foreign key that refers to an identifier in the [concepts](#concepts) table for the unique gender of the person | [concepts](#concepts)  |
 
-## [facilities](#facilities)
+### [facilities](#facilities)
 
 - Unique records for all the [facilities](#facilities) in the data
 - facility_type_concept_id should be used to describe the whole facility (e.g., Academic Medical Center or Community Medical Center). Specific departments in the facility should be entered in the [contexts](#contexts) table using the care_site_type_concept_id field.
@@ -68,7 +68,7 @@ facility_type_concept_id  | bigint | FK reference to [concepts](#concepts) table
 specialty_concept_id      | bigint | A foreign key to an identifier in the [concepts](#concepts) table for specialty | [concepts](#concepts)  |
 address_id                | bigint | A foreign key to the address of the location of the facility                    | [addresses](#addresses)|
 
-## [collections](#collections)
+### [collections](#collections)
 
 - Used to group [contexts](#contexts) records
 - For claims, records the claim level information (also referred to as "headers" in some databases)
@@ -90,7 +90,7 @@ facility_id         | bigint | FK reference to [facilities](#facilities) table  
 admission_detail_id | bigint | FK reference to [admission_details](#admission_details) table | [admission_details](#admission_details)|
 collection_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the type of collection this record represents | [concepts](#concepts)   |
 
-## [contexts](#contexts)_[practitioners](#practitioners)
+### [contexts](#contexts)_[practitioners](#practitioners)
 
 - Links one or more [practitioners](#practitioners) with a [contexts](#contexts) record
 - Each record represents an encounter between a patient and a practitioner on a specific context
@@ -103,7 +103,7 @@ practitioner_id           | bigint | FK reference to [practitioners](#practition
 role_type_concept_id              | text   | Roles [practitioners](#practitioners) can play in an encounter                                                           |                                |
 specialty_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the practitioner's specialty type for the services/diagnoses associated with this record | [concepts](#concepts)          |
 
-## [contexts](#contexts)
+### [contexts](#contexts)
 
 - Stores information about the context of the [clinical_codes](#clinical_codes) and [payer_reimbursements](#payer_reimbursements)
 - Used to group [clinical_codes](#clinical_codes) typically occurring on the same day or at the same time (e.g., a diagnosis and a procedure, or a systolic and diastolic blood pressure)
@@ -124,7 +124,7 @@ source_type_concept_id              | bigint | FK reference to [concepts](#conce
 service_specialty_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the specialty type for the services/diagnoses associated with this record                                   | [concepts](#concepts)      |
 record_type_concept_id                   | bigint | FK reference to [concepts](#concepts) table representing the type of [contexts](#contexts) the record represents (line, claim, etc.)                                         | [concepts](#concepts)      |     x
 
-## [clinical_codes](#clinical_codes)
+### [clinical_codes](#clinical_codes)
 
 - Stores clinical codes from all types of records including procedures, diagnoses, drugs, laboratory records and other sources.  Some common vocabularies include ICD-9, ICD-10, SNOMED, Read, HCPCS, CPT, NDC, and LOINC
 
@@ -151,7 +151,7 @@ clinical_code_vocabulary_id | text   | Vocabulary the clinical code comes from  
 measurement_detail_id   | bigint   | FK reference to [measurement_details](#measurement_details) table             | [measurement_details](#measurement_details)|
 drug_exposure_detail_id   | bigint   | FK reference to [drug_exposure_details](#drug_exposure_details) table         | [drug_exposure_details](#drug_exposure_details)|
 
-## [measurement_details](#measurement_details)
+### [measurement_details](#measurement_details)
 
 - Stores additional information related to measurements, observations, status, and specifications
 - Text-based vocabularies are sufficient, but could also be mapped to LOINC and stored in the [mappings](#mappings) table  (e.g., laboratory data indexed by text names for the lab results)
@@ -173,7 +173,7 @@ normal_range_high                     | float  | Upper bound of the normal refer
 normal_range_low_modifier_concept_id  | bigint | FK reference to [concepts](#concepts) table for result modifier (=, <, >, etc.)                                                                            | [concepts](#concepts)            |
 normal_range_high_modifier_concept_id | bigint | FK reference to [concepts](#concepts) table for result modifier (=, <, >, etc.)                                                                            | [concepts](#concepts)            |
 
-## [drug_exposure_details](#drug_exposure_details)
+### [drug_exposure_details](#drug_exposure_details)
 
 - Designed to capture extra details about drug-specific [clinical_codes](#clinical_codes)
 - The quantity of a drug is stored in the [clinical_codes](#clinical_codes) quantity field
@@ -193,7 +193,7 @@ strength_source_value     | text   | Drug strength as reported in the raw data. 
 ingredient_source_value   | text   | Ingredient/Generic name of drug as reported in the raw data                                                               |                                  |
 drug_name_source_value    | text   | Product/Brand name of drug as reported in the raw data                                                                    |                                  |
 
-## [payer_reimbursements](#payer_reimbursements)
+### [payer_reimbursements](#payer_reimbursements)
 
 - The purpose of this table is to capture all costs reported in the course of paying for services. It is designed from a US administrative claims data perspective.
 - All payer reimbursement records are linked to a record in the [contexts](#contexts) table which identifies the type of reimbursement (generally a line-level or claim-level cost)
@@ -219,7 +219,7 @@ paid_dispensing_fee        | float  | The amount paid by the Payer to a pharmacy
 information_period_id      | float  | FK reference to the [information_periods](#information_periods) table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |                      |
 amount_allowed             | float  | The contracted amount agreed between the payer and provider. This information is generally available in claims data. This is similar to the total_paid amount in that it shows what the payer expects the provider to be reimbursed after the payer and patient pay. This differs from the total_paid amount in that it is not a calculated field, but a field available directly in claims data. Use case: This will capture non-covered services. Non-covered services are indicated by an amount allowed and patient responsibility variables (copay, coinsurance, deductible) will be equal $0 in the source data. This means the patient is responsible for the total_charged value. The amount_allowed field is payer specific and the payer should be indicated by the payer_plan_id field.                                                                                            |                      |
 
-## [costs](#costs)
+### [costs](#costs)
 
 - Used to capture all non reimbursement costs
 - Examples of things captured in this table are things like cost-to-charge ratio, calculated cost (for situations where the ETL process calculates a cost based on the available data), reported cost (where the ETL process imputes a cost from another source), and some other things that may become apparent with more use cases.
@@ -235,7 +235,7 @@ cost_base | text | Defines the basis for the cost in the table (e.g., 2013 for a
 value      | float  | Cost value                                                  |      |     x
 value_type_concept_id | bigint  | FK reference to [concepts](#concepts) table to concept that defines the type of economic information in the value field (e.g., cost-to-charge ratio, calculated cost, reported cost) | [concepts](#concepts) |     x
 
-## [addresses](#addresses)
+### [addresses](#addresses)
 
 - Used to store location information for [patients](#patients), [practitioners](#practitioners), and [facilities](#facilities)
 - One record for each geographic location in the data
@@ -253,7 +253,7 @@ census_tract | text   | The census tract if available                           
 hsa          | text   | The Health Service Area, if available (originally defined by the National Center for Health Statistics)                                                              |             |
 country       | text   | The country if necessary                                                               |             |
 
-## [deaths](#deaths)
+### [deaths](#deaths)
 
 - Stores mortality information including date of death and cause(s) of death
 - Commonly populated from beneficiary or similar administrative data associated with the medical record
@@ -268,7 +268,7 @@ cause_concept_id      | bigint | FK reference to [concepts](#concepts) table for
 cause_type_concept_id | bigint | FK reference to [concepts](#concepts) table for the type of cause of death (e.g. primary, secondary, etc. ) | [concepts](#concepts)          |
 practitioner_id       | bigint | FK reference to [practitioners](#practitioners) table                                                       | [practitioners](#practitioners)|
 
-## [information_periods](#information_periods)
+### [information_periods](#information_periods)
 
 - Captures periods for which information in each table is relevant for each person
 - Could include enrollment types (e.g., Part A, Part B, HMO) or just "observable" (as with up-to-standard data in CPRD)
@@ -282,7 +282,7 @@ start_date                  | date   | Start date of record (yyyy-mm-dd)        
 end_date                    | date   | End date of record (yyyy-mm-dd)                                                                                                              |                      |     x
 information_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the information type (e.g., insurance coverage, hospital data, up-to-standard date) | [concepts](#concepts)|     x
 
-## [admission_details](#admission_details)
+### [admission_details](#admission_details)
 
 - Captures details about admissions and emergency department encounters that cannot be stored in the [clinical_codes](#clinical_codes), [contexts](#contexts), or [collections](#collections) tables
 - One row per admission
@@ -298,7 +298,7 @@ admit_source_concept_id       | bigint | Database specific code indicating sourc
 discharge_location_concept_id | bigint | Database specific code indicating discharge location (e.g., death, home, transfer, long-term care, etc.)                |                      |
 admission_type_concept_id       | bigint | FK reference to [concepts](#concepts) table representing the type of admission the record is (Emergency, Elective, etc.) | [concepts](#concepts)|
 
-## [concepts](#concepts)
+### [concepts](#concepts)
 
 - Adapted from OMOP concept table (could add other fields, like domain, if needed)
 - Can be created *de novo* for each data source or could use a different source like the [National Library of Medicine Metathesaurus](https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/)
@@ -311,7 +311,7 @@ vocabulary_id | text   | Unique text-string identifier of the vocabulary (see OM
 concept_code  | text   | Actual code as text string from the source vocabulary (e.g., "410.00" for ICD-9) |                              |     x
 concept_text  | text   | Text descriptor associated with the concept_code                                 |                              |     x
 
-## [vocabularies](#vocabularies)
+### [vocabularies](#vocabularies)
 
 - A list of vocabularies, currently adapted from the OMOP vocabulary table (e.g., ICD9)
 
@@ -321,7 +321,7 @@ id                   | text | Short name of the vocabulary which acts as a natur
 omopv4_vocabulary_id | int  | Old ID used in OMOPv4                                               |             |     x
 vocabulary_name      | text | Full name of the vocabulary                                         |             |     x
 
-## [mappings](#mappings)
+### [mappings](#mappings)
 
 - A set of relationships, currently adapted from the OMOP concept_relationship table
 - This can be used to establish relationships between database-specific information and standardized information.
