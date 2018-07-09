@@ -16,7 +16,11 @@ def extract(link)
   md.to_a[1] if md
 end
 
-def convert(type, name)
+def is_primary?(column, type)
+  type.to_sym == :serial || column.to_sym == :id
+end
+
+def convert(name, type)
   db_type = case type.to_sym
   when :int
     "Integer"
@@ -33,7 +37,7 @@ def convert(type, name)
   end
 
   result = { type: db_type }
-  result.merge!(primary_key: true) if type.to_sym == :serial || name == :id
+  result.merge!(primary_key: true) if is_primary?(name, type)
   result
 end
 
@@ -60,7 +64,11 @@ CSV.open(artifacts_dir + "gdm.csv", "w") do |csv|
       foreign_key = extract(foreign_key)
       csv << [table, name, type, comment, foreign_key, required]
       schema[table] ||= {}
+<<<<<<< HEAD
       schema[table][name] = convert(type, name).merge(comment: comment)
+=======
+      schema[table][name] = convert(name, type).merge(comment: comment)
+>>>>>>> e97ac286ecdf2d5e7d5dc8c29436ef434c98566e
       schema[table][name].merge!(foreign_key: foreign_key) unless foreign_key.nil? || foreign_key.empty?
       schema[table][name].merge!(null: false) if required && !required.strip.empty?
     end
