@@ -64,11 +64,7 @@ CSV.open(artifacts_dir + "gdm.csv", "w") do |csv|
       foreign_key = extract(foreign_key)
       csv << [table, name, type, comment, foreign_key, required]
       schema[table] ||= {}
-<<<<<<< HEAD
-      schema[table][name] = convert(type, name).merge(comment: comment)
-=======
       schema[table][name] = convert(name, type).merge(comment: comment)
->>>>>>> e97ac286ecdf2d5e7d5dc8c29436ef434c98566e
       schema[table][name].merge!(foreign_key: foreign_key) unless foreign_key.nil? || foreign_key.empty?
       schema[table][name].merge!(null: false) if required && !required.strip.empty?
     end
