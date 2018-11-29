@@ -10,6 +10,7 @@ script:
 - sh check_readme.sh
 after_success:
 - ruby converter.rb
+- ruby convert_to_schema.rb
 - dropbox-deployment
 notifications:
   slack:
