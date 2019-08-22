@@ -314,14 +314,14 @@ concept_text  | text   | Text descriptor associated with the concept_code       
 
 - A list of vocabularies, currently adapted from the OMOP vocabulary table (e.g., ICD9)
 
-column                 | type    | description                                                         | foreign key (FK) | required
----------------------- | ------- | ------------------------------------------------------------------- | ---------------- | --------
-id                     | text    | Short name of the vocabulary which acts as a natural key for record |                  | x
-omopv4_vocabulary_id   | int     | Old ID used in OMOPv4                                               |                  | x
-vocabulary_name        | text    | Full name of the vocabulary                                         |                  | x
-domain                 | text    | Domain to which the majority of the vocabulary is assigned          |                  |
-concept_count          | integer | Domain to which the majority of the vocabulary is assigned          |                  |
-is_clinical_vocabulary | boolean | Domain to which the majority of the vocabulary is assigned          |                  |
+column                 | type    | description                                                                    | foreign key (FK) | required
+---------------------- | ------- | ------------------------------------------------------------------------------ | ---------------- | --------
+id                     | text    | Short name of the vocabulary which acts as a natural key for record            |                  | x
+omopv4_vocabulary_id   | int     | Old ID used in OMOPv4                                                          |                  | x
+vocabulary_name        | text    | Full name of the vocabulary                                                    |                  | x
+domain                 | text    | Domain to which the majority of the vocabulary is assigned                     |                  |
+concepts_count         | integer | Number of row in the [concepts](#concepts) table assigned to this vocabulary   |                  |
+is_clinical_vocabulary | boolean | Are concepts from this vocabulary stored in [clinical_codes](#clinical_codes)? |                  |
 
 ### [mappings](#mappings)
 
