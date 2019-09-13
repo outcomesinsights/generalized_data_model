@@ -32,6 +32,8 @@ def convert(name, type)
     "Float"
   when :date
     "Date"
+  when :boolean
+    "TrueClass"
   else
     raise "Unknown type #{type}"
   end
@@ -46,7 +48,7 @@ CSV.open(artifacts_dir + "gdm.csv", "w") do |csv|
   File.foreach('README.md') do |line|
     line.chomp!
     case line
-    when /^\##\s*(.+)/
+    when /^\###\s*(.+)/
       table = extract(Regexp.last_match.to_a.last).to_sym
       next
     when /-{4,}/
@@ -63,10 +65,10 @@ CSV.open(artifacts_dir + "gdm.csv", "w") do |csv|
       type = type.to_sym
       foreign_key = extract(foreign_key)
       csv << [table, name, type, comment, foreign_key, required]
-      schema[table] ||= {}
-      schema[table][name] = convert(name, type).merge(comment: comment)
-      schema[table][name].merge!(foreign_key: foreign_key) unless foreign_key.nil? || foreign_key.empty?
-      schema[table][name].merge!(null: false) if required && !required.strip.empty?
+      schema[table] ||= { columns: {} }
+      schema[table][:columns][name] = convert(name, type).merge(comment: comment)
+      schema[table][:columns][name].merge!(foreign_key: foreign_key) unless foreign_key.nil? || foreign_key.empty?
+      schema[table][:columns][name].merge!(null: false) if required && !required.strip.empty?
     end
   end
 end
