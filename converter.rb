@@ -73,4 +73,11 @@ CSV.open(artifacts_dir + "gdm.csv", "w") do |csv|
   end
 end
 
+arrayed_schema = schema.map do |table_name, table|
+  columns = table[:columns].map do |column_name, column|
+    { name: column_name }.merge(column)
+  end
+  { name: table_name, columns: columns}
+end
 File.write(artifacts_dir + "gdm.yml", schema.to_yaml)
+File.write(artifacts_dir + "gdm_arrayed.yml", arrayed_schema.to_yaml)
