@@ -148,6 +148,7 @@ indexes = {
 table = nil
 
 def apply_indexes(io, table, indexes)
+  return
   (indexes || []).each do |index|
     columns_str = "[ " + Array(index).map do |col|
       case col
