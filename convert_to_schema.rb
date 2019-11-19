@@ -132,7 +132,7 @@ File.foreach('README.md') do |line|
     if foreign_key
       (fks[table] ||= {})[name] = foreign_key
     end
-    schema_io.puts "#{type} #{name.inspect} #{column_opts.empty? ? '' : ", #{column_opts.inspect}"}"
+    schema_io.puts "#{type} #{name.inspect}#{column_opts.empty? ? '' : ", #{column_opts.inspect}"}"
   end
 end
 
