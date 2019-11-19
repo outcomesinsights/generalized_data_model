@@ -88,8 +88,12 @@ def convert(name, type)
   end
 
   if is_primary?(name, type)
-    opts[:type] = :Bigint
-    db_type = "primary_key"
+    if opts[:text]
+      opts[:primary_key] = true
+    else
+      opts[:type] = :Bigint
+      db_type = "primary_key"
+    end
   end
 
   [db_type, opts]
