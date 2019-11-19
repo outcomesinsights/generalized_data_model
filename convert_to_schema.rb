@@ -81,6 +81,8 @@ def convert(name, type)
     "Float"
   when :date
     "Date"
+  when :boolean
+    "TrueClass"
   else
     raise "Unknown type #{type}"
   end
