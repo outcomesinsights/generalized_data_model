@@ -317,10 +317,10 @@ concept_text  | text   | Text descriptor associated with the concept_code       
 column                 | type    | description                                                                    | foreign key (FK) | required
 ---------------------- | ------- | ------------------------------------------------------------------------------ | ---------------- | --------
 id                     | text    | Short name of the vocabulary which acts as a natural key for record            |                  | x
-omopv4_vocabulary_id   | int     | Old ID used in OMOPv4                                                          |                  | x
+omopv4_vocabulary_id   | bigint  | Old ID used in OMOPv4                                                          |                  | x
 vocabulary_name        | text    | Full name of the vocabulary                                                    |                  | x
 domain                 | text    | Domain to which the majority of the vocabulary is assigned                     |                  |
-concepts_count         | int     | Number of row in the [concepts](#concepts) table assigned to this vocabulary   |                  |
+concepts_count         | bigint  | Number of row in the [concepts](#concepts) table assigned to this vocabulary   |                  |
 is_clinical_vocabulary | boolean | Are concepts from this vocabulary stored in [clinical_codes](#clinical_codes)? |                  |
 
 ### [mappings](#mappings)
