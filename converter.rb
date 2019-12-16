@@ -6,7 +6,7 @@ table = nil
 collect = false
 schema = {}
 
-artifacts_dir = Pathname.new("artifacts")
+artifacts_dir = Pathname.new("artifacts") + "gdm"
 artifacts_dir.mkpath
 
 def extract(link)
@@ -43,7 +43,7 @@ def convert(name, type)
   result
 end
 
-CSV.open(artifacts_dir + "gdm.csv", "w") do |csv|
+CSV.open(artifacts_dir + "schema.csv", "w") do |csv|
   csv << %w(table column type comment foreign_key required)
   File.foreach('README.md') do |line|
     line.chomp!
@@ -79,5 +79,5 @@ arrayed_schema = schema.map do |table_name, table|
   end
   { name: table_name, columns: columns}
 end
-File.write(artifacts_dir + "gdm.yml", schema.to_yaml)
-File.write(artifacts_dir + "gdm_arrayed.yml", arrayed_schema.to_yaml)
+File.write(artifacts_dir + "schema.yml", schema.to_yaml)
+File.write(artifacts_dir + "schema_arrayed.yml", arrayed_schema.to_yaml)
