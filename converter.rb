@@ -6,7 +6,7 @@ table = nil
 collect = false
 schema = {}
 
-artifacts_dir = Pathname.new("artifacts") + "gdm"
+artifacts_dir = Pathname.new("artifacts") + "schemas" + "gdm"
 artifacts_dir.mkpath
 
 def extract(link)
