@@ -11,7 +11,7 @@ script:
 after_success:
 - ruby converter.rb
 - ruby convert_to_schema.rb
-- tar jcvf artifacts/gdm_schemas.tbz artifacts/schemas
+- (cd artifacts && tar jcvf gdm_schemas.tbz schemas)
 - dropbox-deployment
 notifications:
   slack:
