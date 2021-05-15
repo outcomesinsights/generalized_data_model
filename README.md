@@ -93,7 +93,7 @@ facility_id                | bigint | FK reference to [facilities](#facilities) 
 admission_detail_id        | bigint | FK reference to [admission_details](#admission_details) table                                           | [admission_details](#admission_details) |
 collection_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the type of collection this record represents  | [concepts](#concepts)                   |
 
-### [contexts](#contexts)_[practitioners](#practitioners)
+### [contexts_practitioners](#context_practitioners)
 
 - Links one or more [practitioners](#practitioners) with a [contexts](#contexts) record
 - Each record represents an encounter between a patient and a practitioner on a specific context
