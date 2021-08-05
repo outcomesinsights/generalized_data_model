@@ -103,6 +103,7 @@ column                    | type   | description                                
 ------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | --------
 context_id                | bigint | FK reference to [contexts](#contexts) table                                                                                                       | [contexts](#contexts)           | x
 practitioner_id           | bigint | FK reference to [practitioners](#practitioners) table                                                                                             | [practitioners](#practitioners) | x
+patient_id                | bigint | FK reference to [patients](#patients) table                                                                                                       | [patients](#patients)           | x
 role_type_concept_id      | bigint | FK reference to the [concepts](#concepts) table representing roles [practitioners](#practitioners) can play in an encounter                       | [concepts](#concepts)           |
 specialty_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the practitioner's specialty type for the services/diagnoses associated with this record | [concepts](#concepts)           |
 
