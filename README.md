@@ -337,7 +337,6 @@ concept_1_id         | bigint | FK reference to [concepts](#concepts) table for 
 relationship_id      | text   | The type or nature of the relationship (e.g., "is_a")                    |                               | x
 concept_2_id         | bigint | FK reference to [concepts](#concepts) table for the destination concept  | [concepts](#concepts)         | x
 
-
 ### [etl_info](#etl_info)
 
 - Basic attribute value table for storing information about the ETL
@@ -348,7 +347,6 @@ column | type   | description        | foreign key (FK) | required
 key    | string | Name for the value |                  | x
 value  | string | Value              |                  |
 
-
 ### [etl_information_types](#etl_information_types)
 
 - Lists all the information types present in [`information_periods`](#information_periods)`.information_type_concept_id`
@@ -358,7 +356,6 @@ column           | type   | description                                         
 -----------------| -----  | ------------------------------------------------------------------------ | ----------------------------- | --------
 information_type | string | Information type                                                         |                               | x
 n                | bigint | Number of occurrences in [information_periods](#information_periods)     |                               | x
-
 
 ### [etl_tables](#etl_tables)
 
@@ -372,7 +369,6 @@ n_rows        | bigint | Number of rows in table         |                      
 n_patients    | bigint | Number of unique patients table |                               |
 earliest_date | bigint | Earliest date found in table    |                               |
 latest_date   | bigint | Latest date found in table      |                               |
-
 
 ### [etl_vocabulary_ids](#etl_vocabulary_ids)
 
