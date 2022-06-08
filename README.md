@@ -355,7 +355,7 @@ value  | text   | Value              |                  |
 column           | type   | description                                                              | foreign key (FK)              | required
 -----------------| -----  | ------------------------------------------------------------------------ | ----------------------------- | --------
 information_type | text   | Information type                                                         |                               | x
-n                | bigint | Number of occurrences in [information_periods](#information_periods)     |                               | x
+n_rows           | bigint | Number of occurrences in [information_periods](#information_periods)     |                               | x
 
 ### [etl_tables](#etl_tables)
 
@@ -378,4 +378,4 @@ latest_date   | bigint | Latest date found in table      |                      
 column        | type   | description                                                              | foreign key (FK)              | required
 --------------| -----  | ------------------------------------------------------------------------ | ----------------------------- | --------
 vocabulary_id | text   | Vocabulary ID present                                                    | [vocabularies](#vocabularies) | x
-n             | bigint | Number of occurrences in [clinical_codes](#clinical_codes)               |                               | x
+n_rows        | bigint | Number of occurrences in [clinical_codes](#clinical_codes)               |                               | x
