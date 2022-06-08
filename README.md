@@ -367,8 +367,8 @@ column        | type   | description                     | foreign key (FK)     
 table_name    | text   | Name of table                   |                               | x
 n_rows        | bigint | Number of rows in table         |                               | x
 n_patients    | bigint | Number of unique patients table |                               |
-earliest_date | bigint | Earliest date found in table    |                               |
-latest_date   | bigint | Latest date found in table      |                               |
+earliest_date | date   | Earliest date found in table    |                               |
+latest_date   | date   | Latest date found in table      |                               |
 
 ### [etl_vocabulary_ids](#etl_vocabulary_ids)
 
