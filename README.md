@@ -344,8 +344,8 @@ concept_2_id         | bigint | FK reference to [concepts](#concepts) table for 
 
 column | type   | description        | foreign key (FK) | required
 -------| -----  | -------------------| -----------------| --------
-key    | string | Name for the value |                  | x
-value  | string | Value              |                  |
+key    | text   | Name for the value |                  | x
+value  | text   | Value              |                  |
 
 ### [etl_information_types](#etl_information_types)
 
@@ -354,7 +354,7 @@ value  | string | Value              |                  |
 
 column           | type   | description                                                              | foreign key (FK)              | required
 -----------------| -----  | ------------------------------------------------------------------------ | ----------------------------- | --------
-information_type | string | Information type                                                         |                               | x
+information_type | text   | Information type                                                         |                               | x
 n                | bigint | Number of occurrences in [information_periods](#information_periods)     |                               | x
 
 ### [etl_tables](#etl_tables)
@@ -364,7 +364,7 @@ n                | bigint | Number of occurrences in [information_periods](#info
 
 column        | type   | description                     | foreign key (FK)              | required
 --------------| -----  | --------------------------------| ----------------------------- | --------
-table_name    | string | Name of table                   |                               | x
+table_name    | text   | Name of table                   |                               | x
 n_rows        | bigint | Number of rows in table         |                               | x
 n_patients    | bigint | Number of unique patients table |                               |
 earliest_date | bigint | Earliest date found in table    |                               |
@@ -377,5 +377,5 @@ latest_date   | bigint | Latest date found in table      |                      
 
 column        | type   | description                                                              | foreign key (FK)              | required
 --------------| -----  | ------------------------------------------------------------------------ | ----------------------------- | --------
-vocabulary_id | string | Vocabulary ID present                                                    | [vocabularies](#vocabularies) | x
+vocabulary_id | text   | Vocabulary ID present                                                    | [vocabularies](#vocabularies) | x
 n             | bigint | Number of occurrences in [clinical_codes](#clinical_codes)               |                               | x
