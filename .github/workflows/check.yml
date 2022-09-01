@@ -11,7 +11,7 @@ jobs:
         ruby-version: '2.7' # Not needed with a .ruby-version file
     - 
       name: Install Gems
-      run: gem install dropbox-deployment mdl
+      run: gem install dropbox-deployment mdl sequel
     - 
       name: Check Syntax
       run: sh check_readme.sh
