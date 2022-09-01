@@ -1,4 +1,5 @@
 require "pathname"
+require "stringio"
 
 table = nil
 collect = false

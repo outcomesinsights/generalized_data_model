@@ -1,0 +1,31 @@
+name: GDM Check and Conversion
+on: [push, pull_request]
+jobs:
+  check_and_convert:
+    runs-on: ubuntu-latest
+    environment: GDM Secrets
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '2.7'
+    - 
+      name: Install Gems
+      run: gem install dropbox-deployment mdl
+    - 
+      name: Check Syntax
+      run: sh check_readme.sh
+    - 
+      name: Convert to CSV/YAML
+      run: ruby converter.rb
+    - 
+      name: Convert to Sequel Schema
+      run: ruby convert_to_schema.rb
+    - 
+      name: Prepare schemas archive
+      run: (cd artifacts && tar jcvf gdm_schemas.tbz schemas)
+    - 
+      name: Upload to Dropbox
+      run: dropbox-deployment
+      env:
+        DROPBOX_OAUTH_BEARER: ${{ secrets.DROPBOX_OAUTH_BEARER }}
