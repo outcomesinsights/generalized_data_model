@@ -27,3 +27,5 @@ jobs:
     - 
       name: Upload to Dropbox
       run: dropbox-deployment
+      env:
+        DROPBOX_OAUTH_BEARER: ${{ secrets.DROPBOX_OAUTH_BEARER }}
