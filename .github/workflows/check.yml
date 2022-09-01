@@ -1,14 +1,14 @@
 name: GDM Check and Conversion
 on: [push, pull_request]
 jobs:
-  test:
+  check_and_convert:
     runs-on: ubuntu-latest
     environment: GDM Secrets
     steps:
     - uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '2.7' # Not needed with a .ruby-version file
+        ruby-version: '2.7'
     - 
       name: Install Gems
       run: gem install dropbox-deployment mdl
