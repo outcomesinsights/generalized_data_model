@@ -22,23 +22,6 @@ address_id              | bigint | FK reference to the place of residency for th
 practitioner_id         | bigint | FK reference to the primary care practitioner the patient is seeing in the [practitioners](#practitioners) table                | [practitioners](#practitioners) |
 patient_id_source_value | text   | Originial patient identifier defined in the source data                                                                         |                                 | x
 
-### [patient_details](#patient_details)
-
-- Extra information about a patient that doesn't fit in the [patients](#patients) table
-
-column                       | type   | description                                                                     | foreign key (FK)              | required
----------------------------- | ------ | ------------------------------------------------------------------------------- | ----------------------------- | ----------
-id                           | serial | Surrogate key for record                                                        |                               | x
-patient_id                   | bigint | FK reference to [patients](#patients) table                                     | [patients](#patients)         | x
-start_date                   | date   | Start date of record (yyyy-mm-dd)                                               |                               | x
-end_date                     | date   | Start date of record (yyyy-mm-dd)                                               |                               |
-value_as_number              | float  | The patient detail result stored as a number, applicable to patient detail where the result is expressed as a numeric value                                     |                                   |
-value_as_string              | text   | The patient detail result stored as a string, applicable to patient details where the result is expressed as verbatim text                                       |                                   |
-value_as_concept_id          | bigint | FK reference to [concepts](#concepts) table for the result associated with the patient detail | [concepts](#concepts)             |
-patient_detail_concept_id    | bigint | FK reference to [concepts](#concepts) table for the code assigned to the record | [concepts](#concepts)         | x
-patient_detail_source_value  | text   | Source code from raw data                                                       |                               | x
-patient_detail_vocabulary_id | text   | Vocabulary the patient detail comes from                                        | [vocabularies](#vocabularies) | x
-
 ### [practitioners](#practitioners)
 
 - All non-facility [practitioners](#practitioners) (i.e., physicians, etc.) are listed
