@@ -1,1 +1,1 @@
-mdl --style style.rb README.md && echo "Looks good!"
+bundle exec mdl --style style.rb README.md && echo "Looks good!"
