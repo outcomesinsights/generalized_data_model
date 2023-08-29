@@ -137,13 +137,6 @@ indexes = {
     :patient_id,
     :information_type_concept_id
   ],
-  concepts: [
-    [ :vocabulary_id, "Sequel.function(:lower, :concept_code)" ],
-    [ :vocabulary_id, :concept_code ]
-  ],
-  mappings: [
-    :concept_1_id
-  ]
 }
 
 table = nil
@@ -192,7 +185,13 @@ File.foreach('README.md') do |line|
     column_opts.merge!(comment: comment)
     column_opts.merge!(null: false) if required && !required.strip.empty?
     if foreign_key
-      schema_io.puts "foreign_key #{name.inspect}, #{foreign_key.to_sym.inspect}, #{column_opts.merge(type: "Bigint".to_sym, key: :id).inspect}"
+      fk_col = :id
+      fk_type = "Bigint".to_sym
+      if %w(concept vocabulary).include?(foreign_key)
+        fk_col = "#{foreign_key}_id".to_sym
+        fk_type = "String" if foreign_key == "vocabulary"
+      end
+      schema_io.puts "foreign_key #{name.inspect}, #{foreign_key.to_sym.inspect}, #{column_opts.merge(type: fk_type, key: fk_col).inspect}"
     else
       schema_io.puts "#{type} #{name.inspect}#{column_opts.empty? ? '' : ", #{column_opts.inspect}"}"
     end
