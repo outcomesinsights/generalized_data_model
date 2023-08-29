@@ -2,7 +2,7 @@
 
 We have a [manuscript available](https://bmcmedinformdecismak.biomedcentral.com/articles/10.1186/s12911-019-0837-5) that describes the design of the Generalized Data Model (GDM).
 
-Below is the current version of the schema for the Generalized Data Model. We gratefully acknowledge the influence of the OHDSI community and the open-source OMOP common data model [specifications](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:cdm) on our thinking. In addition, we acknowledge the influence of both Sentinel and i2b2 on our approach, although most of our data model was designed prior to fully reviewing other data models. At the moment, many references to the [concepts](#concepts) table refer to the OMOP version 5 vocabulary [table](http://www.ohdsi.org/web/athena/) maintained by OHDSI.  However, any internally consistent set of vocabularies with unique concept ids would be sufficient (e.g., the [National Library of Medicine Metathesaurus](https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/)).
+Below is the current version of the schema for the Generalized Data Model. We gratefully acknowledge the influence of the OHDSI community and the open-source OMOP common data model [specifications](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:cdm) on our thinking. In addition, we acknowledge the influence of both Sentinel and i2b2 on our approach, although most of our data model was designed prior to fully reviewing other data models. At the moment, many references to the concept table refer to the OMOP version 5 vocabulary [table](http://www.ohdsi.org/web/athena/) maintained by OHDSI.  However, any internally consistent set of vocabularies with unique concept ids would be sufficient (e.g., the [National Library of Medicine Metathesaurus](https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/)).
 
 Note that in April 2023, we removed the patient_details table from the data model.
 
@@ -16,10 +16,10 @@ Note that in April 2023, we removed the patient_details table from the data mode
 column                | type   | description                                                                                                                     | foreign key (FK)                | required
 ----------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | --------
 id                    | serial | Surrogate key for record                                                                                                        |                                 | x
-gender_concept_id     | bigint | FK reference to the [concepts](#concepts) table for the unique gender of the patient                                            | [concepts](#concepts)           |
+gender_concept_id     | bigint | FK reference to the concept table for the unique gender of the patient                                            | concept           |
 birth_date            | date   | Date of birth (yyyy-mm-dd)                                                                                                      |                                 |
-race_concept_id       | bigint | FK reference to the [concepts](#concepts) table for the unique race of the patient                                              | [concepts](#concepts)           |
-ethnicity_concept_id  | bigint | FK reference to the [concepts](#concepts) table for the ethnicity of the patient                                                | [concepts](#concepts)           |
+race_concept_id       | bigint | FK reference to the concept table for the unique race of the patient                                              | concept           |
+ethnicity_concept_id  | bigint | FK reference to the concept table for the ethnicity of the patient                                                | concept           |
 address_id            | bigint | FK reference to the place of residency for the patient in the location table, where the detailed address information is stored  | [addresses](#addresses)         |
 practitioner_id       | bigint | FK reference to the primary care practitioner the patient is seeing in the [practitioners](#practitioners) table                | [practitioners](#practitioners) |
 patient_id_source_value | text | Originial patient identifier defined in the source data                                                                         |                                 | x
@@ -36,10 +36,10 @@ primary_identifier      | text   | Primary practitioner identifier              
 primary_identifier_type | text   | Type of identifier specified in primary identifier field (UPIN, NPI, etc)                                         |                         | x
 secondary_identifier    | text   | Secondary practitioner identifier (Optional)                                                                      |                         |
 secondary_identifier_type | text | Type of identifier specified in secondary identifier field (UPIN, NPI, etc)                                       |                         |
-specialty_concept_id    | bigint | FK reference to an identifier in the [concepts](#concepts) table for specialty                                    | [concepts](#concepts)   |
+specialty_concept_id    | bigint | FK reference to an identifier in the concept table for specialty                                    | concept   |
 address_id              | bigint | FK reference to the address of the location where the practitioner is practicing                                  | [addresses](#addresses) |
 birth_date              | date   | Date of birth (yyyy-mm-dd)                                                                                        |                         |
-gender_concept_id       | bigint | FK reference to an identifier in the [concepts](#concepts) table for the unique gender of the practitioner        | [concepts](#concepts)   |
+gender_concept_id       | bigint | FK reference to an identifier in the concept table for the unique gender of the practitioner        | concept   |
 
 ### [facilities](#facilities)
 
@@ -54,8 +54,8 @@ primary_identifier      | text   | Primary facility identifier                  
 primary_identifier_type | text   | Type of identifier specified in primary identifier field (UPIN, NPI, etc)       |                         | x
 secondary_identifier    | text   | Secondary facility identifier (Optional)                                        |                         |
 secondary_identifier_type | text | Type of identifier specified in secondary identifier field (UPIN, NPI, etc)     |                         |
-facility_type_concept_id| bigint | FK reference to [concepts](#concepts) table representing the facility type      | [concepts](#concepts)   |
-specialty_concept_id    | bigint | A foreign key to an identifier in the [concepts](#concepts) table for specialty | [concepts](#concepts)   |
+facility_type_concept_id| bigint | FK reference to concept table representing the facility type      | concept   |
+specialty_concept_id    | bigint | A foreign key to an identifier in the concept table for specialty | concept   |
 address_id              | bigint | A foreign key to the address of the location of the facility                    | [addresses](#addresses) |
 
 ### [collections](#collections)
@@ -73,10 +73,10 @@ patient_id               | bigint | FK to reference to [patients](#patients) tab
 start_date               | date   | Start date of record (yyyy-mm-dd)                                                                       |                                         | x
 end_date                 | date   | End date of record (yyyy-mm-dd)                                                                         |                                         | x
 duration                 | float  | Duration of collection. (e.g. hospitalization length of stay)                                           |                                         |
-duration_unit_concept_id | bigint | FK reference to [concepts](#concepts) table representing the unit of duration (hours, days, weeks etc.) | concepts                                        |
+duration_unit_concept_id | bigint | FK reference to concept table representing the unit of duration (hours, days, weeks etc.) | concepts                                        |
 facility_id              | bigint | FK reference to [facilities](#facilities) table                                                         | [facilities](#facilities)               |
 admission_detail_id      | bigint | FK reference to [admission_details](#admission_details) table                                           | [admission_details](#admission_details) |
-collection_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the type of collection this record represents| [concepts](#concepts)                   |
+collection_type_concept_id | bigint | FK reference to concept table representing the type of collection this record represents| concept                   |
 
 ### [contexts_practitioners](#context_practitioners)
 
@@ -89,8 +89,8 @@ column                  | type   | description                                  
 context_id              | bigint | FK reference to [contexts](#contexts) table                                                                                                       | [contexts](#contexts)           | x
 practitioner_id         | bigint | FK reference to [practitioners](#practitioners) table                                                                                             | [practitioners](#practitioners) | x
 patient_id              | bigint | FK reference to [patients](#patients) table                                                                                                       | [patients](#patients)           | x
-role_type_concept_id    | bigint | FK reference to the [concepts](#concepts) table representing roles [practitioners](#practitioners) can play in an encounter                       | [concepts](#concepts)           |
-specialty_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the practitioner's specialty type for the services/diagnoses associated with this record | [concepts](#concepts)         |
+role_type_concept_id    | bigint | FK reference to the concept table representing roles [practitioners](#practitioners) can play in an encounter                       | concept           |
+specialty_type_concept_id | bigint | FK reference to concept table representing the practitioner's specialty type for the services/diagnoses associated with this record | concept         |
 
 ### [contexts](#contexts)
 
@@ -107,11 +107,11 @@ patient_id                      | bigint | FK to reference to [patients](#patien
 start_date                      | date   | Start date of record (yyyy-mm-dd)                                                                                                                                                              |                             | x
 end_date                        | date   | End date of record (yyyy-mm-dd)                                                                                                                                                                |                             |
 facility_id                     | bigint | FK reference to [facilities](#facilities) table                                                                                                                                                | [facilities](#facilities)   |
-care_site_type_concept_id       | bigint | FK reference to [concepts](#concepts) table representing the care site type within the facility                                                                                                | [concepts](#concepts)       |
-pos_concept_id                  | bigint | FK reference to [concepts](#concepts) table representing the place of service associated with this record                                                                                      | [concepts](#concepts)       |
-source_type_concept_id          | bigint | FK reference to [concepts](#concepts) table representing the file name (e.g MEDPAR). If data represents a subset of a file, concatenate the name of the file used and subset  (e.g MEDPAR_SNF) | [concepts](#concepts)       | x
-service_specialty_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the specialty type for the services/diagnoses associated with this record                                                           | [concepts](#concepts)       |
-record_type_concept_id          | bigint | FK reference to [concepts](#concepts) table representing the type of [contexts](#contexts) the record represents (line, claim, etc.)                                                           | [concepts](#concepts)       | x
+care_site_type_concept_id       | bigint | FK reference to concept table representing the care site type within the facility                                                                                                | concept       |
+pos_concept_id                  | bigint | FK reference to concept table representing the place of service associated with this record                                                                                      | concept       |
+source_type_concept_id          | bigint | FK reference to concept table representing the file name (e.g MEDPAR). If data represents a subset of a file, concatenate the name of the file used and subset  (e.g MEDPAR_SNF) | concept       | x
+service_specialty_type_concept_id | bigint | FK reference to concept table representing the specialty type for the services/diagnoses associated with this record                                                           | concept       |
+record_type_concept_id          | bigint | FK reference to concept table representing the type of [contexts](#contexts) the record represents (line, claim, etc.)                                                           | concept       | x
 
 ### [clinical_codes](#clinical_codes)
 
@@ -128,12 +128,12 @@ context_id                | bigint | FK reference to [contexts](#contexts) table
 patient_id                | bigint | FK reference to [patients](#patients) table                                     | [patients](#patients)                           | x
 start_date                | date   | Start date of record (yyyy-mm-dd)                                               |                                                 | x
 end_date                  | date   | End date of record (yyyy-mm-dd)                                                 |                                                 | x
-clinical_code_concept_id  | bigint | FK reference to [concepts](#concepts) table for the code assigned to the record | [concepts](#concepts)                           | x
+clinical_code_concept_id  | bigint | FK reference to concept table for the code assigned to the record | concept                           | x
 quantity                  | bigint | Quantity, if available (e.g., procedures)                                       |                                                 |
 seq_num                   | int    | The sequence number for the variable assigned (e.g. dx3 gets sequence number 3) |                                                 |
-provenance_concept_id     | bigint | Additional type information (ex: primary, admitting, problem list, etc)         | [concepts](#concepts)                           |
+provenance_concept_id     | bigint | Additional type information (ex: primary, admitting, problem list, etc)         | concept                           |
 clinical_code_source_value| text   | Source code from raw data                                                       |                                                 | x
-clinical_code_vocabulary_id | text | FK reference to the vocabulary the clinical code comes from                     | [vocabularies](#vocabularies)                   | x
+clinical_code_vocabulary_id | text | FK reference to the vocabulary the clinical code comes from                     | vocabulary                   | x
 measurement_detail_id     | bigint | FK reference to [measurement_details](#measurement_details) table               | [measurement_details](#measurement_details)     |
 drug_exposure_detail_id   | bigint | FK reference to [drug_exposure_details](#drug_exposure_details) table           | [drug_exposure_details](#drug_exposure_details) |
 
@@ -150,13 +150,13 @@ id                                  | serial | Surrogate key for record         
 patient_id                          | bigint | FK reference to [patients](#patients) table                                                                                                                | [patients](#patients)             | x
 result_as_number                    | float  | The observation result stored as a number, applicable to observations where the result is expressed as a numeric value                                     |                                   |
 result_as_string                    | text   | The observation result stored as a string, applicable to observations where the result is expressed as verbatim text                                       |                                   |
-result_as_concept_id                | bigint | FK reference to [concepts](#concepts) table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.) | [concepts](#concepts)             |
-result_modifier_concept_id          | bigint | FK reference to [concepts](#concepts) table for result modifier (=, <, >, etc.)                                                                            | [concepts](#concepts)             |
-unit_concept_id                     | bigint | FK reference to [concepts](#concepts) table for the measurement units (e.g., mmol/L, mg/dL, etc.)                                                          | [concepts](#concepts)             |
+result_as_concept_id                | bigint | FK reference to concept table for the result associated with the detail_concept_id (e.g., positive/negative, present/absent, low/high, etc.) | concept             |
+result_modifier_concept_id          | bigint | FK reference to concept table for result modifier (=, <, >, etc.)                                                                            | concept             |
+unit_concept_id                     | bigint | FK reference to concept table for the measurement units (e.g., mmol/L, mg/dL, etc.)                                                          | concept             |
 normal_range_low                    | float  | Lower bound of the normal reference range assigned by the laboratory                                                                                       |                                   |
 normal_range_high                   | float  | Upper bound of the normal reference range assigned by the laboratory                                                                                       |                                   |
-normal_range_low_modifier_concept_id| bigint | FK reference to [concepts](#concepts) table for result modifier (=, <, >, etc.)                                                                            | [concepts](#concepts)             |
-normal_range_high_modifier_concept_id | bigint | FK reference to [concepts](#concepts) table for result modifier (=, <, >, etc.)                                                                          | [concepts](#concepts)             |
+normal_range_low_modifier_concept_id| bigint | FK reference to concept table for result modifier (=, <, >, etc.)                                                                            | concept             |
+normal_range_high_modifier_concept_id | bigint | FK reference to concept table for result modifier (=, <, >, etc.)                                                                          | concept             |
 
 ### [drug_exposure_details](#drug_exposure_details)
 
@@ -170,9 +170,9 @@ patient_id              | bigint | FK to reference to [patients](#patients) tabl
 refills                 | int    | The number of refills after the initial prescription; the initial prescription is not counted (i.e., values start with 0) |                                   |
 days_supply             | int    | The number of days of supply as recorded in the original prescription or dispensing record                                |                                   |
 number_per_day          | float  | The number of pills taken per day                                                                                         |                                   |
-dose_form_concept_id    | bigint | FK reference to [concepts](#concepts) table for the form of the drug (capsule, injection, etc.)                           | [concepts](#concepts)             |
-dose_unit_concept_id    | bigint | FK reference to [concepts](#concepts) table for the units in which the dose_value is expressed                            | [concepts](#concepts)             |
-route_concept_id        | bigint | FK reference to [concepts](#concepts) table for route in which drug is given                                              | [concepts](#concepts)             |
+dose_form_concept_id    | bigint | FK reference to concept table for the form of the drug (capsule, injection, etc.)                           | concept             |
+dose_unit_concept_id    | bigint | FK reference to concept table for the units in which the dose_value is expressed                            | concept             |
+route_concept_id        | bigint | FK reference to concept table for route in which drug is given                                              | concept             |
 dose_value              | float  | Numeric value for the dose of the drug                                                                                    |                                   |
 strength_source_value   | text   | Drug strength as reported in the raw data. This can include both dose value and units                                     |                                   |
 ingredient_source_value | text   | Ingredient/Generic name of drug as reported in the raw data                                                               |                                   |
@@ -190,7 +190,7 @@ id                       | serial | Surrogate key for record                    
 context_id               | bigint | FK reference to context table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | [contexts](#contexts)             | x
 patient_id               | bigint | FK to reference to [patients](#patients) table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | [patients](#patients)             | x
 clinical_code_id         | bigint | FK reference to [clinical_codes](#clinical_codes) table to be used if a specific code is the direct cause for the reimbursement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | [clinical_codes](#clinical_codes) |
-currency_concept_id      | bigint | FK reference to [concepts](#concepts) table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | [concepts](#concepts)             | x
+currency_concept_id      | bigint | FK reference to concept table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | concept             | x
 total_charged            | float  | The total amount charged by the provider of the good/service (e.g. hospital, physician pharmacy, dme provider) billed to a payer. This information is usually provided in claims data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |                                   |
 total_paid               | float  | The total amount paid from all payers for the expenses of the service/device/drug. This field is calculated using the following formula: paid_by_payer + paid_by_patient + paid_by_primary. In claims data, this field is considered the calculated field the payer expects the provider to get reimbursed for the service/device/drug from the payer and from the patient, based on the payer's contractual obligations.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |                                   |
 paid_by_payer            | float  | The amount paid by the Payer for the service/device/drug. In claims data, generally there is one field representing the total payment from the payer for the service/device/drug. However, this field could be a calculated field if the source data provides separate payment information for the ingredient cost and the dispensing fee. If the paid_ingredient_cost or paid_dispensing_fee fields are populated with nonzero values, the paid_by_payer field is calculated using the following formula: paid_ingredient_cost + paid_dispensing_fee. If there is more than one Payer in the source data, several cost records indicate that fact. The Payer reporting this reimbursement should be indicated under the payer_plan_id field.                                                                                                                                                 |                                   |
@@ -215,10 +215,10 @@ id                  | serial | Surrogate key for record                         
 context_id          | bigint | FK reference to context table                                                                                                                                                        | [contexts](#contexts)             | x
 patient_id          | bigint | FK reference to [patients](#patients) table                                                                                                                                          | [patients](#patients)             | x
 clinical_code_id    | bigint | FK reference to [clinical_codes](#clinical_codes) table to be used if a specific code is the direct cause for the reimbursement                                                      | [clinical_codes](#clinical_codes) |
-currency_concept_id | bigint | FK reference to [concepts](#concepts) table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar)                                                 | [concepts](#concepts)             | x
+currency_concept_id | bigint | FK reference to concept table for the 3-letter code used to delineate international currencies (e.g., USD = US Dollar)                                                 | concept             | x
 cost_base           | text   | Defines the basis for the cost in the table (e.g., 2013 for a specific cost-to-charge ratio, or a specific cost from an external cost                                                |                                   | x
 value               | float  | Cost value                                                                                                                                                                           |                                   | x
-value_type_concept_id | bigint | FK reference to [concepts](#concepts) table to concept that defines the type of economic information in the value field (e.g., cost-to-charge ratio, calculated cost, reported cost) | [concepts](#concepts)           | x
+value_type_concept_id | bigint | FK reference to concept table to concept that defines the type of economic information in the value field (e.g., cost-to-charge ratio, calculated cost, reported cost) | concept           | x
 
 ### [addresses](#addresses)
 
@@ -249,8 +249,8 @@ column              | type   | description                                      
 id                  | serial | Surrogate key for record                                                                                    |                                 | x
 patient_id          | bigint | FK reference to [patients](#patients) table                                                                 | [patients](#patients)           | x
 date                | date   | Date of death (yyyy-mm-dd)                                                                                  |                                 | x
-cause_concept_id    | bigint | FK reference to [concepts](#concepts) table for cause of death (typically ICD-9 or ICD-10 code)             | [concepts](#concepts)           |
-cause_type_concept_id | bigint | FK reference to [concepts](#concepts) table for the type of cause of death (e.g. primary, secondary, etc. ) | [concepts](#concepts)         |
+cause_concept_id    | bigint | FK reference to concept table for cause of death (typically ICD-9 or ICD-10 code)             | concept           |
+cause_type_concept_id | bigint | FK reference to concept table for the type of cause of death (e.g. primary, secondary, etc. ) | concept         |
 practitioner_id     | bigint | FK reference to [practitioners](#practitioners) table                                                       | [practitioners](#practitioners) |
 
 ### [information_periods](#information_periods)
@@ -265,7 +265,7 @@ id                        | serial | Surrogate key for record                   
 patient_id                | bigint | FK reference to [patients](#patients) table                                                                                                  | [patients](#patients) | x
 start_date                | date   | Start date of record (yyyy-mm-dd)                                                                                                            |                       | x
 end_date                  | date   | End date of record (yyyy-mm-dd)                                                                                                              |                       | x
-information_type_concept_id | bigint | FK reference to [concepts](#concepts) table representing the information type (e.g., insurance coverage, hospital data, up-to-standard date) | [concepts](#concepts) | x
+information_type_concept_id | bigint | FK reference to concept table representing the information type (e.g., insurance coverage, hospital data, up-to-standard date) | concept | x
 
 ### [admission_details](#admission_details)
 
@@ -279,48 +279,9 @@ id                          | serial | Surrogate key for record                 
 patient_id                  | bigint | FK reference to [patients](#patients) table                                                                              | [patients](#patients) | x
 admission_date              | date   | Date of admission (yyyy-mm-dd)                                                                                           |                       | x
 discharge_date              | date   | Date of discharge (yyyy-mm-dd)                                                                                           |                       | x
-admit_source_concept_id     | bigint | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                   | [concepts](#concepts) |
-discharge_location_concept_id | bigint | Database specific code indicating discharge location (e.g., death, home, transfer, long-term care, etc.)               | [concepts](#concepts) |
-admission_type_concept_id   | bigint | FK reference to [concepts](#concepts) table representing the type of admission the record is (Emergency, Elective, etc.) | [concepts](#concepts) |
-
-### [concepts](#concepts)
-
-- Adapted from OMOP concept table (could add other fields, like domain, if needed)
-- Can be created *de novo* for each data source or could use a different source like the [National Library of Medicine Metathesaurus](https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/)
-- The [mappings](#mappings) table can be used to establish relationships among concept_ids
-
-column      | type   | description                                                                                              | foreign key (FK)              | required
-------------- | ------ | --------------------------------------------------------------------------------                       | ----------------------------- | --------
-id          | serial | Surrogate key for record (this is the concept_id)                                                        |                               | x
-vocabulary_id | text | FK reference to the vocabularies table for the vocabulary associated with the concept (see OMOP or UMLS) | [vocabularies](#vocabularies) | x
-concept_code| text   | Actual code as text string from the source vocabulary (e.g., "410.00" for ICD-9)                         |                               | x
-concept_text| text   | Text descriptor associated with the concept_code                                                         |                               | x
-
-### [vocabularies](#vocabularies)
-
-- A list of vocabularies, currently adapted from the OMOP vocabulary table (e.g., ICD9)
-
-column               | type    | description                                                                    | foreign key (FK) | required
----------------------- | ------- | ------------------------------------------------------------------------------ | ---------------- | --------
-id                   | text    | Short name of the vocabulary which acts as a natural key for record            |                  | x
-vocabulary_name      | text    | Full name of the vocabulary                                                    |                  | x
-domain               | text    | Domain to which the majority of the vocabulary is assigned                     |                  |
-concepts_count       | bigint  | Number of row in the [concepts](#concepts) table assigned to this vocabulary   |                  |
-is_clinical_vocabulary | boolean | Are concepts from this vocabulary stored in [clinical_codes](#clinical_codes)? |                |
-
-### [mappings](#mappings)
-
-- A set of relationships, currently adapted from the OMOP concept_relationship table
-- This can be used to establish relationships between database-specific information and standardized information.
-- It is preferable to store the raw data in the [concepts](#concepts) table and establish a mapping to standard concepts in this table.
-   - For example, if sex were coded as "male" and "female", these terms would be stored in the [concepts](#concepts) table, and would be linked to standard concepts (if any) in the [mappings](#mappings) table
-   - This moves such "hidden" mappings from the ETL process to the data itself, makes ETL easier, and increases transparency and reproducibility of studies
-
-column             | type   | description                                                              | foreign key (FK)              | required
--------------------- | -----| ------------------------------------------------------------------------ | ----------------------------- | --------
-concept_1_id       | bigint | FK reference to [concepts](#concepts) table for the source concept       | [concepts](#concepts)         | x
-relationship_id    | text   | The type or nature of the relationship (e.g., "is_a")                    |                               | x
-concept_2_id       | bigint | FK reference to [concepts](#concepts) table for the destination concept  | [concepts](#concepts)         | x
+admit_source_concept_id     | bigint | Database specific code indicating source of admission (e.g., ER visit, transfer, etc.)                                   | concept |
+discharge_location_concept_id | bigint | Database specific code indicating discharge location (e.g., death, home, transfer, long-term care, etc.)               | concept |
+admission_type_concept_id   | bigint | FK reference to concept table representing the type of admission the record is (Emergency, Elective, etc.) | concept |
 
 ### [etl_info](#etl_info)
 
@@ -362,5 +323,5 @@ latest_date | date   | Latest date found in table      |                        
 
 column      | type   | description                                                              | foreign key (FK)              | required
 --------------| -----| ------------------------------------------------------------------------ | ----------------------------- | --------
-vocabulary_id | text | Vocabulary ID present                                                    | [vocabularies](#vocabularies) | x
+vocabulary_id | text | Vocabulary ID present                                                    | vocabulary | x
 n_rows      | bigint | Number of occurrences in [clinical_codes](#clinical_codes)               |                               | x
