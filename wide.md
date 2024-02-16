@@ -24,7 +24,7 @@ CREATE TABLE observations AS
 		cc.seq_num,
 		cc.provenance_concept_id,
 		cc.clinical_code_source_value,
-		cc.vocabulary_id AS clinical_code_vocabulary_id,
+		cc.clinical_code_vocabulary_id,
 		ctx.start_date AS context_start_date,
 		ctx.end_date AS context_end_date,
 		ctx.facility_id AS context_facility_id,
