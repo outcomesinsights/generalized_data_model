@@ -102,7 +102,7 @@ DROP TABLE IF EXISTS supplemented_payer_reimbursements;
 CREATE TABLE supplemented_payer_reimbursements AS
 	SELECT
 		pr.*,
-		cc.collection_id AS collection_id,
+		ctx.collection_id AS collection_id,
 		cc.clinical_code_concept_id,
 		cc.clinical_code_source_value,
 		cc.clinical_code_vocabulary_id,
