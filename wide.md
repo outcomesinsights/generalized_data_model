@@ -15,7 +15,6 @@ DROP TABLE IF EXISTS observations;
 CREATE TABLE observations AS
 	SELECT
 		cc.id,
-		cc.context_id,
 		cc.patient_id,
 		cc.start_date,
 		cc.end_date,
