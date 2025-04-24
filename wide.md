@@ -13,7 +13,7 @@ To avoid naming conflicts, we call this denormalized table `observations`.  We c
 ```sql
 DROP TABLE IF EXISTS observations;
 CREATE TABLE observations AS
-	SELECT 
+	SELECT
 		cc.id,
 		cc.context_id,
 		cc.patient_id,
@@ -24,7 +24,8 @@ CREATE TABLE observations AS
 		cc.seq_num,
 		cc.provenance_concept_id,
 		cc.clinical_code_source_value,
-		cc.vocabulary_id AS clinical_code_vocabulary_id,
+		cc.clinical_code_vocabulary_id,
+		ctx.id AS context_id,
 		ctx.start_date AS context_start_date,
 		ctx.end_date AS context_end_date,
 		ctx.facility_id AS context_facility_id,
@@ -40,6 +41,7 @@ CREATE TABLE observations AS
 		col.duration_unit_concept_id,
 		col.facility_id AS collection_facility_id,
 		col.collection_type_concept_id,
+		ded.id AS drug_exposure_detail_id,
 		ded.refills,
 		ded.days_supply,
 		ded.number_per_day,
@@ -50,11 +52,13 @@ CREATE TABLE observations AS
 		ded.strength_source_value,
 		ded.ingredient_source_value,
 		ded.drug_name_source_value,
+		ad.id AS admission_detail_id,
 		ad.admission_date AS admit_admission_date,
 		ad.discharge_date AS admit_discharge_date,
 		ad.admit_source_concept_id,
 		ad.discharge_location_concept_id,
 		ad.admission_type_concept_id,
+		md.id AS measurement_detail_id,
 		md.result_as_number,
 		md.result_as_string,
 		md.result_as_concept_id,
@@ -117,3 +121,18 @@ CREATE TABLE supplemented_payer_reimbursements AS
 CREATE INDEX ON supplemented_payer_reimbursements (patient_id, start_date);
 CLUSTER supplemented_payer_reimbursements USING supplemented_payer_reimbursements_patient_id_start_date_idx;
 ```
+
+## Versions
+
+### 1.0.0 - 2024-02-01
+
+- Original implementation
+
+### 1.0.1 - 2024-02-17
+
+- Fix bug where collections were incorrectly joined via cc.context_id instead of cc.collection_id
+
+### 1.1.0 - 2025-04-24
+
+- Include foreign keys in `observations`
+	- Provides helpful information for some [ConceptQL](https://github.com/outcomesinsights/conceptql) operators
