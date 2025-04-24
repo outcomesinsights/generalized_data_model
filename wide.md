@@ -66,7 +66,7 @@ CREATE TABLE observations AS
 		md.normal_range_high_modifier_concept_id
 	FROM clinical_codes AS cc
 	LEFT JOIN contexts AS ctx ON (cc.context_id = ctx.id)
-	LEFT JOIN collections AS col ON (cc.context_id = col.id)
+	LEFT JOIN collections AS col ON (cc.collection_id = col.id)
 	LEFT JOIN drug_exposure_details AS ded ON (cc.drug_exposure_detail_id = ded.id)
 	LEFT JOIN admission_details AS ad ON (col.admission_detail_id = ad.id)
 	LEFT JOIN measurement_details AS md ON (cc.measurement_detail_id = md.id)
