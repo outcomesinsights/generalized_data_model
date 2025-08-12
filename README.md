@@ -228,7 +228,7 @@ value_type_concept_id | bigint | FK reference to [concept](https://ohdsi.github.
 column       | type   | description                                                                                             | foreign key (FK) | required
 -------------|--------|---------------------------------------------------------------------------------------------------------|------------------|---------
 id           | serial | Surrogate key for record                                                                                |                  | x
-address_1    | text   | Typically used for street address                                                                       |                  |
+address_1    | text   | Typically used for street but may also contain full address details for non-standard address formats address                                                                       |                  |
 address_2    | text   | Typically used for additional detail such as building, suite, floor, etc.                               |                  |
 city         | text   | The city field as it appears in the source data                                                         |                  |
 state        | text   | The state field as it appears in the source data                                                        |                  |
