@@ -6,6 +6,31 @@ Below is the current version of the schema for the Generalized Data Model. We gr
 
 Note that in April 2023, we removed the patient_details table from the data model.
 
+<!-- toc -->
+
+- [GDM Tables](#gdm-tables)
+  - [patients](#patients)
+  - [practitioners](#practitioners)
+  - [facilities](#facilities)
+  - [collections](#collections)
+  - [contexts_practitioners](#contexts_practitioners)
+  - [contexts](#contexts)
+  - [clinical_codes](#clinical_codes)
+  - [measurement_details](#measurement_details)
+  - [drug_exposure_details](#drug_exposure_details)
+  - [payer_reimbursements](#payer_reimbursements)
+  - [costs](#costs)
+  - [addresses](#addresses)
+  - [deaths](#deaths)
+  - [information_periods](#information_periods)
+  - [admission_details](#admission_details)
+  - [etl_info](#etl_info)
+  - [etl_information_types](#etl_information_types)
+  - [etl_tables](#etl_tables)
+  - [etl_vocabulary_ids](#etl_vocabulary_ids)
+
+<!-- tocstop -->
+
 ## GDM Tables
 
 ### [patients](#patients)
