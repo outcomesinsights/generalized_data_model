@@ -6,9 +6,9 @@ We are investigating possible approaches to denormalizing GDM, referring to it a
 
 ## Denormalizing `clinical_codes`
 
-It turns out that GDM lends itself nicely to denormalization.  Because the `clinical_codes` table exclusively contains one to one or one to many relationships, we can quickly generate a denormalized table that includes all the details about a `clinical_codes` record without worrying about producing duplicate rows.
+It turns out that GDM lends itself nicely to denormalization. Because the `clinical_codes` table exclusively contains one to one or one to many relationships, we can quickly generate a denormalized table that includes all the details about a `clinical_codes` record without worrying about producing duplicate rows.
 
-To avoid naming conflicts, we call this denormalized table `observations`.  We can generate `observations` using the following PostgreSQL query:
+To avoid naming conflicts, we call this denormalized table `observations`. We can generate `observations` using the following PostgreSQL query:
 
 ```sql
 DROP TABLE IF EXISTS observations;
@@ -94,11 +94,11 @@ The `observations` eliminates the need for following tables:
 - `admission_details`
 - `measurement_details`
 
-We could further denormalize the table by appending all columns from `patients` but that seemed excessive as we rarely need demographic information when querying `clinical_codes`-related information.  There are still other tables that we could join, but again, we rarely query on or utilize these tables in our analyses.
+We could further denormalize the table by appending all columns from `patients` but that seemed excessive as we rarely need demographic information when querying `clinical_codes`-related information. There are still other tables that we could join, but again, we rarely query on or utilize these tables in our analyses.
 
 ## Supplementing `payer_reimbursements`
 
-Another table we frequently join on is `payer_reimbursements`.  We took the opportunity to supplement the `payer_reimbursements` table with the most-common fields we query on to create the `supplemented_payer_reimbursements` table.  We can generate it using the following PostgreSQL query:
+Another table we frequently join on is `payer_reimbursements`. We took the opportunity to supplement the `payer_reimbursements` table with the most-common fields we query on to create the `supplemented_payer_reimbursements` table. We can generate it using the following PostgreSQL query:
 
 ```sql
 DROP TABLE IF EXISTS supplemented_payer_reimbursements;
@@ -134,4 +134,4 @@ CLUSTER supplemented_payer_reimbursements USING supplemented_payer_reimbursement
 ### 1.1.0 - 2025-04-24
 
 - Include foreign keys in `observations`
-	- Provides helpful information for some [ConceptQL](https://github.com/outcomesinsights/conceptql) operators
+  - Provides helpful information for some [ConceptQL](https://github.com/outcomesinsights/conceptql) operators
