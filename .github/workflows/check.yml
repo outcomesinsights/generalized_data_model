@@ -1,5 +1,11 @@
-name: GDM Check and Conversion
-on: [push, pull_request]
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
 jobs:
   check_and_convert:
     runs-on: ubuntu-latest
@@ -9,23 +15,59 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.3'
-    - 
+    -
       name: Install Gems
       run: gem install dropbox-deployment mdl
-    - 
+    -
       name: Check Syntax
       run: sh check_readme.sh
-    - 
+    -
       name: Convert to CSV/YAML
       run: ruby converter.rb
-    - 
+    -
       name: Convert to Sequel Schema
       run: ruby convert_to_schema.rb
-    - 
+    -
       name: Prepare schemas archive
       run: (cd artifacts && tar jcvf gdm_schemas.tbz schemas)
-    - 
+    -
       name: Upload to Dropbox
       run: dropbox-deployment
       env:
         DROPBOX_OAUTH_BEARER: ${{ secrets.DROPBOX_OAUTH_BEARER }}
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version: ['3.3', '3.4', '4.0']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby ${{ matrix.ruby-version }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+
+      - name: Run tests
+        run: bundle exec rake test
+
+  ci:
+    if: always()
+    needs: [check_and_convert, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check CI status
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" ]]; then
+            echo "CI failed"
+            exit 1
+          fi
+          if [[ "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "CI cancelled"
+            exit 1
+          fi
+          echo "All CI jobs passed"
