@@ -1,5 +1,6 @@
 require "pathname"
-require "stringio"
+require_relative "convert_to_schema_class"
+require_relative "lib/gdm_helpers"
 
 table = nil
 collect = false
@@ -8,62 +9,12 @@ schema = {}
 artifacts_dir = Pathname.new("artifacts") + "schemas" + "gdm"
 artifacts_dir.mkpath
 
-class SequelMigrationIO
-  attr_reader :indent, :io
-
-  def initialize
-    @io = StringIO.new
-    @indent = 0
-    open_block "Sequel.migration do"
-    open_block "change do"
-  end
-
-  def puts(*args)
-    io.print(" " * indent)
-    io.puts(*args)
-  end
-
-  def close_block(opts = {})
-    decrease_indent
-    puts("end")
-    unless opts[:no_blank]
-      io.puts
-    end
-  end
-
-  def open_block(*args)
-    puts(*args)
-    increase_indent
-  end
-
-  def increase_indent
-    @indent += 2
-  end
-
-  def decrease_indent
-    @indent -= 2
-  end
-
-  def finish
-    while(@indent > 0)
-      close_block(no_blank: true)
-    end
-  end
-
-  def string
-    io.string
-  end
-end
-
 def extract(link)
-  return nil if link.nil? || link.empty?
-  return "contexts_practitioners" if link =~ /contexts/ && link =~ /practitioners/
-  md = /\[(.+)\]/.match(link)
-  md.to_a[1] if md
+  GdmHelpers.extract(link)
 end
 
 def is_primary?(column, type)
-  type.to_sym == :serial || column.to_sym == :id
+  GdmHelpers.is_primary?(column, type)
 end
 
 def convert(name, type)

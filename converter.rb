@@ -1,6 +1,7 @@
 require 'psych'
 require 'pathname'
 require 'csv'
+require_relative 'lib/gdm_helpers'
 
 table = nil
 collect = false
@@ -10,14 +11,11 @@ artifacts_dir = Pathname.new("artifacts") + "schemas" + "gdm"
 artifacts_dir.mkpath
 
 def extract(link)
-  return nil if link.nil? || link.empty?
-  return "contexts_practitioners" if link =~ /contexts/ && link =~ /practitioners/
-  md = /\[(.+)\]/.match(link)
-  md.to_a[1] if md
+  GdmHelpers.extract(link)
 end
 
 def is_primary?(column, type)
-  type.to_sym == :serial || column.to_sym == :id
+  GdmHelpers.is_primary?(column, type)
 end
 
 def convert(name, type)

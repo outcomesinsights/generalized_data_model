@@ -4,6 +4,9 @@ GEM
     chef-utils (18.2.7)
       concurrent-ruby
     concurrent-ruby (1.2.2)
+    csv (3.3.5)
+    docile (1.4.1)
+    drb (2.2.3)
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -14,19 +17,34 @@ GEM
       mixlib-cli (~> 2.1, >= 2.1.1)
       mixlib-config (>= 2.2.1, < 4)
       mixlib-shellout
+    minitest (6.0.2)
+      drb (~> 2.0)
+      prism (~> 1.5)
     mixlib-cli (2.1.8)
     mixlib-config (3.0.27)
       tomlrb
     mixlib-shellout (3.2.7)
       chef-utils
+    prism (1.9.0)
+    rake (13.3.1)
     rexml (3.2.6)
+    simplecov (0.22.0)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.13.2)
+    simplecov_json_formatter (0.1.4)
     tomlrb (2.0.3)
 
 PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  csv
   mdl (~> 0.12.0)
+  minitest
+  rake
+  simplecov
 
 BUNDLED WITH
    2.4.7

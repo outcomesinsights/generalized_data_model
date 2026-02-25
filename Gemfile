@@ -2,6 +2,11 @@
 
 source "https://rubygems.org"
 
-# gem "rails"
-
 gem "mdl", "~> 0.12.0"
+gem "csv"
+
+group :test do
+  gem "minitest"
+  gem "simplecov"
+  gem "rake"
+end
