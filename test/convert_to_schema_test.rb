@@ -64,14 +64,14 @@ class ConvertToSchemaTest < Minitest::Test
 
   def test_foreign_key_to_concept
     schema = run_convert_to_schema
-    # FK to concept should use key: :concept_id
-    assert_match(/foreign_key :gender_concept_id, :concept.*key: :concept_id/, schema)
+    # FK to concept should use key: :concept_id (Ruby 3.4+ uses keyword syntax, 3.3 uses hash rockets)
+    assert_match(/foreign_key :gender_concept_id, :concept.*(?:key: |:key=>):concept_id/, schema)
   end
 
   def test_foreign_key_to_regular_table
     schema = run_convert_to_schema
-    # FK to practitioners should use key: :id
-    assert_match(/foreign_key :practitioner_id, :practitioners.*key: :id/, schema)
+    # FK to practitioners should use key: :id (Ruby 3.4+ uses keyword syntax, 3.3 uses hash rockets)
+    assert_match(/foreign_key :practitioner_id, :practitioners.*(?:key: |:key=>):id/, schema)
   end
 
   def test_date_column
@@ -96,8 +96,8 @@ class ConvertToSchemaTest < Minitest::Test
 
   def test_null_false_on_required_columns
     schema = run_convert_to_schema
-    # birth_date is required
-    assert_match(/Date :birth_date.*null: false/, schema)
+    # birth_date is required (Ruby 3.4+ uses keyword syntax, 3.3 uses hash rockets)
+    assert_match(/Date :birth_date.*(?:null: |:null=>)false/, schema)
   end
 
   def test_proper_closing
