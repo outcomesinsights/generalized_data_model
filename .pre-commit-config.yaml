@@ -1,0 +1,32 @@
+# Pre-commit framework config for generalized_data_model.
+#
+# Policy (see ~/.claude/CLAUDE.md "CI Gates"): fast checks on every commit,
+# the FULL local CI equivalent on every push, so red CI on push is rare.
+#
+#   pre-push : `just ci` = mdl lint + schema converters + rake test
+#              (mirrors .github/workflows/check.yml, minus the Dropbox deploy),
+#              plus beads' own pre-push sync.
+#
+# beads coexistence: the pre-commit framework owns .git/hooks/pre-push only.
+# beads' other hooks (pre-commit, post-checkout, post-merge, prepare-commit-msg)
+# remain as symlinks from .beads/hooks/ into .git/hooks/, so beads tracking on
+# commit/checkout/merge is unchanged and stays current with `bd` upgrades.
+#
+# Emergency bypass: git push --no-verify
+repos:
+  - repo: local
+    hooks:
+      - id: just-ci
+        name: just ci (full local CI equivalent)
+        entry: just ci
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        always_run: true
+      - id: beads-pre-push
+        name: beads (pre-push sync)
+        entry: bd hooks run pre-push
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        always_run: true
