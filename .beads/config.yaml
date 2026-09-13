@@ -41,3 +41,6 @@
 # - github.org
 # - github.repo
 
+
+# Beads sync via the git-backed Dolt remote at refs/dolt/data (pre-push gate drives it).
+sync.remote: "git+ssh://git@github.com/outcomesinsights/generalized_data_model.git"
